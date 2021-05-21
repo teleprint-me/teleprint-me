@@ -1,0 +1,8 @@
+flask
+blinker
+click
+pymongo
+pytest
+python-dotenv
+simplejson
+watchdog
