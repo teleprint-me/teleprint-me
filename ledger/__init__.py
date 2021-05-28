@@ -1,29 +1,24 @@
-import flask
+from flask import Flask
+
+from ledger.core.extensions import mongo
+
+from ledger import index
+from ledger import auth
 
 
-app = flask.Flask(__name__)
+def create_app(config: str = None) -> Flask:
+    app = Flask(__name__, instance_relative_config=True)
 
+    if config is None:
+        config = 'ledger.core.config'
 
-@app.route('/')
-def index():
-    flask.url_for('static', filename='main.css')
-    return 'index'
+    app.config.from_object(config)
 
+    mongo.init_app(app)
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if flask.request.method == 'POST':
-        flask.url_for('index')
-    return 'register'
+    app.register_blueprint(auth.bp)
+    app.register_blueprint(index.bp)
 
+    app.add_url_rule("/", endpoint="index")
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if flask.request.method == 'POST':
-        flask.url_for('index')
-    return 'login'
-
-
-@app.route('/logout')
-def logout():
-    return 'logout'
+    return app
