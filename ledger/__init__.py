@@ -1,3 +1,4 @@
+from logging.config import dictConfig
 from flask import Flask
 
 from ledger.core.extensions import mongo
@@ -15,6 +16,15 @@ def create_app(config: str = None) -> Flask:
     app.config.from_object(config)
 
     mongo.init_app(app)
+
+    @app.context_processor
+    def utility_processor():
+        def timestamp():
+            import datetime
+            date, time = datetime.datetime.now().isoformat().split('T')
+            time = time.split('.')[0]
+            return f'{date}@{time}'
+        return dict(zip=zip, list=list, timestamp=timestamp)
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(index.bp)

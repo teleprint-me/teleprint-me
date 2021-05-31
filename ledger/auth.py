@@ -40,29 +40,36 @@ def load_user_session() -> None:
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
-        error = None
-        email = request.form['email']
-        password = request.form['password']
+        message = None
+        email = request.form.get('email')
+        password = request.form.get('password')
+        repeat = request.form.get('repeat')
         document = mongo.db.users.find_one({'email': email})
 
         if not email:
-            error = 'Username is required'
+            message = 'Username is required'
         elif not password:
-            error = 'Password is required'
+            message = 'Password is required'
+        elif not repeat:
+            message = 'Password Repeat is required'
+        elif password != repeat:
+            message = 'Passwords do not match'
         elif document:
-            error = f'{email} is already registered'
+            message = f'{email} is already registered'
 
-        if error is None:
+        if message is None:
             session.clear()
-            result = mongo.db.users.insert({
+            result = mongo.db.users.insert_one({
+                'database': uuid.uuid4(),
                 'email': email,
                 'password': shash(password),
-                'database': uuid.uuid4()
+                'verified': False,
+                '2fa': False
             })
-            session['sid'] = result.inserted_id
+            session['sid'] = str(result.inserted_id)
             return redirect(url_for('index'))
 
-        flash(error)
+        flash(('Error', message))
 
     return render_template('auth/register.html')
 
@@ -70,22 +77,27 @@ def register():
 @bp.route("/login", methods=("GET", "POST"))
 def login():
     if request.method == "POST":
-        error = None
-        email = request.form['email']
-        password = request.form['password']
+        print('[LOGIN] receieved post request')
+        message = None
+        email = request.form.get('email')
+        password = request.form.get('password')
         document = mongo.db.users.find_one({'email': email})
 
-        if document is None:
-            error = f'{email} does not exist'
+        if not email:
+            message = 'A email is required'
+        elif not password:
+            message = 'A password is required'
+        elif not document:
+            message = f'Email {email} does not exist'
         elif not sverify(password, document['password']):
-            error = 'invalid password was given'
+            message = 'Invalid password was given'
 
-        if error is None:
+        if message is None:
             session.clear()
             session['sid'] = str(document['_id'])
             return redirect(url_for("index"))
 
-        flash(error)
+        flash(('Error', message))
 
     return render_template("auth/login.html")
 
@@ -93,4 +105,4 @@ def login():
 @bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("login"))
+    return redirect(url_for("auth.login"))
