@@ -1,34 +1,84 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    <h2>Register</h2>
-    <form method="post">
-        <div class="col-md-6">
-            <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-                <input type="email" name="email" class="form-control" id="inputEmail3">
+    <h2 class="border-bottom m-3 p-3">Register</h2>
+
+    <form class="d-flex flex-column bg-light rounded mx-auto m-3 p-3 shadow w-50 needs-validation" 
+          enctype="application/x-www-form-urlencoded" 
+          action="/auth/register" 
+          method="post"
+          novalidate>
+
+        <div class="form-floating mb-3">
+            <input type="email" 
+                   name="email" 
+                   class="form-control" 
+                   id="floatingInput" 
+                   placeholder="name@example.com"
+                   required>
+            <label for="floatingInput">Email address</label>
+            <div class="invalid-feedback">
+                Please provide a email.
             </div>
         </div>
-        <div class="col-md-6">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-10">
-                <input type="password" name="password" class="form-control" id="inputPassword3">
+
+        <div class="form-floating mb-3">
+            <input type="password" 
+                   name="password" 
+                   class="form-control" 
+                   id="floatingPassword" 
+                   placeholder="Password"
+                   required>
+            <label for="floatingPassword">Password</label>
+            <div class="invalid-feedback">
+                Please provide a password.
             </div>
         </div>
-        <div class="col-md-6">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">Repeat</label>
-            <div class="col-sm-10">
-                <input type="password" name="repeat" class="form-control" id="inputPassword3">
+
+        <div class="form-floating mb-3">
+            <input type="password" 
+                   name="repeat" 
+                   class="form-control" 
+                   id="floatingPassword" 
+                   placeholder="Password"
+                   required>
+            <label for="floatingPassword">Repeat Password</label>
+            <div class="invalid-feedback">
+                Please repeat the password.
             </div>
         </div>
-        <div class="col-12">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck1">
-                <label class="form-check-label" for="gridCheck1">
-                   Remember Me 
-                </label>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+
+        <button type="submit" name="submit" class="btn btn-primary w-100 mb-3">Sign up</button>
+
+        <a href="/auth/login" class="btn btn-primary w-100">Sign in</a>
     </form>
+
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script charset="utf-8">
+        let form = document.querySelector('form');
+
+        let modifyFormWidth = () => {
+            if (window.innerWidth < 768) {
+                form.classList.replace('w-50', 'w-100');
+            } else {
+                form.classList.replace('w-100', 'w-50');
+            }
+        }
+
+        ['load', 'resize'].forEach((event) => {
+            window.addEventListener(event, modifyFormWidth);
+        });
+
+        form.addEventListener('submit', (event) => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+        }, false);
+    </script>
 {% endblock %}
