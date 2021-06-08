@@ -1,0 +1,46 @@
+{# Ledger - A web application to track cryptocurrency investments
+## Copyright (C) 2021 teleprint.me
+##
+## This program is free software: you can redistribute it and/or modify
+## it under the terms of the GNU Affero General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or
+## (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU Affero General Public License for more details.
+##
+## You should have received a copy of the GNU Affero General Public License
+## along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#}
+{% extends 'base.html' %}
+
+{% block main %}
+    <h2 class="border-bottom m-3 p-3">Portfolio</h2>
+
+    {% if not accounts %}
+        <div class="card rounded mx-auto shadow" style="min-width: 14rem; max-width: 21rem;">
+            <div class="card-body">
+                <h5 class="card-title">Accounts</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Add a brokerage account</h6>
+                <p class="card-text">
+                    The Accounts page lets you view, create, and delete authentication methods 
+                    for managing your brokerage accounts.
+                </p>
+                <p class="card-text">
+                    Adding an authentication method allows this application to view, modify,
+                    record, and track your finances. 
+                </p>
+                <a href="/accounts/create" class="card-link">Add an account</a>
+            </div>
+        </div>
+    {% else %}
+        <p>{{ accounts }}</p>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script charset="utf-8">
+    </script>
+{% endblock %}

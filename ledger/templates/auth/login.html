@@ -1,3 +1,19 @@
+{# Ledger - A web application to track cryptocurrency investments
+## Copyright (C) 2021 teleprint.me
+##
+## This program is free software: you can redistribute it and/or modify
+## it under the terms of the GNU Affero General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or
+## (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU Affero General Public License for more details.
+##
+## You should have received a copy of the GNU Affero General Public License
+## along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#}
 {% extends 'base.html' %}
 
 {% block main %}
@@ -13,7 +29,7 @@
             <input type="email" 
                    name="email" 
                    class="form-control" 
-                   id="floatingInput" 
+                   id="email" 
                    placeholder="name@example.com"
                    required>
             <label for="floatingInput">Email address</label>
@@ -26,7 +42,7 @@
             <input type="password" 
                    name="password" 
                    class="form-control" 
-                   id="floatingPassword" 
+                   id="password" 
                    placeholder="Password"
                    required>
             <label for="floatingPassword">Password</label>
@@ -42,28 +58,9 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="/static/scripts/forms.js"></script>
     <script charset="utf-8">
-        let form = document.querySelector('form');
-
-        let modifyFormWidth = () => {
-            if (window.innerWidth < 768) {
-                form.classList.replace('w-50', 'w-100');
-            } else {
-                form.classList.replace('w-100', 'w-50');
-            }
-        }
-
-        ['load', 'resize'].forEach((event) => {
-            window.addEventListener(event, modifyFormWidth);
-        });
-
-        form.addEventListener('submit', (event) => {
-            if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-            }
-
-            form.classList.add('was-validated')
-        }, false);
+        formsResponsiveResize();
+        formsValidateRequired();
     </script>
 {% endblock %}

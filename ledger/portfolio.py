@@ -13,9 +13,26 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from ledger.core import generate
+from flask import Blueprint
+from flask import flash
+from flask import g
+from flask import redirect
+from flask import render_template
+from flask import request
+from flask import session
+from flask import url_for
 
-import os
+from bson.objectid import ObjectId
 
-SECRET_KEY = generate.gbytes()
-MONGO_URI = os.environ.get('MONGO_URI')
+from ledger.core.extensions import mongo
+from ledger import auth
+
+bp = Blueprint('index', __name__)
+
+
+@bp.route('/', methods=('GET',))
+@auth.required
+def portfolio():
+    # load accounts collection from user db
+    accounts = [account for account in g.db.accounts.find()]
+    return render_template('portfolio.html', accounts=accounts)

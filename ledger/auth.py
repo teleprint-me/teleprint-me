@@ -1,3 +1,18 @@
+# Ledger - A web application to track cryptocurrency investments
+# Copyright (C) 2021 teleprint.me
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from flask import Blueprint
 from flask import flash
 from flask import g
@@ -28,6 +43,15 @@ def required(view):
     return wrapped_view
 
 
+def redirect_user(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is not None:
+            return redirect(url_for('index'))
+        return view(**kwargs)
+    return wrapped_view
+
+
 @bp.before_app_request
 def load_user_session() -> None:
     _id = session.get('sid')
@@ -38,6 +62,7 @@ def load_user_session() -> None:
 
 
 @bp.route('/register', methods=('GET', 'POST'))
+@redirect_user
 def register():
     if request.method == 'POST':
         message = None
@@ -74,10 +99,10 @@ def register():
     return render_template('auth/register.html')
 
 
-@bp.route("/login", methods=("GET", "POST"))
+@bp.route('/login', methods=('GET', 'POST'))
+@redirect_user
 def login():
-    if request.method == "POST":
-        print('[LOGIN] receieved post request')
+    if request.method == 'POST':
         message = None
         email = request.form.get('email')
         password = request.form.get('password')
@@ -95,14 +120,14 @@ def login():
         if message is None:
             session.clear()
             session['sid'] = str(document['_id'])
-            return redirect(url_for("index"))
+            return redirect(url_for('index'))
 
         flash(('Error', message))
 
-    return render_template("auth/login.html")
+    return render_template('auth/login.html')
 
 
-@bp.route("/logout")
+@bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for("auth.login"))
+    return redirect(url_for('auth.login'))

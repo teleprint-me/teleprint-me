@@ -1,3 +1,19 @@
+{# Ledger - A web application to track cryptocurrency investments
+## Copyright (C) 2021 teleprint.me
+##
+## This program is free software: you can redistribute it and/or modify
+## it under the terms of the GNU Affero General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or
+## (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU Affero General Public License for more details.
+##
+## You should have received a copy of the GNU Affero General Public License
+## along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -16,16 +32,18 @@
         {% block styles %}{% endblock %}
     </head>
     <body>
-        {% if g.user %}
-            {# include 'nav.html' #}
-        {%- endif %}
+        {% include 'navbar.html' %}
+
+        {% set messages = list(get_flashed_messages()) %}
 
         <main class="container">
-            {% set messages = list(get_flashed_messages()) %}
             {% if messages %}
                 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1;">
                     {% for title, message in messages %}
-                        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast" 
+                             role="alert" 
+                             aria-live="assertive" 
+                             aria-atomic="true">
                             <div class="toast-header">
                                 <strong class="me-auto">{{ title }}</strong>
                                 <small class="text-muted">{{ timestamp() }}</small>
@@ -35,13 +53,12 @@
                                         aria-label="Close">
                                 </button>
                             </div>
-                            <div class="toast-body">
-                                {{ message }}
-                            </div>
+                            <div class="toast-body">{{ message }}</div>
                         </div>
                     {% endfor %}
                 </div>
             {% endif %}
+
             {% block main %}{%- endblock %}
         </main>
 
@@ -50,12 +67,17 @@
                 crossorigin="anonymous">
         </script>
 
-        {% if messages %}
+        {% if g.user %}
+            <script src="/static/scripts/navbar.js"></script>
             <script charset="utf-8">
-                for (let toast of document.querySelectorAll('.toast')) {
-                    new bootstrap.Toast(toast).show();
-                }
+                navbarRemovePageHighlight(); 
+                navbarAddPageHighlight();
             </script>
+        {% endif %}
+
+        {% if messages %}
+            <script src="/static/scripts/toast.js"></script>
+            <script charset="utf-8">showToastsOnLoad('.toast');</script>
         {% endif %}
 
         {% block scripts %}{% endblock %}

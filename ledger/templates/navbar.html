@@ -1,0 +1,52 @@
+{# Ledger - A web application to track cryptocurrency investments
+## Copyright (C) 2021 teleprint.me
+##
+## This program is free software: you can redistribute it and/or modify
+## it under the terms of the GNU Affero General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or
+## (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU Affero General Public License for more details.
+##
+## You should have received a copy of the GNU Affero General Public License
+## along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#}
+{% if g.user %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">teleprint.me</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a id="nav-portfolio" 
+                       class="nav-link active" 
+                       aria-current="page" 
+                       href="/">Portfolio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="nav-assets" class="nav-link" href="/assets/menu">Assets</a>
+                </li>
+                <li class="nav-item">
+                    <a id="nav-accounts" class="nav-link" href="/accounts/menu">Accounts</a>
+                </li>
+                <li class="nav-item">
+                    <a id="nav-wallets" class="nav-link" href="/wallets/menu">Wallets</a>
+                </li>
+                <li class="nav-item">
+                    <a id="nav-settings" class="nav-link" href="/settings/menu">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a id="nav-sign-out" class="nav-link" href="/auth/logout">Sign out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endif %}

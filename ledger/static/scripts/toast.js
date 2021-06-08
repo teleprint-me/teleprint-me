@@ -14,6 +14,10 @@
 ** You should have received a copy of the GNU Affero General Public License
 ** along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-body {
-    box-sizing: border-box;
+function showToastsOnLoad(query) {
+    let toasts = document.querySelectorAll(query);
+
+    for (let toast of toasts) {
+        new bootstrap.Toast(toast).show();
+    }
 }
