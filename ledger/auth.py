@@ -30,6 +30,8 @@ from ledger.core.extensions import mongo
 
 import functools
 import uuid
+import cbpro
+import krakenex
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -52,13 +54,39 @@ def redirect_user(view):
     return wrapped_view
 
 
-@bp.before_app_request
-def load_user_session() -> None:
+def get_user():
     _id = session.get('sid')
-    g.user = mongo.db.users.find_one({'_id': ObjectId(_id)})
-    if g.user:
-        key = str(g.user['database'])
-        g.db = mongo.cx[key]
+    return mongo.db.users.find_one({'_id': ObjectId(_id)})
+
+
+def get_database(user):
+    if user:
+        key = str(user['database'])
+        return mongo.cx[key]
+    return None
+
+
+def get_accounts(db):
+    accounts = list()
+    if db:
+        for account in db.accounts.find():
+            platform, client = account.get('platform'), None
+            key, secret = account.get('key'), account.get('secret')
+            if platform == 'coinbase-pro':
+                passphrase = account.get('passphrase')
+                client = cbpro.private_client(key, secret, passphrase)
+            elif platform == 'kraken':
+                client = krakenex.private_client(key, secret)
+            if client:
+                accounts.append({'platform': platform, 'client': client})
+    return accounts
+
+
+@bp.before_app_request
+def load_user_session():
+    g.user = get_user()
+    g.db = get_database(g.user)
+    g.accounts = get_accounts(g.db)
 
 
 @bp.route('/register', methods=('GET', 'POST'))
@@ -70,7 +98,6 @@ def register():
         password = request.form.get('password')
         repeat = request.form.get('repeat')
         document = mongo.db.users.find_one({'email': email})
-
         if not email:
             message = 'Username is required'
         elif not password:
@@ -81,7 +108,6 @@ def register():
             message = 'Passwords do not match'
         elif document:
             message = f'{email} is already registered'
-
         if message is None:
             session.clear()
             result = mongo.db.users.insert_one({
@@ -93,9 +119,7 @@ def register():
             })
             session['sid'] = str(result.inserted_id)
             return redirect(url_for('index'))
-
         flash(('Error', message))
-
     return render_template('auth/register.html')
 
 
@@ -107,7 +131,6 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
         document = mongo.db.users.find_one({'email': email})
-
         if not email:
             message = 'A email is required'
         elif not password:
@@ -116,14 +139,11 @@ def login():
             message = f'Email {email} does not exist'
         elif not sverify(password, document['password']):
             message = 'Invalid password was given'
-
         if message is None:
             session.clear()
             session['sid'] = str(document['_id'])
             return redirect(url_for('index'))
-
         flash(('Error', message))
-
     return render_template('auth/login.html')
 
 

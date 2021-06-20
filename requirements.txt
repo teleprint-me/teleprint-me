@@ -1,10 +1,11 @@
 flask
-blinker
-click
 pymongo
-pytest
-python-dotenv
-simplejson
-watchdog
 Flask-PyMongo
 scrypt
+blinker
+click
+simplejson
+python-dotenv
+watchdog
+coinbasepro-python
+python3-krakenex

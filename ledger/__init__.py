@@ -19,6 +19,7 @@ from ledger.core.extensions import mongo
 
 from ledger import portfolio
 from ledger import accounts
+from ledger import assets
 from ledger import auth
 
 
@@ -51,6 +52,7 @@ def create_app(config: str = None) -> Flask:
     app.register_blueprint(auth.bp)
     app.register_blueprint(portfolio.bp)
     app.register_blueprint(accounts.bp)
+    app.register_blueprint(assets.bp)
 
     app.add_url_rule('/', endpoint='index')
 
