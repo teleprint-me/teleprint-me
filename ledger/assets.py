@@ -27,22 +27,17 @@ bp = Blueprint('assets', __name__, url_prefix='/assets')
 def get_account_options() -> list:
     options = []
     for account in g.accounts:
-        value = account['platform']
-        inner_text = ' '.join(word.capitalize() for word in value.split('-'))
-        options.append({'value': value, 'inner-text': inner_text})
+        inner_text = ' '.join(word.capitalize() for word in account.name.split('-'))
+        options.append({'value': account.name, 'inner-text': inner_text})
     return options
 
 
 def get_asset_options() -> list:
     options = []
     for account in g.accounts:
-        platform = account['platform']
-        client = account['client']
-        if platform == 'coinbase-pro':
-            assets = client.products.list()
-        if platform == 'kraken':
-            assets = client.market.pairs()['result']
-        options.append({'platform': platform, 'assets': assets})
+        assets = account.get_assets()
+        if assets:
+            options.append({'platform': account.name, 'assets': assets})
     return options
 
 
@@ -55,40 +50,54 @@ def assets_menu():
 @bp.route("/create", methods=('GET', 'POST'))
 @auth.required
 def assets_create():
-    # assets need to be serialized so that javascript can access
-    # the data. this should only be done with trusted 3rd party data.
-    # doing otherwise will lead to xss vulnerabilities.
     g.data = {
         'accounts': get_account_options(),
         'assets': get_asset_options()
     }
 
     if request.method == "POST":
-        meta, data, message = None, None, None
-        account = request.form.get('account'),
-        asset = request.form.get('asset'),
-        strategy = request.form.get('strategy'),
-        principle = request.form.get('principle'),
-        period = request.form.get('period'),
+        message = None
+
+        # get the form fields
+        account = request.form.get('account')
+        asset = request.form.get('asset')
+        strategy = request.form.get('strategy')
+        principle = request.form.get('principle')
+        period = request.form.get('period')
         apy = request.form.get('apy')
 
-        record = g.db.assets.find_one({
-            'meta': {
-                'account': account, 'asset': asset
-            }
-        })
+        # check the form fields
+        if not account:
+            message = 'Error', '`Account` is required'
+        elif not asset:
+            message = 'Error', '`Asset Pair` is required'
+        elif not strategy:
+            message = 'Error', '`Strategy` is required'
+        elif not principle:
+            message = 'Error', '`Principle Amount` is required'
+        elif not apy:
+            message = 'Error', '`Annual Percentage Yield` is required'
 
+        # check to see if the record already exists
+        record = g.db.assets.find_one({'account': account, 'asset': asset})
         if record:
             message = 'Error', f'{account} and {asset} pair already exists!'
-        elif account == 'coinbase-pro':
-            pass
-        elif account == 'kraken':
-            pass
-        else:
-            message = 'Error', f'Got {asset} with {strategy}'
 
+        # insert the document into the database
         if not message:
-            g.db.assets.insert_one()
+            result = g.db.assets.insert_one({
+                'ledger': [],
+                'account': account,
+                'asset': asset,
+                'strategy': strategy,
+                'principle': principle,
+                'period': period,
+                'apy': apy
+            })
+            if result.acknowledged:
+                message = 'Info', f'Created {asset} pair using {strategy}'
+            else:
+                message = 'Error', f'Failed to create {asset} pair using {strategy}'
 
         flash(message, message[0].lower())
 
@@ -98,15 +107,8 @@ def assets_create():
 @bp.route('/view', methods=(('GET',)))
 @auth.required
 def assets_view():
-    accounts = [account for account in g.db.accounts.find()]
-    for account in accounts:
-        if account['platform'] == 'coinbase-pro':
-            pass
-        elif account['platform'] == 'kraken':
-            pass
-        else:
-            break
-    return render_template('assets/view.html')
+    assets = [asset for asset in g.db.assets.find()]
+    return render_template('assets/view.html', assets=assets)
 
 
 @bp.route('/delete', methods=('GET', 'POST'))

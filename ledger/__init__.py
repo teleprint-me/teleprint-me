@@ -13,26 +13,23 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from flask import Flask
-
 from ledger.core.extensions import mongo
-
-from ledger import portfolio
+from ledger import auth
+from ledger import proxy
 from ledger import accounts
 from ledger import assets
-from ledger import auth
+from ledger import portfolio
+
+import flask
 
 
-def create_app(config: str = None) -> Flask:
-    app = Flask(__name__, instance_relative_config=True)
-
+def get_config(config: str) -> str:
     if config is None:
-        config = 'ledger.core.config'
+        return 'ledger.core.config'
+    return config
 
-    app.config.from_object(config)
 
-    mongo.init_app(app)
-
+def define_utility_processor(app: flask.Flask) -> flask.Flask:
     @app.context_processor
     def utility_processor():
         def timestamp():
@@ -48,12 +45,19 @@ def create_app(config: str = None) -> Flask:
         }
 
         return utils
+    return app
 
+
+def create_app(config: str = None) -> flask.Flask:
+    app = flask.Flask(__name__, instance_relative_config=True)
+    config = get_config(config)
+    app.config.from_object(config)
+    app = define_utility_processor(app)
+    mongo.init_app(app)
     app.register_blueprint(auth.bp)
-    app.register_blueprint(portfolio.bp)
+    app.register_blueprint(proxy.bp)
     app.register_blueprint(accounts.bp)
     app.register_blueprint(assets.bp)
-
+    app.register_blueprint(portfolio.bp)
     app.add_url_rule('/', endpoint='index')
-
     return app

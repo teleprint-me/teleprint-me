@@ -132,16 +132,15 @@
 
 {% block scripts %}
     <script src="/static/scripts/utilities.js"></script>
+    <script src="/static/scripts/requests.js"></script>
     <script src="/static/scripts/forms.js"></script>
     <script src="/static/scripts/assets.js"></script>
     <script charset="utf-8">
-        let data = {{ g.data['assets'] | tojson }};
-        let assets = getAssetsFromData(data);
         let form = document.querySelector('#create-assets');
         formsResponsiveResize();
         formsValidateRequired();
         form.account.addEventListener('change', toggleAccount);
         form.strategy.addEventListener('change', toggleStrategy);
-        //form.principle.addEventListener('input', updateMinPrincipleAmount);
+        form.principle.addEventListener('focus', togglePrinciple);
     </script>
 {% endblock %}

@@ -27,11 +27,11 @@ from bson.objectid import ObjectId
 from ledger.core.security import shash
 from ledger.core.security import sverify
 from ledger.core.extensions import mongo
+from ledger.client.coinbasepro import CoinbaseProFactory
+from ledger.client.kraken import KrakenFactory
 
 import functools
 import uuid
-import cbpro
-import krakenex
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -66,19 +66,25 @@ def get_database(user):
     return None
 
 
+def get_client(cursor):
+    platform = cursor.get('platform')
+    key = cursor.get('key')
+    secret = cursor.get('secret')
+    if platform == 'coinbase-pro':
+        passphrase = cursor.get('passphrase')
+        return CoinbaseProFactory().get_client(key, secret, passphrase)
+    if platform == 'kraken':
+        return KrakenFactory().get_client(key, secret)
+    return None
+
+
 def get_accounts(db):
     accounts = list()
     if db:
         for account in db.accounts.find():
-            platform, client = account.get('platform'), None
-            key, secret = account.get('key'), account.get('secret')
-            if platform == 'coinbase-pro':
-                passphrase = account.get('passphrase')
-                client = cbpro.private_client(key, secret, passphrase)
-            elif platform == 'kraken':
-                client = krakenex.private_client(key, secret)
+            client = get_client(account)
             if client:
-                accounts.append({'platform': platform, 'client': client})
+                accounts.append(client)
     return accounts
 
 
