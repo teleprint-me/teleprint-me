@@ -34,7 +34,7 @@ def gstring(size: int = None) -> str:
     return gbytes(size).decode('utf-8')
 
 
-def gidentifer(size=None):
+def gidentifer(size: int = None) -> str:
     if size is None:
         size = SIZE
     prefix = SystemRandom().choice(LETTERS)

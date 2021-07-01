@@ -13,34 +13,26 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from flask import Blueprint
-from flask import flash
-from flask import g
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import session
-from flask import url_for
-
-from bson.objectid import ObjectId
-
 from ledger.core.security import shash
 from ledger.core.security import sverify
 from ledger.core.extensions import mongo
 from ledger.client.coinbasepro import CoinbaseProFactory
 from ledger.client.kraken import KrakenFactory
 
+import bson
+import flask
 import functools
 import uuid
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+bp = flask.Blueprint('auth', __name__, url_prefix='/auth')
 
 
 def required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
+        if flask.g.user is None:
+            path = flask.url_for('auth.login')
+            return flask.redirect(path)
         return view(**kwargs)
     return wrapped_view
 
@@ -48,15 +40,17 @@ def required(view):
 def redirect_user(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if g.user is not None:
-            return redirect(url_for('index'))
+        if flask.g.user is not None:
+            path = flask.url_for('index')
+            return flask.redirect(path)
         return view(**kwargs)
     return wrapped_view
 
 
 def get_user():
-    _id = session.get('sid')
-    return mongo.db.users.find_one({'_id': ObjectId(_id)})
+    _id = flask.session.get('sid')
+    objectid = bson.objectid.ObjectId(_id)
+    return mongo.db.users.find_one({'_id': objectid})
 
 
 def get_database(user):
@@ -70,8 +64,8 @@ def get_client(cursor):
     platform = cursor.get('platform')
     key = cursor.get('key')
     secret = cursor.get('secret')
+    passphrase = cursor.get('passphrase')
     if platform == 'coinbase-pro':
-        passphrase = cursor.get('passphrase')
         return CoinbaseProFactory().get_client(key, secret, passphrase)
     if platform == 'kraken':
         return KrakenFactory().get_client(key, secret)
@@ -90,19 +84,19 @@ def get_accounts(db):
 
 @bp.before_app_request
 def load_user_session():
-    g.user = get_user()
-    g.db = get_database(g.user)
-    g.accounts = get_accounts(g.db)
+    flask.g.user = get_user()
+    flask.g.db = get_database(flask.g.user)
+    flask.g.accounts = get_accounts(flask.g.db)
 
 
 @bp.route('/register', methods=('GET', 'POST'))
 @redirect_user
 def register():
-    if request.method == 'POST':
+    if flask.request.method == 'POST':
         message = None
-        email = request.form.get('email')
-        password = request.form.get('password')
-        repeat = request.form.get('repeat')
+        email = flask.request.form.get('email')
+        password = flask.request.form.get('password')
+        repeat = flask.request.form.get('repeat')
         document = mongo.db.users.find_one({'email': email})
         if not email:
             message = 'Username is required'
@@ -115,7 +109,7 @@ def register():
         elif document:
             message = f'{email} is already registered'
         if message is None:
-            session.clear()
+            flask.session.clear()
             result = mongo.db.users.insert_one({
                 'database': uuid.uuid4(),
                 'email': email,
@@ -123,19 +117,20 @@ def register():
                 'verified': False,
                 '2fa': False
             })
-            session['sid'] = str(result.inserted_id)
-            return redirect(url_for('index'))
-        flash(('Error', message))
-    return render_template('auth/register.html')
+            flask.session['sid'] = str(result.inserted_id)
+            path = flask.url_for('index')
+            return flask.redirect(path)
+        flask.flash(('Error', message))
+    return flask.render_template('auth/register.html')
 
 
 @bp.route('/login', methods=('GET', 'POST'))
 @redirect_user
 def login():
-    if request.method == 'POST':
+    if flask.request.method == 'POST':
         message = None
-        email = request.form.get('email')
-        password = request.form.get('password')
+        email = flask.request.form.get('email')
+        password = flask.request.form.get('password')
         document = mongo.db.users.find_one({'email': email})
         if not email:
             message = 'A email is required'
@@ -146,14 +141,16 @@ def login():
         elif not sverify(password, document['password']):
             message = 'Invalid password was given'
         if message is None:
-            session.clear()
-            session['sid'] = str(document['_id'])
-            return redirect(url_for('index'))
-        flash(('Error', message))
-    return render_template('auth/login.html')
+            flask.session.clear()
+            flask.session['sid'] = str(document['_id'])
+            path = flask.url_for('index')
+            return flask.redirect(path)
+        flask.flash(('Error', message))
+    return flask.render_template('auth/login.html')
 
 
 @bp.route('/logout')
 def logout():
-    session.clear()
-    return redirect(url_for('auth.login'))
+    flask.session.clear()
+    path = flask.url_for('auth.login')
+    return flask.redirect(path)

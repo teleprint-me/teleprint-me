@@ -24,19 +24,17 @@ import flask
 
 
 def get_config(config: str) -> str:
-    if config is None:
+    if not config:
         return 'ledger.core.config'
     return config
 
 
 def define_utility_processor(app: flask.Flask) -> flask.Flask:
     @app.context_processor
-    def utility_processor():
-        def timestamp():
+    def utility_processor() -> dict:
+        def timestamp() -> str:
             import datetime
-            date, time = datetime.datetime.now().isoformat().split('T')
-            time = time.split('.')[0]
-            return f'{date}@{time}'
+            return datetime.datetime.now().isoformat()
 
         utils = {
             'zip': zip,
@@ -54,10 +52,8 @@ def create_app(config: str = None) -> flask.Flask:
     app.config.from_object(config)
     app = define_utility_processor(app)
     mongo.init_app(app)
-    app.register_blueprint(auth.bp)
-    app.register_blueprint(proxy.bp)
-    app.register_blueprint(accounts.bp)
-    app.register_blueprint(assets.bp)
-    app.register_blueprint(portfolio.bp)
+    blueprints = [auth.bp, proxy.bp, accounts.bp, assets.bp, portfolio.bp]
+    for blueprint in blueprints:
+        app.register_blueprint(blueprint)
     app.add_url_rule('/', endpoint='index')
     return app

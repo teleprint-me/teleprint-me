@@ -18,12 +18,14 @@ class CoinbaseProClient(AbstractClient):
         return self.__client
 
     def has_error(self, response: object) -> bool:
-        return bool(response.get('message'))
+        if isinstance(response, dict):
+            return bool(response.get('message'))
+        return False
 
     def get_assets(self) -> list:
         assets = list()
         response = self.client.products.list()
-        if 'message' in response:
+        if self.has_error(response):
             return response
         for item in response:
             assets.append({

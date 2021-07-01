@@ -56,7 +56,7 @@ def proxy_price(platform, asset):
         if account.name == platform:
             price = account.get_price(asset)
             break
-    return price
+    return flask.jsonify(price)
 
 
 @bp.route('/<platform>/order', methods=('POST',))
