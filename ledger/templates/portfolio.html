@@ -19,7 +19,7 @@
 {% block main %}
     <h2 class="border-bottom m-3 p-3">Portfolio</h2>
 
-    {% if not accounts %}
+    {% if not g.accounts %}
         <div class="card rounded mx-auto shadow" style="min-width: 14rem; max-width: 21rem;">
             <div class="card-body">
                 <h5 class="card-title">Accounts</h5>
@@ -36,11 +36,31 @@
             </div>
         </div>
     {% else %}
-        <p>{{ accounts }}</p>
+        <div class="list-group bg-light rounded shadow mx-auto w-50">
+            {% for asset in assets %}
+                <a href="#{{asset['name'].lower()}}"
+                   class="list-group-item list-group-item-primary"
+                   data-account={{asset['account']}}
+                   data-name={{asset['name']}}
+                   data-balance={{asset['balance']}}>
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{asset['name']}}</h5>
+                        <small class="text-muted">{{asset['account']}}</small>
+                    </div>
+                    <p class="mb-1">{{asset['balance']}}</p>
+                </a>
+            {% endfor %}
+        </div>
     {% endif %}
 {% endblock %}
 
 {% block scripts %}
+    {% set accounts = [] %}
+    {% for account in g.accounts %}
+        {{ accounts.append({'account': account.name}) }}
+    {% endfor %}
+    <script src="/static/scripts/websocket.js"></script>
     <script charset="utf-8">
+        let accounts = {{ accounts | tojson }};
     </script>
 {% endblock %}
