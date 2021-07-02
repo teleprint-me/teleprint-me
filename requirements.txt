@@ -1,6 +1,8 @@
 flask
 pymongo
-Flask-PyMongo
+wtforms[email]
+flask-pymongo
+flask-wtf
 scrypt
 blinker
 click
