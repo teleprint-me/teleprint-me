@@ -34,7 +34,7 @@
     <body>
         {% include 'navbar.html' %}
 
-        {% set messages = list(get_flashed_messages()) %}
+        {% set messages = get_flashed_messages()[0] %}
 
         <main class="container">
             {% if messages %}

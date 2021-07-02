@@ -13,9 +13,12 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from ledger.forms import SignUpForm
+from ledger.forms import SignInForm
+
 from ledger.core.security import shash
-from ledger.core.security import sverify
 from ledger.core.extensions import mongo
+
 from ledger.client.coinbasepro import CoinbaseProFactory
 from ledger.client.kraken import KrakenFactory
 
@@ -31,7 +34,7 @@ def required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if flask.g.user is None:
-            path = flask.url_for('auth.login')
+            path = flask.url_for('auth.sign_in')
             return flask.redirect(path)
         return view(**kwargs)
     return wrapped_view
@@ -89,68 +92,53 @@ def load_user_session():
     flask.g.accounts = get_accounts(flask.g.db)
 
 
-@bp.route('/register', methods=('GET', 'POST'))
+@bp.route('/sign-up', methods=('GET', 'POST'))
 @redirect_user
-def register():
+def sign_up():
+    form = SignUpForm(flask.request.form)
     if flask.request.method == 'POST':
-        message = None
-        email = flask.request.form.get('email')
-        password = flask.request.form.get('password')
-        repeat = flask.request.form.get('repeat')
-        document = mongo.db.users.find_one({'email': email})
-        if not email:
-            message = 'Username is required'
-        elif not password:
-            message = 'Password is required'
-        elif not repeat:
-            message = 'Password Repeat is required'
-        elif password != repeat:
-            message = 'Passwords do not match'
-        elif document:
-            message = f'{email} is already registered'
-        if message is None:
+        messages = []
+        if form.validate_on_submit():
             flask.session.clear()
             result = mongo.db.users.insert_one({
                 'database': uuid.uuid4(),
-                'email': email,
-                'password': shash(password),
+                'email': form.email.data,
+                'password': shash(form.password.data),
                 'verified': False,
                 '2fa': False
             })
             flask.session['sid'] = str(result.inserted_id)
             path = flask.url_for('index')
             return flask.redirect(path)
-        flask.flash(('Error', message))
-    return flask.render_template('auth/register.html')
+        for key, value in form.errors.items():
+            if value:
+                messages.append((key, value[0]))
+        if messages:
+            flask.flash(tuple(messages))
+    return flask.render_template('auth/sign-up.html', form=form)
 
 
-@bp.route('/login', methods=('GET', 'POST'))
+@bp.route('/sign-in', methods=('GET', 'POST'))
 @redirect_user
-def login():
+def sign_in():
+    form = SignInForm(flask.request.form)
     if flask.request.method == 'POST':
-        message = None
-        email = flask.request.form.get('email')
-        password = flask.request.form.get('password')
-        document = mongo.db.users.find_one({'email': email})
-        if not email:
-            message = 'A email is required'
-        elif not password:
-            message = 'A password is required'
-        elif not document:
-            message = f'Email {email} does not exist'
-        elif not sverify(password, document['password']):
-            message = 'Invalid password was given'
-        if message is None:
+        messages = []
+        if form.validate_on_submit():
+            document = mongo.db.users.find_one({'email': form.email.data})
             flask.session.clear()
             flask.session['sid'] = str(document['_id'])
-            path = flask.url_for('index')
-            return flask.redirect(path)
-        flask.flash(('Error', message))
-    return flask.render_template('auth/login.html')
+            return flask.redirect(flask.url_for('index'))
+        for key, value in form.errors.items():
+            if value:
+                messages.append((key, value[0]))
+        if messages:
+            flask.flash(tuple(messages), 'error')
+    return flask.render_template('auth/sign-in.html', form=form)
 
 
-@bp.route('/logout')
+@bp.route('/sign-out')
 def logout():
     flask.session.clear()
-    path = flask.url_for('auth.login')
+    path = flask.url_for('auth.sign_in')
     return flask.redirect(path)

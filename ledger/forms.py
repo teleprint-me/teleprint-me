@@ -6,28 +6,33 @@ from wtforms.validators import Email
 from wtforms.validators import DataRequired
 from wtforms.validators import EqualTo
 from wtforms.validators import Length
+from wtforms.validators import ValidationError
+
+from ledger.core.security import sverify
+from ledger.core.extensions import mongo
 
 
-class SignInForm(FlaskForm):
-    email = EmailField('Email', [
-        DataRequired(message='Email is required'),
-        Length(min=6, message='Email must be at least 6 characters long'),
-        Email(message='Email must be valid')
-    ])
+#
+# Registration
+#
+class SignUpEmail(object):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Email already exists'
+        self.message = message
 
-    password = PasswordField('Password', [
-        DataRequired(message='Password is required'),
-        Length(min=8, message='Password must be at least 8 characters long')
-    ])
-
-    submit = SubmitField('Sign in')
+    def __call__(self, form, field):
+        document = {'email': field.data}
+        if mongo.db.users.find_one(document):
+            raise ValidationError(self.message)
 
 
 class SignUpForm(FlaskForm):
     email = EmailField('Email', [
         DataRequired(message='Email is required'),
         Length(min=6, message='Email must be at least 6 characters long'),
-        Email(message='Email must be valid')
+        Email(message='Email must be valid'),
+        SignUpEmail()
     ])
 
     password = PasswordField('Password', [
@@ -39,3 +44,47 @@ class SignUpForm(FlaskForm):
     repeat = PasswordField('Repeat Password')
 
     submit = SubmitField('Sign up')
+
+
+#
+# Login
+#
+class SignInEmail(object):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Email does not exist'
+        self.message = message
+
+    def __call__(self, form, field):
+        document = mongo.db.users.find_one({'email': field.data})
+        if not document:
+            raise ValidationError(self.message)
+
+
+class SignInPassword(object):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Password is invalid'
+        self.message = message
+
+    def __call__(self, form, field):
+        document = mongo.db.users.find_one({'email': form.email.data})
+        if not document or not sverify(field.data, document['password']):
+            raise ValidationError(self.message)
+
+
+class SignInForm(FlaskForm):
+    email = EmailField('Email', [
+        DataRequired(message='Email is required'),
+        Length(min=6, message='Email must be at least 6 characters long'),
+        Email(message='Email must be valid'),
+        SignInEmail()
+    ])
+
+    password = PasswordField('Password', [
+        DataRequired(message='Password is required'),
+        Length(min=8, message='Password must be at least 8 characters long'),
+        SignInPassword()
+    ])
+
+    submit = SubmitField('Sign in')

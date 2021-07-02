@@ -17,58 +17,35 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    <h2 class="border-bottom m-3 p-3">Register</h2>
+    <h2 class="border-bottom m-3 p-3">Sign In</h2>
 
     <form class="d-flex flex-column bg-light rounded mx-auto m-3 p-3 shadow w-50 needs-validation" 
           enctype="application/x-www-form-urlencoded" 
-          action="/auth/register" 
+          action="/auth/sign-in" 
           method="post"
           novalidate>
 
+        {{ form.csrf_token() }}
+
         <div class="form-floating mb-3">
-            <input type="email" 
-                   name="email" 
-                   class="form-control" 
-                   id="email" 
-                   placeholder="name@example.com"
-                   required>
-            <label for="floatingInput">Email address</label>
+            {{ form.email(class_='form-control', placeholder='username@example.com') }}
+            {{ form.email.label(for_='email') }}
             <div class="invalid-feedback">
                 Please provide a email.
             </div>
         </div>
 
         <div class="form-floating mb-3">
-            <input type="password" 
-                   name="password" 
-                   class="form-control" 
-                   id="password" 
-                   placeholder="Password"
-                   required>
-            <label for="floatingPassword">Password</label>
+            {{ form.password(class_='form-control', placeholder='password') }}
+            {{ form.password.label(for_='password') }}
             <div class="invalid-feedback">
                 Please provide a password.
             </div>
         </div>
 
-        <div class="form-floating mb-3">
-            <input type="password" 
-                   name="repeat" 
-                   class="form-control" 
-                   id="repeat" 
-                   placeholder="Repeat Password"
-                   required>
-            <label for="floatingPassword">Repeat Password</label>
-            <div class="invalid-feedback">
-                Please repeat the password.
-            </div>
-        </div>
+        <button type="submit" name="submit" class="btn btn-primary w-100 mb-3">Sign in</button>
 
-        <button type="submit" name="submit" class="btn btn-primary w-100 mb-3">Sign up</button>
-
-        <a href="/auth/login" class="btn btn-primary w-100">Sign in</a>
-    </form>
-
+        <a href="/auth/sign-up" class="btn btn-primary w-100">Sign up</a>
     </form>
 {% endblock %}
 
