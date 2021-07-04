@@ -9,5 +9,3 @@ click
 simplejson
 python-dotenv
 watchdog
-coinbasepro-python
-python3-krakenex

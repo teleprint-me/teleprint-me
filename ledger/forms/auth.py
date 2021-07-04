@@ -8,8 +8,8 @@ from wtforms.validators import EqualTo
 from wtforms.validators import Length
 from wtforms.validators import ValidationError
 
-from ledger.core.security import sverify
-from ledger.core.extensions import mongo
+from ledger.core import scrypt
+from ledger.core import mongo
 
 
 #
@@ -22,8 +22,8 @@ class SignUpEmail(object):
         self.message = message
 
     def __call__(self, form, field):
-        document = {'email': field.data}
-        if mongo.db.users.find_one(document):
+        document = mongo.db.users.find_one({'email': field.data})
+        if document:
             raise ValidationError(self.message)
 
 
@@ -69,7 +69,7 @@ class SignInPassword(object):
 
     def __call__(self, form, field):
         document = mongo.db.users.find_one({'email': form.email.data})
-        if not document or not sverify(field.data, document['password']):
+        if not document or not scrypt.verify(field.data, document['password']):
             raise ValidationError(self.message)
 
 

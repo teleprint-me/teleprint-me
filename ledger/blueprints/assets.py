@@ -19,7 +19,7 @@ from flask import g
 from flask import render_template
 from flask import request
 
-from ledger import auth
+from ledger.blueprints import auth
 
 bp = Blueprint('assets', __name__, url_prefix='/assets')
 

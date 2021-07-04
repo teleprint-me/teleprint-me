@@ -23,20 +23,21 @@ SIZE = 64
 SYMBOLS = f'_{LETTERS}{DIGITS}'
 
 
-def gbytes(size: int = None) -> bytes:
-    if size is None:
-        size = SIZE
-    data = urandom(size)
-    return urlsafe_b64encode(data)
+class Generate(object):
+    """wrapper class for generating random bytes and strings"""
 
+    def bytes(self, size: int = None) -> bytes:
+        if size is None:
+            size = SIZE
+        data = urandom(size)
+        return urlsafe_b64encode(data)
 
-def gstring(size: int = None) -> str:
-    return gbytes(size).decode('utf-8')
+    def string(self, size: int = None) -> str:
+        return self.bytes(size).decode('utf-8')
 
-
-def gidentifer(size: int = None) -> str:
-    if size is None:
-        size = SIZE
-    prefix = SystemRandom().choice(LETTERS)
-    body = ''.join(SystemRandom().choice(SYMBOLS) for _ in range(size - 1))
-    return f'{prefix}{body}'
+    def identifer(self, size: int = None) -> str:
+        if size is None:
+            size = SIZE
+        prefix = SystemRandom().choice(LETTERS)
+        body = ''.join(SystemRandom().choice(SYMBOLS) for _ in range(size - 1))
+        return f'{prefix}{body}'

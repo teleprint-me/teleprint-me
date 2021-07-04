@@ -1,8 +1,26 @@
-from ledger.client.factory import AbstractClient
-from ledger.client.factory import AbstractFactory
+# Ledger - A web application to track cryptocurrency investments
+# Copyright (C) 2021 teleprint.me
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from ledger.exchange.factory import AbstractMessenger
+from ledger.exchange.factory import AbstractClient
+from ledger.exchange.factory import AbstractFactory
+
+from ledger.exchange.kraken.auth import Auth
+from ledger.exchange.kraken.messenger import Messenger
 
 import datetime
-import krakenex
 import time
 
 
@@ -19,24 +37,24 @@ def pricelist2average(prices: list) -> str:
 
 
 class KrakenClient(AbstractClient):
-    def __init__(self, client: krakenex.PrivateClient):
+    def __init__(self, messenger: AbstractMessenger):
         self.__name = 'kraken'
-        self.__client = client
+        self.__messenger = messenger
 
     @property
     def name(self) -> str:
         return self.__name
 
     @property
-    def client(self) -> krakenex.PrivateClient:
-        return self.__client
+    def messenger(self) -> AbstractMessenger:
+        return self.__messenger
 
     def has_error(self, response: object) -> bool:
         return bool(response.get('error'))
 
     def get_assets(self) -> list:
         assets = list()
-        response = self.client.market.pairs()
+        response = self.messenger.get('/public/AssetPairs')
         if self.has_error(response):
             return response['error']
         result = response['result']
@@ -51,7 +69,7 @@ class KrakenClient(AbstractClient):
 
     def get_accounts(self) -> list:
         accounts = list()
-        response = self.client.account.balance()
+        response = self.messenger.post('/private/Balance')
         if self.has_error(response):
             return response['error']
         result = response['result']
@@ -67,7 +85,9 @@ class KrakenClient(AbstractClient):
         offset = 0
         fills = list()
         while offset < limit:
-            response = self.client.trade.history({'ofs': offset})
+            response = self.messenger.post(
+                '/private/TradesHistory', {'ofs': offset}
+            )
             if self.has_error(response):
                 return response['error']
             trades = response['result']['trades']
@@ -85,7 +105,7 @@ class KrakenClient(AbstractClient):
         return fills
 
     def get_price(self, asset: str) -> dict:
-        response = self.client.market.ticker({'pair': asset})
+        response = self.messenger.get('/public/Ticker', {'pair': asset})
         if self.has_error(response):
             return response['error']
         asset = response['result'][asset]
@@ -96,12 +116,12 @@ class KrakenClient(AbstractClient):
         }
 
     def post_order(self, data: dict) -> dict:
-        order = self.client.orders.post(data)
+        order = self.messenger.post('/private/AddOrder', data)
         if self.has_error(order):
             return order['error']
         txid = order['result']['txid']
         time.sleep(0.25)
-        query = self.client.orders.query({'txid': txid})
+        query = self.messenger.post('/private/QueryOrders', {'txid': txid})
         if self.has_error(query):
             return query['error']
         info = query['result'][txid]
@@ -116,5 +136,6 @@ class KrakenClient(AbstractClient):
 
 class KrakenFactory(AbstractFactory):
     def get_client(self, key: str, secret: str) -> AbstractClient:
-        client = krakenex.private_client(key, secret)
-        return KrakenClient(client)
+        auth = Auth(key, secret)
+        messenger = Messenger(auth)
+        return KrakenClient(messenger)

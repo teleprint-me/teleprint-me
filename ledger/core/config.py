@@ -17,5 +17,5 @@ from ledger.core import generate
 
 import os
 
-SECRET_KEY = generate.gbytes()
+SECRET_KEY = generate.bytes()
 MONGO_URI = os.environ.get('MONGO_URI')

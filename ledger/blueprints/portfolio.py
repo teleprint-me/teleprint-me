@@ -13,20 +13,22 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from ledger import auth
+from flask import g
+from flask import render_template
+from flask import Blueprint
 
-import flask
+from ledger.blueprints import auth
 
-bp = flask.Blueprint('index', __name__)
+bp = Blueprint('index', __name__)
 
 
 @bp.route('/', methods=('GET',))
 @auth.required
 def portfolio():
     assets = []
-    for client in flask.g.accounts:
+    for client in g.accounts:
         for asset in client.get_accounts():
             if float(asset['balance']) > 0:
                 asset.update({'account': client.name})
                 assets.append(asset)
-    return flask.render_template('portfolio.html', assets=assets)
+    return render_template('portfolio.html', assets=assets)

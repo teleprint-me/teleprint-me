@@ -13,14 +13,15 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from ledger.core.extensions import mongo
-from ledger import auth
-from ledger import proxy
-from ledger import accounts
-from ledger import assets
-from ledger import portfolio
+from ledger.core import mongo
 
-import flask
+from ledger.blueprints import auth
+from ledger.blueprints import proxy
+from ledger.blueprints import accounts
+from ledger.blueprints import assets
+from ledger.blueprints import portfolio
+
+from flask import Flask
 
 
 def get_config(config: str) -> str:
@@ -29,7 +30,17 @@ def get_config(config: str) -> str:
     return config
 
 
-def define_utility_processor(app: flask.Flask) -> flask.Flask:
+def get_blueprints() -> tuple:
+    return (
+        auth.bp,
+        proxy.bp,
+        accounts.bp,
+        assets.bp,
+        portfolio.bp
+    )
+
+
+def define_utility_processor(app: Flask) -> Flask:
     @app.context_processor
     def utility_processor() -> dict:
         def timestamp() -> str:
@@ -46,14 +57,13 @@ def define_utility_processor(app: flask.Flask) -> flask.Flask:
     return app
 
 
-def create_app(config: str = None) -> flask.Flask:
-    app = flask.Flask(__name__, instance_relative_config=True)
+def create_app(config: str = None) -> Flask:
+    app = Flask(__name__, instance_relative_config=True)
     config = get_config(config)
     app.config.from_object(config)
     app = define_utility_processor(app)
     mongo.init_app(app)
-    blueprints = [auth.bp, proxy.bp, accounts.bp, assets.bp, portfolio.bp]
-    for blueprint in blueprints:
+    for blueprint in get_blueprints():
         app.register_blueprint(blueprint)
     app.add_url_rule('/', endpoint='index')
     return app

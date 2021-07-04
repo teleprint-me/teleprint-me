@@ -13,3 +13,9 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from ledger.core.generate import Generate
+from ledger.core.security import Scrypt
+from ledger.core.extensions import mongo
+
+generate = Generate()
+scrypt = Scrypt()

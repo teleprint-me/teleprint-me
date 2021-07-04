@@ -13,29 +13,53 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from ledger.forms import SignUpForm
-from ledger.forms import SignInForm
+from ledger.core import scrypt
+from ledger.core import mongo
 
-from ledger.core.security import shash
-from ledger.core.extensions import mongo
+from ledger.forms.auth import SignUpForm
+from ledger.forms.auth import SignInForm
 
-from ledger.client.coinbasepro import CoinbaseProFactory
-from ledger.client.kraken import KrakenFactory
+from ledger.exchange.cbpro.client import CoinbaseProFactory
+from ledger.exchange.kraken.client import KrakenFactory
+
+from flask import render_template
+from flask import flash
+from flask import g
+from flask import url_for
+from flask import redirect
+from flask import request
+from flask import session
+from flask import Blueprint
 
 import bson
-import flask
 import functools
 import uuid
 
-bp = flask.Blueprint('auth', __name__, url_prefix='/auth')
+bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+
+class User(object):
+    def __init__(self, objectid):
+        document = mongo.db.users.find_one({'_id': objectid})
+        self.__oid = objectid
+        self.email = document['email']
+        self.password = document['password']
+        self.database = document['database']
+
+        self.tokens = []
+        self.clients = []
+
+    @property
+    def objectid(self):
+        return self.__objectid
 
 
 def required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if flask.g.user is None:
-            path = flask.url_for('auth.sign_in')
-            return flask.redirect(path)
+        if g.user is None:
+            path = url_for('auth.sign_in')
+            return redirect(path)
         return view(**kwargs)
     return wrapped_view
 
@@ -43,15 +67,15 @@ def required(view):
 def redirect_user(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if flask.g.user is not None:
-            path = flask.url_for('index')
-            return flask.redirect(path)
+        if g.user is not None:
+            path = url_for('index')
+            return redirect(path)
         return view(**kwargs)
     return wrapped_view
 
 
 def get_user():
-    _id = flask.session.get('sid')
+    _id = session.get('sid')
     objectid = bson.objectid.ObjectId(_id)
     return mongo.db.users.find_one({'_id': objectid})
 
@@ -87,58 +111,58 @@ def get_accounts(db):
 
 @bp.before_app_request
 def load_user_session():
-    flask.g.user = get_user()
-    flask.g.db = get_database(flask.g.user)
-    flask.g.accounts = get_accounts(flask.g.db)
+    g.user = get_user()
+    g.db = get_database(g.user)
+    g.accounts = get_accounts(g.db)
 
 
 @bp.route('/sign-up', methods=('GET', 'POST'))
 @redirect_user
 def sign_up():
-    form = SignUpForm(flask.request.form)
-    if flask.request.method == 'POST':
+    form = SignUpForm(request.form)
+    if request.method == 'POST':
         messages = []
         if form.validate_on_submit():
-            flask.session.clear()
+            session.clear()
             result = mongo.db.users.insert_one({
                 'database': uuid.uuid4(),
                 'email': form.email.data,
-                'password': shash(form.password.data),
+                'password': scrypt.hash(form.password.data),
                 'verified': False,
                 '2fa': False
             })
-            flask.session['sid'] = str(result.inserted_id)
-            path = flask.url_for('index')
-            return flask.redirect(path)
+            session['sid'] = str(result.inserted_id)
+            path = url_for('index')
+            return redirect(path)
         for key, value in form.errors.items():
             if value:
                 messages.append((key, value[0]))
         if messages:
-            flask.flash(tuple(messages))
-    return flask.render_template('auth/sign-up.html', form=form)
+            flash(tuple(messages))
+    return render_template('auth/sign-up.html', form=form)
 
 
 @bp.route('/sign-in', methods=('GET', 'POST'))
 @redirect_user
 def sign_in():
-    form = SignInForm(flask.request.form)
-    if flask.request.method == 'POST':
+    form = SignInForm(request.form)
+    if request.method == 'POST':
         messages = []
         if form.validate_on_submit():
             document = mongo.db.users.find_one({'email': form.email.data})
-            flask.session.clear()
-            flask.session['sid'] = str(document['_id'])
-            return flask.redirect(flask.url_for('index'))
+            session.clear()
+            session['sid'] = str(document['_id'])
+            return redirect(url_for('index'))
         for key, value in form.errors.items():
             if value:
                 messages.append((key, value[0]))
         if messages:
-            flask.flash(tuple(messages), 'error')
-    return flask.render_template('auth/sign-in.html', form=form)
+            flash(tuple(messages), 'error')
+    return render_template('auth/sign-in.html', form=form)
 
 
 @bp.route('/sign-out')
 def logout():
-    flask.session.clear()
-    path = flask.url_for('auth.sign_in')
-    return flask.redirect(path)
+    session.clear()
+    path = url_for('auth.sign_in')
+    return redirect(path)

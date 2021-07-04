@@ -18,7 +18,7 @@ from jwcrypto import jws
 from jwcrypto.common import json_encode
 from jwcrypto.common import json_decode
 
-from ledger.core.generate import gidentifer
+from ledger.core import generate
 
 import json
 import os
@@ -27,44 +27,6 @@ import time
 import uuid
 
 TIMEOUT: int = 3600
-
-
-def shash(password: str) -> str:
-    """return a hashed password as str"""
-    salt = os.urandom(64)
-    n, r, p, dklen = 16384, 8, 1, 64
-    dk = scrypt.hash(password, salt, n, r, p, dklen)
-    return f'{n}${r}${p}${dklen}${salt.hex()}${dk.hex()}'
-
-
-def sverify(password: str, hashed: str) -> bool:
-    """return True if hashed password is verified else False"""
-    n, r, p, dklen, salt, dk = hashed.split('$')
-    tk = scrypt.hash(
-        password,
-        bytes.fromhex(salt),
-        int(n), int(r), int(p),
-        int(dklen)
-    ).hex()
-    return True if tk == dk else False
-
-
-def ssalt(hashed: str) -> str:
-    """return the salt from a hashed password"""
-    _, _, _, _, salt, _ = hashed.split('$')
-    return salt
-
-
-def sencrypt(data: object, password: str) -> bytes:
-    """return the encrypted data object as bytes using password"""
-    payload = json.dumps(data).encode()
-    return scrypt.encrypt(payload, password)
-
-
-def sdecrypt(data: bytes, password: str) -> object:
-    """return decrypted bytes as object using password"""
-    payload = scrypt.decrypt(data, password)
-    return json.loads(payload)
 
 
 def serialize(sig: str) -> str:
@@ -87,13 +49,55 @@ def deserialize(hdr: str) -> str:
         return str()
 
 
+class Scrypt(object):
+    """wrapper class for handling scrypt functions"""
+
+    @staticmethod
+    def hash(password: str) -> str:
+        """return a hashed password as str"""
+        salt = os.urandom(64)
+        n, r, p, dklen = 16384, 8, 1, 64
+        dk = scrypt.hash(password, salt, n, r, p, dklen)
+        return f'{n}${r}${p}${dklen}${salt.hex()}${dk.hex()}'
+
+    @staticmethod
+    def verify(password: str, hashed: str) -> bool:
+        """return True if hashed password is verified else False"""
+        n, r, p, dklen, salt, dk = hashed.split('$')
+        tk = scrypt.hash(
+            password,
+            bytes.fromhex(salt),
+            int(n), int(r), int(p),
+            int(dklen)
+        ).hex()
+        return True if tk == dk else False
+
+    @staticmethod
+    def salt(hashed: str) -> str:
+        """return the salt from the hashed password"""
+        _, _, _, _, salt, _ = hashed.split('$')
+        return salt
+
+    @staticmethod
+    def encrypt(data: object, password: str) -> bytes:
+        """return the encrypted data object as bytes using password"""
+        payload = json.dumps(data).encode()
+        return scrypt.encrypt(payload, password)
+
+    @staticmethod
+    def decrypt(data: bytes, password: str) -> object:
+        """return decrypted bytes as object using password"""
+        payload = scrypt.decrypt(data, password)
+        return json.loads(payload)
+
+
 class Policy(object):
     """JSON Web Token: https://tools.ietf.org/html/rfc7519"""
 
     def __init__(self, aud=None):
         self.__iss = 'https://teleprint.me'
         self.__sub = 'https://github.com/teleprint-me/ledger'
-        self.__aud = gidentifer() if aud is None else aud
+        self.__aud = generate.identifer() if aud is None else aud
         self.__jti = str(uuid.uuid4())
         self.__iat = int(time.time())
         self.__exp = self.__iat + TIMEOUT
@@ -149,6 +153,7 @@ class Policy(object):
 
 
 class Gaurd(object):
+    """wrapper class for handling json web tokens"""
     def __init__(self, kty=None, size=None, alg=None):
         self.__kty = 'oct' if kty is None else kty
         self.__size = 256 if size is None else size

@@ -1,21 +1,38 @@
-from ledger.client.factory import AbstractClient
-from ledger.client.factory import AbstractFactory
+# Ledger - A web application to track cryptocurrency investments
+# Copyright (C) 2021 teleprint.me
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from ledger.exchange.factory import AbstractMessenger
+from ledger.exchange.factory import AbstractClient
+from ledger.exchange.factory import AbstractFactory
 
-import cbpro
+from ledger.exchange.cbpro.auth import Auth
+from ledger.exchange.cbpro.messenger import Messenger
 
 
 class CoinbaseProClient(AbstractClient):
-    def __init__(self, client: cbpro.PrivateClient):
+    def __init__(self, messenger: AbstractMessenger):
         self.__name = 'coinbase-pro'
-        self.__client = client
+        self.__messenger = messenger
 
     @property
     def name(self) -> str:
         return self.__name
 
     @property
-    def client(self) -> cbpro.PrivateClient:
-        return self.__client
+    def messenger(self) -> AbstractMessenger:
+        return self.__messenger
 
     def has_error(self, response: object) -> bool:
         if isinstance(response, dict):
@@ -24,7 +41,7 @@ class CoinbaseProClient(AbstractClient):
 
     def get_assets(self) -> list:
         assets = list()
-        response = self.client.products.list()
+        response = self.messenger.get('/products')
         if self.has_error(response):
             return response
         for item in response:
@@ -38,7 +55,7 @@ class CoinbaseProClient(AbstractClient):
 
     def get_accounts(self) -> list:
         accounts = list()
-        response = self.client.accounts.list()
+        response = self.messenger.get('/accounts')
         if self.has_error(response):
             return response
         for item in response:
@@ -50,7 +67,7 @@ class CoinbaseProClient(AbstractClient):
 
     def get_history(self, asset: str) -> list:
         fills = list()
-        response = self.client.fills.list({'product_id': asset})
+        response = self.messenger.paginate('/fills', {'product_id': asset})
         if self.has_error(response):
             return response
         for fill in response:
@@ -64,7 +81,7 @@ class CoinbaseProClient(AbstractClient):
         return fills
 
     def get_price(self, asset: str) -> dict:
-        response = self.client.products.ticker(asset)
+        response = self.messenger.get(f'/products/{asset}/ticker')
         if self.has_error(response):
             return response
         return {
@@ -75,7 +92,7 @@ class CoinbaseProClient(AbstractClient):
 
     def post_order(self, data: dict) -> dict:
         # TODO: Filter out redundent data
-        response = self.client.orders.post(data)
+        response = self.messenger.post('/orders', data)
         if self.has_error(response):
             return response
         return {
@@ -88,6 +105,11 @@ class CoinbaseProClient(AbstractClient):
 
 
 class CoinbaseProFactory(AbstractFactory):
-    def get_client(self, key: str, secret: str, passphrase: str) -> AbstractClient:
-        client = cbpro.private_client(key, secret, passphrase)
-        return CoinbaseProClient(client)
+    def get_client(self,
+                   key: str,
+                   secret: str,
+                   passphrase: str) -> AbstractClient:
+
+        auth = Auth(key, secret, passphrase)
+        messenger = Messenger(auth)
+        return CoinbaseProClient(messenger)
