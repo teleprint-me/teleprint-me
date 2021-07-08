@@ -1,9 +1,11 @@
 flask
 pymongo
+requests
 wtforms[email]
 flask-pymongo
 flask-wtf
 scrypt
+jwcrypto
 blinker
 click
 simplejson
