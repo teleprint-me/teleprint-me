@@ -15,7 +15,7 @@
 ## along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #}
 {% if g.user %}
-    <nav id="nav-main" class="nav-main">
+    <nav id="nav-dock" class="nav-main">
         <a href="/">
             <i class="bx bx-bar-chart"></i>
             <span>Portfolio</span>
@@ -24,25 +24,9 @@
             <i class="bx bx-coin-stack"></i>
             <span>Trade</span>
         </a>
-        <a href="/assets/menu">
-            <i class="bx bx-library"></i>
-            <span>Assets</span>
-        </a>
-        <a href="/accounts/menu">
-            <i class="bx bx-buildings"></i>
-            <span>Accounts</span>
-        </a>
-        <a href="/wallets/menu">
-            <i class="bx bx-wallet"></i>
-            <span>Wallets</span>
-        </a>
-        <a href="/settings/menu">
+        <a href="/menu">
             <i class="bx bx-menu"></i>
             <span>Menu</span>
-        </a>
-        <a href="/auth/sign-out">
-            <i class="bx bx-log-out-circle"></i>
-            <span>Sign out</span>
         </a>
     </nav>
 {% endif %}

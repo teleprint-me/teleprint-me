@@ -64,12 +64,15 @@ def create_app(config: str = None) -> Flask:
     app.config.from_object(config)
     app = define_utility_processor(app)
     mongo.init_app(app)
+
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
 
     @app.route('/menu.html')
+    @auth.required
     def menu():
         return render_template('menu.html')
 
     app.add_url_rule('/', endpoint='index')
+    app.add_url_rule('/menu', endpoint='menu')
     return app

@@ -19,20 +19,25 @@
 {% block main %}
     <nav class="mt-3" aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Assets</li>
+            <li class="breadcrumb-item active" aria-current="page">Menu</li>
         </ol>
     </nav>
 
-    <nav id="nav-assets" class="nav-menu">
+    <nav id="nav-menu" class="nav-menu">
         <div class="mb-3">
-            <a href="/assets/create" class="btn btn-primary w-100">Add Asset</a>
+            <a href="/accounts/menu" class="btn btn-primary w-100">Accounts</a>
         </div>
         <div class="mb-3">
-            <a href="/assets/view" class="btn btn-primary w-100">View Asset</a>
+            <a href="/assets/menu" class="btn btn-primary w-100">Assets</a>
+        </div>
+        <div class="mb-3">
+            <a href="/wallets/menu" class="btn btn-primary w-100">Wallets</a>
+        </div>
+        <div class="mb-3">
+            <a href="/settings/menu" class="btn btn-primary w-100">Settings</a>
         </div>
         <div class="mb-0">
-            <a href="/assets/delete" class="btn btn-primary w-100">Delete Asset</a>
+            <a href="/auth/sign-out" class="btn btn-primary w-100">Sign out</a>
         </div>
     </nav>
 {% endblock %}
