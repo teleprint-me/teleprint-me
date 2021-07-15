@@ -47,7 +47,6 @@ class Token(AbstractToken):
     def passphrase(self) -> str:
         return self.__passphrase
 
-    @property
     def as_dict(self) -> dict:
         return {
             'key': self.key,

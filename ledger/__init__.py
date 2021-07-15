@@ -22,6 +22,18 @@ from ledger.blueprints import assets
 from ledger.blueprints import portfolio
 
 from flask import Flask
+from flask import render_template
+
+import datetime
+
+
+blueprints = (
+    auth.bp,
+    proxy.bp,
+    accounts.bp,
+    assets.bp,
+    portfolio.bp
+)
 
 
 def get_config(config: str) -> str:
@@ -30,21 +42,10 @@ def get_config(config: str) -> str:
     return config
 
 
-def get_blueprints() -> tuple:
-    return (
-        auth.bp,
-        proxy.bp,
-        accounts.bp,
-        assets.bp,
-        portfolio.bp
-    )
-
-
 def define_utility_processor(app: Flask) -> Flask:
     @app.context_processor
     def utility_processor() -> dict:
         def timestamp() -> str:
-            import datetime
             return datetime.datetime.now().isoformat()
 
         utils = {
@@ -63,7 +64,12 @@ def create_app(config: str = None) -> Flask:
     app.config.from_object(config)
     app = define_utility_processor(app)
     mongo.init_app(app)
-    for blueprint in get_blueprints():
+    for blueprint in blueprints:
         app.register_blueprint(blueprint)
+
+    @app.route('/menu.html')
+    def menu():
+        return render_template('menu.html')
+
     app.add_url_rule('/', endpoint='index')
     return app

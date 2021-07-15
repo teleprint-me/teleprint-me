@@ -26,9 +26,9 @@ bp = Blueprint('index', __name__)
 @auth.required
 def portfolio():
     assets = []
-    for client in g.accounts:
+    for client in g.clients:
         for asset in client.get_accounts():
-            if float(asset['balance']) > 0:
+            if float(asset['balance']) > 0.001:
                 asset.update({'account': client.name})
                 assets.append(asset)
     return render_template('portfolio.html', assets=assets)

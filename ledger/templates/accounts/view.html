@@ -24,7 +24,7 @@
         </ol>
     </nav>
 
-    <div class="list-group bg-light rounded shadow mx-auto w-50">
+    <div class="list-group bg-light rounded shadow mx-auto">
         {% for platform, key in accounts %}
             <a href="#" class="list-group-item list-group-item-primary">
                 <div class="d-flex w-100 justify-content-between">
@@ -43,11 +43,4 @@
             </a>
         {% endfor %}
     </div>
-{% endblock %}
-
-{% block scripts %}
-    <script src="/static/scripts/accounts.js"></script>
-    <script charset="utf-8">
-        accountsResponsiveResize();
-    </script>
 {% endblock %}

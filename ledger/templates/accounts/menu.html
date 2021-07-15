@@ -23,27 +23,15 @@
         </ol>
     </nav>
 
-    <form class="d-flex flex-column justify-content-center bg-light rounded shadow mx-auto m-3 p-3 w-50" 
-          id="accounts-menu">
-
+    <nav id="nav-accounts" class="nav-menu">
         <div class="mb-3">
             <a href="/accounts/create" class="btn btn-primary w-100">Add Account</a>
         </div>
-
         <div class="mb-3">
             <a href="/accounts/view" class="btn btn-primary w-100">View Account</a>
         </div>
-
         <div class="mb-0">
             <a href="/accounts/delete" class="btn btn-primary w-100">Delete Account</a>
         </div>
-    </form>
-{% endblock %}
-
-{% block scripts %}
-    <script src="/static/scripts/forms.js"></script>
-    <script charset="utf-8">
-        formsResponsiveResize();
-        formsValidateRequired();
-    </script>
+    </nav>
 {% endblock %}

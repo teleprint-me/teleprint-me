@@ -20,6 +20,7 @@ from jwcrypto.common import json_decode
 
 from ledger.core import generate
 
+import hmac
 import json
 import os
 import scrypt
@@ -70,7 +71,7 @@ class Scrypt(object):
             int(n), int(r), int(p),
             int(dklen)
         ).hex()
-        return True if tk == dk else False
+        return hmac.compare_digest(bytes.fromhex(tk), bytes.fromhex(dk))
 
     @staticmethod
     def salt(hashed: str) -> str:
@@ -154,6 +155,7 @@ class Policy(object):
 
 class Gaurd(object):
     """wrapper class for handling json web tokens"""
+
     def __init__(self, kty=None, size=None, alg=None):
         self.__kty = 'oct' if kty is None else kty
         self.__size = 256 if size is None else size

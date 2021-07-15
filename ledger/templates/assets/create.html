@@ -24,7 +24,7 @@
         </ol>
     </nav>
 
-    <form class="d-flex flex-column bg-light rounded shadow mx-auto m-3 p-3 w-50 needs-validation" 
+    <form class="needs-validation" 
           id="create-assets"
           enctype="application/x-www-form-urlencoded" 
           action="/assets/create" 
@@ -137,7 +137,6 @@
     <script src="/static/scripts/assets.js"></script>
     <script charset="utf-8">
         let form = document.querySelector('#create-assets');
-        formsResponsiveResize();
         formsValidateRequired();
         form.account.addEventListener('change', toggleAccount);
         form.strategy.addEventListener('change', toggleStrategy);

@@ -19,7 +19,7 @@
 {% block main %}
     <h2 class="border-bottom m-3 p-3">Sign In</h2>
 
-    <form class="d-flex flex-column bg-light rounded mx-auto m-3 p-3 shadow w-50 needs-validation" 
+    <form class="needs-validation" 
           enctype="application/x-www-form-urlencoded" 
           action="/auth/sign-in" 
           method="post"
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <button type="submit" name="submit" class="btn btn-primary w-100 mb-3">Sign in</button>
+        {{ form.submit(class_='btn btn-primary w-100 mb-3', value='Sign in') }}
 
         <a href="/auth/sign-up" class="btn btn-primary w-100">Sign up</a>
     </form>
@@ -52,7 +52,6 @@
 {% block scripts %}
     <script src="/static/scripts/forms.js"></script>
     <script charset="utf-8">
-        formsResponsiveResize();
         formsValidateRequired();
     </script>
 {% endblock %}

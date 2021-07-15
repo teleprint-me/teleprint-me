@@ -18,6 +18,8 @@ from flask import flash
 from flask import g
 from flask import render_template
 from flask import request
+from flask import redirect
+from flask import url_for
 
 from ledger.blueprints import auth
 
@@ -26,18 +28,18 @@ bp = Blueprint('assets', __name__, url_prefix='/assets')
 
 def get_account_options() -> list:
     options = []
-    for account in g.accounts:
-        inner_text = ' '.join(word.capitalize() for word in account.name.split('-'))
-        options.append({'value': account.name, 'inner-text': inner_text})
+    for client in g.clients:
+        inner_text = ' '.join(word.capitalize() for word in client.name.split('-'))
+        options.append({'value': client.name, 'inner-text': inner_text})
     return options
 
 
 def get_asset_options() -> list:
     options = []
-    for account in g.accounts:
-        assets = account.get_assets()
+    for client in g.clients:
+        assets = client.get_assets()
         if assets:
-            options.append({'platform': account.name, 'assets': assets})
+            options.append({'platform': client.name, 'assets': assets})
     return options
 
 
@@ -118,5 +120,5 @@ def assets_delete():
     account = g.db.accounts.find_one({'platform': platform})
     if account is not None:
         g.db.accounts.delete_one(account)
-        flash((f'Delete', f'{platform} was deleted successfully'))
+        flash(('Delete', f'{platform} was deleted successfully'))
     return render_template('assets/delete.html')

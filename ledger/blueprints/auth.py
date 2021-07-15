@@ -31,63 +31,25 @@ from flask import request
 from flask import session
 from flask import Blueprint
 
-import bson
+from bson.objectid import ObjectId
+
 import functools
 import uuid
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-class User(object):
-    def __init__(self, objectid):
-        document = mongo.db.users.find_one({'_id': objectid})
-        self.__oid = objectid
-        self.email = document['email']
-        self.password = document['password']
-        self.database = document['database']
-
-        self.tokens = []
-        self.clients = []
-
-    @property
-    def objectid(self):
-        return self.__objectid
+def get_user_document():
+    oid = ObjectId(session.get('sid'))
+    return mongo.db.users.find_one({'_id': oid})
 
 
-def required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            path = url_for('auth.sign_in')
-            return redirect(path)
-        return view(**kwargs)
-    return wrapped_view
+def get_user_database(document):
+    db = None if not document else str(document['database'])
+    return None if not db else mongo.cx[db]
 
 
-def redirect_user(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is not None:
-            path = url_for('index')
-            return redirect(path)
-        return view(**kwargs)
-    return wrapped_view
-
-
-def get_user():
-    _id = session.get('sid')
-    objectid = bson.objectid.ObjectId(_id)
-    return mongo.db.users.find_one({'_id': objectid})
-
-
-def get_database(user):
-    if user:
-        key = str(user['database'])
-        return mongo.cx[key]
-    return None
-
-
-def get_client(cursor):
+def get_factory_client(cursor):
     platform = cursor.get('platform')
     key = cursor.get('key')
     secret = cursor.get('secret')
@@ -99,21 +61,50 @@ def get_client(cursor):
     return None
 
 
-def get_accounts(db):
-    accounts = list()
-    if db:
-        for account in db.accounts.find():
-            client = get_client(account)
+def get_user_clients(database):
+    clients = []
+    if database:
+        for cursor in database.accounts.find():
+            client = get_factory_client(cursor)
             if client:
-                accounts.append(client)
-    return accounts
+                clients.append(client)
+    return clients
+
+
+def get_client_tokens(clients):
+    tokens = []
+    if clients:
+        for client in clients:
+            token = client.messenger.auth.token.as_dict()
+            token.update({'name': client.name})
+            tokens.append(token)
+    return tokens
+
+
+def required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if not g.user:
+            return redirect(url_for('auth.sign_in'))
+        return view(**kwargs)
+    return wrapped_view
+
+
+def redirect_user(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user:
+            return redirect(url_for('index'))
+        return view(**kwargs)
+    return wrapped_view
 
 
 @bp.before_app_request
 def load_user_session():
-    g.user = get_user()
-    g.db = get_database(g.user)
-    g.accounts = get_accounts(g.db)
+    g.user = get_user_document()
+    g.db = get_user_database(g.user)
+    g.clients = get_user_clients(g.db)
+    g.tokens = get_client_tokens(g.clients)
 
 
 @bp.route('/sign-up', methods=('GET', 'POST'))
@@ -132,13 +123,12 @@ def sign_up():
                 '2fa': False
             })
             session['sid'] = str(result.inserted_id)
-            path = url_for('index')
-            return redirect(path)
+            return redirect(url_for('index'))
         for key, value in form.errors.items():
             if value:
                 messages.append((key, value[0]))
         if messages:
-            flash(tuple(messages))
+            flash(tuple(messages), 'error')
     return render_template('auth/sign-up.html', form=form)
 
 
@@ -164,5 +154,4 @@ def sign_in():
 @bp.route('/sign-out')
 def logout():
     session.clear()
-    path = url_for('auth.sign_in')
-    return redirect(path)
+    return redirect(url_for('auth.sign_in'))

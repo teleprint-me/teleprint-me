@@ -14,29 +14,7 @@
 ** You should have received a copy of the GNU Affero General Public License
 ** along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-function accountsResponsiveResize() {
-    let list = document.querySelector('.list-group');
-    ['load', 'resize'].forEach((event) => {
-        window.addEventListener(event, () => {
-            if (window.innerWidth < 768) {
-                list.classList.remove('w-50');
-                list.classList.remove('w-75');
-                list.classList.add('w-100');
-            } else if (window.innerWidth < 992) { 
-                list.classList.remove('w-50')
-                list.classList.remove('w-100')
-                list.classList.add('w-75')
-            } else {
-                list.classList.remove('w-75');
-                list.classList.remove('w-100');
-                list.classList.add('w-50');
-            }
-        });
-    });
-}
-
-
-function accountsToggleSelectField() {
+function toggleAccountsSelectField() {
     let form = document.querySelector('#create-accounts');
 
     form.platform.addEventListener('change', (event) => {

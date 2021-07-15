@@ -24,66 +24,46 @@
         </ol>
     </nav>
 
-    <form class="d-flex flex-column bg-light rounded shadow mx-auto m-3 p-3 w-50 needs-validation" 
+    <form class="needs-validation" 
           id="create-accounts"
           enctype="application/x-www-form-urlencoded" 
           action="/accounts/create" 
           method="post"
           novalidate>
+
+        {{ form.csrf_token() }}
+
         <div class="mb-3">
-            <select name="platform" 
-                    class="form-select p-3" 
-                    id="selectOption" 
-                    aria-label="Default select platform" 
-                    required>
-                <option value="" selected disabled>Platform</option>
-                <option value="coinbase-pro">Coinbase Pro</option>
-                <option value="kraken">Kraken</option>
-            </select>
+            {{ form.platform(class_='form-select p-3', placeholder='Platform') }}
             <div class="invalid-feedback">
                 Please select a brokerage platform.
             </div>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" 
-                   name="key" 
-                   class="form-control" 
-                   id="key" 
-                   placeholder="REST API Key"
-                   required>
-            <label for="floatingInput">Key</label>
+            {{ form.key(class_='form-control', placeholder='REST API Key') }}
+            {{ form.key.label(for_='key') }}
             <div class="invalid-feedback">
                 Please provide the API key.
             </div>
         </div>
     
         <div class="form-floating mb-3">
-            <input type="text" 
-                   name="secret" 
-                   class="form-control" 
-                   id="secret" 
-                   placeholder="REST API Secret"
-                   required>
-            <label for="floatingInput">Secret</label>
+            {{ form.secret(class_='form-control', placeholder='REST API Secret') }}
+            {{ form.secret.label(for_='secret') }}
             <div class="invalid-feedback">
                 Please provide the API secret.
             </div>
         </div>
     
         <div class="form-floating mb-3">
-            <input type="password" 
-                   name="passphrase" 
-                   class="form-control" 
-                   id="passphrase" 
-                   placeholder="REST API Passphrase"
-                   required>
-            <label for="floatingPassword">Passphrase</label>
+            {{ form.passphrase(class_='form-control', placeholder='REST API Passphrase', required='true') }}
+            {{ form.passphrase.label(for_='passphrase') }}
             <div class="invalid-feedback">
                 Please provide the API passphrase.
             </div>
         </div>
     
-        <button type="submit" name="submit" class="btn btn-primary w-100">Add Account</button>
+        {{ form.submit(class_='btn btn-primary w-100', value='Add Account') }}
     </form>
 {% endblock %}
 
@@ -91,8 +71,7 @@
     <script src="/static/scripts/forms.js"></script>
     <script src="/static/scripts/accounts.js"></script>
     <script charset="utf-8">
-        formsResponsiveResize();
         formsValidateRequired();
-        accountsToggleSelectField();
+        toggleAccountsSelectField();
     </script>
 {% endblock %}

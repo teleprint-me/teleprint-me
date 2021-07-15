@@ -16,36 +16,6 @@
 */
 // TODO: use css `@media min-width` instead of 
 // js `window.innerWidth` for affecting form width...
-const formsResponsiveResize = () => {
-    // adjust the form width based on the size of the window
-    let forms = Array.from(document.forms);
-    
-    ['load', 'resize'].forEach((event) => {
-        window.addEventListener(event, () => {
-            if (window.innerWidth < 768) {
-                forms.forEach((form) => {
-                    form.classList.remove('w-50');
-                    form.classList.remove('w-75');
-                    form.classList.add('w-100');
-                });
-            } else if (window.innerWidth < 992) { 
-                forms.forEach((form) => {
-                    form.classList.remove('w-50')
-                    form.classList.remove('w-100')
-                    form.classList.add('w-75')
-                });
-            } else {
-                forms.forEach((form) => {
-                    form.classList.remove('w-75');
-                    form.classList.remove('w-100');
-                    form.classList.add('w-50');
-                });
-            }
-        });
-    });
-};
-
-
 const formsValidateRequired = () => {
     // validate required form fields
     let forms = Array.from(document.forms);

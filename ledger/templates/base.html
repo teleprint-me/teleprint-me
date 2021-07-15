@@ -29,7 +29,8 @@
               rel="stylesheet" 
               integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" 
               crossorigin="anonymous">
-        {% block styles %}{% endblock %}
+        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+        <link href='/static/styles/main.css' rel='stylesheet'>
     </head>
     <body>
         {% include 'navbar.html' %}
@@ -66,14 +67,6 @@
                 integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" 
                 crossorigin="anonymous">
         </script>
-
-        {% if g.user %}
-            <script src="/static/scripts/navbar.js"></script>
-            <script charset="utf-8">
-                navbarRemovePageHighlight(); 
-                navbarAddPageHighlight();
-            </script>
-        {% endif %}
 
         {% if messages %}
             <script src="/static/scripts/toast.js"></script>
