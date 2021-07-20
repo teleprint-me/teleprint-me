@@ -25,10 +25,13 @@ bp = Blueprint('index', __name__)
 @bp.route('/', methods=('GET',))
 @auth.required
 def portfolio():
-    assets = []
+    data = {
+        'clients': [],
+        'accounts': []
+    }
     for client in g.clients:
-        for asset in client.get_accounts():
-            if float(asset['balance']) > 0.001:
-                asset.update({'account': client.name})
-                assets.append(asset)
-    return render_template('portfolio.html', assets=assets)
+        data['clients'].append(client.name)
+        for account in client.get_accounts():
+            account.update({'client': client.name})
+            data['accounts'].append(account)
+    return render_template('portfolio.html', data=data)
