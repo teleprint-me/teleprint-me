@@ -63,50 +63,11 @@
 {% block scripts %}
     <script src="/static/scripts/requests.js"></script>
     <script src="/static/scripts/websocket.js"></script>
-    <script src="/static/scripts/portfolio.js"></script>
     <script charset="utf-8">
         let data = {{ data | tojson }};
-        let pairs = getPortfolioAssetPairs('USD', data);
-        let table = document.querySelector('table');
+        data.currency = 'USD';
+        data.table = document.querySelector('table');
         // kraken websocket prototype
-        let kraken = new WebSocket('wss://ws.kraken.com');
-        kraken.onerror = (event) => { throw new Error('[Error]', event); };
-        kraken.onopen = (event) => { console.log('[Kraken] Opened new websocket stream'); };
-        kraken.onclose = (event) => { console.log('[Kraken] Closed existing websocket stream'); };
-        kraken.onmessage = (event) => {
-            let message = JSON.parse(event.data);
-            console.log('[Kraken] Message', message);
-            if (message instanceof Array) {
-                asset = message[3].split('/')[0];
-                price = message[1].p[0];
-                for (let row of table.rows) {
-                    if (row.id && row.dataset.name.includes(asset)) {
-                        value = row.dataset.balance * price;
-                        if (value >= 1) {
-                            row.children[1].innerText = (+price).toFixed(2);
-                            row.children[2].innerText = (+value).toFixed(2);
-                            row.children[3].innerText = (+row.dataset.balance).toFixed(8);
-                        } else {
-                            table.deleteRow(row.rowIndex);
-                        }
-                    }
-                }
-            }
-        };
-        setTimeout(() => { 
-            let message = JSON.stringify({
-                'event': 'subscribe',
-                'pair': pairs,
-                'subscription': {
-                    'name': 'ticker'
-                }
-            });
-
-            if (kraken.OPEN) {
-                kraken.send(message);
-            } else {
-                throw new Error('[Kraken] failed to initialize websocket stream');
-            }
-        }, 1000);
+        let kraken = getKrakenWebSocket(data);
     </script>
 {% endblock %}
