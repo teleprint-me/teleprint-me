@@ -35,7 +35,7 @@ form {
 
 .nav-main {
     background: var(--bs-light);
-    border-radius: 5px;
+    border-radius: 0.25rem;
 
     display: flex;
     flex-flow: row nowrap;

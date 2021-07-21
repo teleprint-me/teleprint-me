@@ -27,6 +27,7 @@ bp = Blueprint('index', __name__)
 def portfolio():
     data = {
         'clients': [],
+        'assets': [],
         'accounts': []
     }
     for client in g.clients:
@@ -34,4 +35,7 @@ def portfolio():
         for account in client.get_accounts():
             account.update({'client': client.name})
             data['accounts'].append(account)
+        for asset in client.get_assets():
+            asset.update({'client': client.name})
+            data['assets'].append(asset)
     return render_template('portfolio.html', data=data)

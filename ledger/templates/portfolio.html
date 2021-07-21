@@ -36,92 +36,77 @@
             </div>
         </div>
     {% else %}
-        <div id="portfolio" class="list-group bg-light rounded shadow mx-auto w-50">
+        <table>
+            <tr>
+                <th>Asset</th>
+                <th>Price</th>
+                <th>Value</th>
+                <th>Balance</th>
+                <th>Client</th>
+            </tr>
             {% for account in data['accounts'] %}
-                <a href="#{{account['name'].lower()}}"
-                   class="list-group-item list-group-item-primary"
-                   data-client={{account['client']}}
-                   data-name={{account['name']}}
-                   data-balance={{account['balance']}}>
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">{{account['name']}}</h5>
-                        <small class="text-muted">{{account['client']}}</small>
-                    </div>
-                    <div class="d-flex w-100 justify-content-between">
-                        <span id="balance" class="mb-1">{{account['balance']}}</span>
-                        <span id="fiat" class="mb-1"></span>
-                    </div>
-                </a>
+                <tr id="{{account['name']}}"
+                    data-client="{{account['client']}}"
+                    data-name="{{account['name']}}"
+                    data-balance="{{account['balance']}}">
+                    <td data-label="asset">{{account['name']}}</td>
+                    <td data-label="price">0</td>
+                    <td data-label="value">0</td>
+                    <td data-label="balance">{{account['balance']}}</td>
+                    <td data-label="client">{{account['client']}}</td>
+                </tr>
             {% endfor %}
-        </div>
+        </table>
     {% endif %}
 {% endblock %}
 
 {% block scripts %}
     <script src="/static/scripts/requests.js"></script>
     <script src="/static/scripts/websocket.js"></script>
+    <script src="/static/scripts/portfolio.js"></script>
     <script charset="utf-8">
-        let portfolio = document.querySelector('#portfolio');
-        let data = {
-            'clients': {{ data['clients'] | tojson }}, 
-            'pairs': []
-        };
-
-        let promise = request('GET', `/client/${data.clients[0]}/assets`);
-        promise.then((response) => {
-            if (!response) {
-                throw new Error('[ResponseError] response if a falsy value');
-            }
-
-            let assets = JSON.parse(response);
-
-            if (!assets) {
-                throw new Error('[JSONParseError] assets is a falsy value');
-            }
-
-            for (let asset of assets) {
-                for (let element of portfolio.children) {
-                    if (!asset.display) {
-                        console.log('[AssetObject]', asset);
-                        continue;
-                    }
-                    if (asset.name.includes(element.dataset.name)) {
-                        if (asset.display.includes('USD'))
-                            data.pairs.push(asset.display);
+        let data = {{ data | tojson }};
+        let pairs = getPortfolioAssetPairs('USD', data);
+        let table = document.querySelector('table');
+        // kraken websocket prototype
+        let kraken = new WebSocket('wss://ws.kraken.com');
+        kraken.onerror = (event) => { throw new Error('[Error]', event); };
+        kraken.onopen = (event) => { console.log('[Kraken] Opened new websocket stream'); };
+        kraken.onclose = (event) => { console.log('[Kraken] Closed existing websocket stream'); };
+        kraken.onmessage = (event) => {
+            let message = JSON.parse(event.data);
+            console.log('[Kraken] Message', message);
+            if (message instanceof Array) {
+                asset = message[3].split('/')[0];
+                price = message[1].p[0];
+                for (let row of table.rows) {
+                    if (row.id && row.dataset.name.includes(asset)) {
+                        value = row.dataset.balance * price;
+                        if (value >= 1) {
+                            row.children[1].innerText = (+price).toFixed(2);
+                            row.children[2].innerText = (+value).toFixed(2);
+                            row.children[3].innerText = (+row.dataset.balance).toFixed(8);
+                        } else {
+                            table.deleteRow(row.rowIndex);
+                        }
                     }
                 }
             }
-        }).catch((error) => { 
-            console.log('[Error]', error); 
-        });
+        };
+        setTimeout(() => { 
+            let message = JSON.stringify({
+                'event': 'subscribe',
+                'pair': pairs,
+                'subscription': {
+                    'name': 'ticker'
+                }
+            });
 
-        console.log('[Pairs]', data.pairs);
-
-        let message = JSON.stringify({
-            'event': 'subscribe',
-            'pair': data.pairs,
-            'subscription': {
-                'name': 'ticker'
+            if (kraken.OPEN) {
+                kraken.send(message);
+            } else {
+                throw new Error('[Kraken] failed to initialize websocket stream');
             }
-        });
-
-        console.log(message);
-        //let socket = new WebSocket('wss://ws.kraken.com');
-        //socket.onerror = (event) => { console.log('[Error]', event); };
-        //socket.onopen = (event) => { console.log('[Opened]', event); };
-        //socket.onclose = (event) => { console.log('[Closed]', event); };
-        //socket.onmessage = (event) => {
-        //    response = JSON.parse(event.data);
-        //    if (response) { console.log('[Message]', response); }
-        //    else { console.log('[Info] response resulted in false condition'); }
-        //};
-        //setTimeout(() => { 
-        //    if (socket.OPEN) {
-        //        socket.send(message);
-        //        console.log('[Open] message was sent')
-        //    } else {
-        //        console.log('[Error] failed to send message');
-        //    }
-        //}, 1000);
+        }, 1000);
     </script>
 {% endblock %}
