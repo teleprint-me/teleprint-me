@@ -22,20 +22,18 @@ from ledger.blueprints import auth
 bp = Blueprint('index', __name__)
 
 
+def get_client_context() -> tuple:
+    context = []
+    for client in g.clients:
+        context.append((client.name, {
+            'accounts': client.get_accounts(),
+            'assets': client.get_assets()
+        }))
+    return tuple(context)
+
+
 @bp.route('/', methods=('GET',))
 @auth.required
 def portfolio():
-    data = {
-        'clients': [],
-        'assets': [],
-        'accounts': []
-    }
-    for client in g.clients:
-        data['clients'].append(client.name)
-        for account in client.get_accounts():
-            account.update({'client': client.name})
-            data['accounts'].append(account)
-        for asset in client.get_assets():
-            asset.update({'client': client.name})
-            data['assets'].append(asset)
-    return render_template('portfolio.html', data=data)
+    context = get_client_context()
+    return render_template('portfolio.html', context=context)

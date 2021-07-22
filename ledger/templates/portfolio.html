@@ -36,38 +36,70 @@
             </div>
         </div>
     {% else %}
-        <table>
-            <tr>
-                <th>Asset</th>
-                <th>Price</th>
-                <th>Value</th>
-                <th>Balance</th>
-                <th>Client</th>
-            </tr>
-            {% for account in data['accounts'] %}
-                <tr id="{{account['name']}}"
-                    data-client="{{account['client']}}"
-                    data-name="{{account['name']}}"
-                    data-balance="{{account['balance']}}">
-                    <td data-label="asset">{{account['name']}}</td>
-                    <td data-label="price">0</td>
-                    <td data-label="value">0</td>
-                    <td data-label="balance">{{account['balance']}}</td>
-                    <td data-label="client">{{account['client']}}</td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% for client, data in context %}
+            <table id="{{ client }}">
+                <thead>
+                    <tr>
+                        <th colspan=4>{{ client }}</th>
+                    </tr>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Price</th>
+                        <th>Value</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for account in data['accounts'] %}
+                        {% if 0 < (account['balance'] | float) %}
+                            <tr data-name="{{ account['name'] }}"
+                                data-balance="{{ account['balance'] }}">
+                                <td data-label="asset">{{ account['name'] }}</td>
+                                <td data-label="price">0</td>
+                                <td data-label="value">0</td>
+                                <td data-label="balance">{{ account['balance'] }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
     {% endif %}
 {% endblock %}
 
 {% block scripts %}
-    <script src="/static/scripts/requests.js"></script>
-    <script src="/static/scripts/websocket.js"></script>
+    <script src="/static/scripts/websocket/coinbase.js"></script>
+    <script src="/static/scripts/websocket/coinbase-pro.js"></script>
+    <script src="/static/scripts/websocket/kraken.js"></script>
     <script charset="utf-8">
-        let data = {{ data | tojson }};
-        data.currency = 'USD';
-        data.table = document.querySelector('table');
-        // kraken websocket prototype
-        let kraken = getKrakenWebSocket(data);
+        let map = new Map({{ context | tojson }});
+
+        for (let view of map) {
+            console.log('[MapView]', view);
+            let client = view[0];
+            let context = view[1];
+            let products = [];
+            let message = {};
+            let socket = null;
+
+            switch(client) {
+                case 'coinbase':
+                    console.log('[CoinbaseWebSocket] This is a work in progress');
+                    break
+                case 'coinbase-pro':
+                    products = getCoinbaseProProducts(context, 'USD');
+                    socket = new CoinbaseProWebSocket(products, coinbaseProPortfolioOnMessage);
+                    socket.send();
+                    break;
+                case 'kraken':
+                    products = getKrakenProducts(context, 'USD');
+                    socket = new KrakenWebSocket(products, krakenPortfolioOnMessage);
+                    socket.send();
+                    break;
+                default:
+                    throw new Error(`[Error] ${client} is currently unsupported`);
+            }
+        }
+        //let kraken = getKrakenWebSocket(data);
     </script>
 {% endblock %}
