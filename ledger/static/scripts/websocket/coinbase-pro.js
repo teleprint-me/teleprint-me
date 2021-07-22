@@ -19,7 +19,7 @@ const getCoinbaseProProducts = (context, currency) => {
     let products = [];
     for (let account of context.accounts) {
         for (let asset of context.assets) {
-            // asset.display -> '<currency>/<base>'
+            // asset.id -> '<currency>-<base>'
             if (asset.id && (account.name === asset.name)) {
                 base = asset.id.split('-')[1];
                 if (base.includes(currency) && base === currency) {
@@ -33,21 +33,32 @@ const getCoinbaseProProducts = (context, currency) => {
 
 
 const coinbaseProPortfolioOnMessage = (event) => {
+    let total = 0;
     let asset = {};
-    let table = document.querySelector('table#coinbase-pro');
     let message = JSON.parse(event.data);
-    console.log('[CoinbaseProSocketMessage]', message);
+    let table = document.querySelector('table#coinbase-pro');
+    let input = document.querySelector('input#coinbase-pro-value');
+    //console.log('[CoinbaseProSocketMessage]', message);
     if (message instanceof Object) {
         asset.name = message.product_id ? message.product_id.split('-')[0] : '';
         asset.price = message.price ? (+(message.price)).toFixed(2) : 0;
-        if (!asset.name || !asset.price) { 
+        if (!asset.name) { 
             return;
         }
         for (let row of table.tBodies[0].rows) {
+            if (row.dataset.name.includes('USD')) {
+                asset.balance = (+(row.dataset.balance)).toFixed(2); 
+                if (asset.balance > 1) {
+                    row.children[3].innerText = asset.balance;
+                } else {
+                    table.deleteRow(row.rowIndex);
+                }
+                total += (+(asset.balance));
+            }
             if (row.dataset.name.includes(asset.name)) {
-                asset.value = (+(row.dataset.balance * asset.price)).toFixed(2);
                 asset.balance = (+(row.dataset.balance)).toFixed(8); 
-                if (asset.value >= 1) {
+                asset.value = (+(asset.balance * asset.price)).toFixed(2);
+                if (1 < asset.value) {
                     row.children[1].innerText = asset.price;
                     row.children[2].innerText = asset.value;
                     row.children[3].innerText = asset.balance;
@@ -55,6 +66,9 @@ const coinbaseProPortfolioOnMessage = (event) => {
                     table.deleteRow(row.rowIndex);
                 }
             }
+            total += (+(row.children[2].innerText));
+            input.value = (+(total)).toFixed(2);
+            input.dispatchEvent(new Event('change'));
         }
     }
 };

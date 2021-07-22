@@ -14,12 +14,9 @@
 ** You should have received a copy of the GNU Affero General Public License
 ** along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-const getKrakenProducts = (context, currency=null) => {
+const getKrakenProducts = (context, currency) => {
     let base = null;
     let products = [];
-    if (!Boolean(currency)) { 
-        currency = 'USD'; 
-    }
     for (let account of context.accounts) {
         for (let asset of context.assets) {
             // asset.display -> '<currency>/<base>'
@@ -36,18 +33,28 @@ const getKrakenProducts = (context, currency=null) => {
 
 
 const krakenPortfolioOnMessage = (event) => {
-    let asset = {};
-    let table = document.querySelector('table#kraken');
     let message = JSON.parse(event.data);
-    console.log('[KrakenSocketMessage]', message);
+    let table = document.querySelector('table#kraken');
+    let input = document.querySelector('input#kraken-value');
+    let total = 0;
+    let asset = {};
+    //console.log('[KrakenSocketMessage]', message);
     if (message instanceof Array) {
         asset.name = message[3].split('/')[0];
         asset.price = (+(message[1].p[0])).toFixed(2);
         for (let row of table.tBodies[0].rows) {
+            if (row.dataset.name.includes('USD')) {
+                asset.balance = (+(row.dataset.balance)).toFixed(2); 
+                if (asset.balance > 1)
+                    row.children[3].innerText = asset.balance;
+                else
+                    table.deleteRow(row.rowIndex);
+                total += (+(asset.balance));
+            }
             if (row.dataset.name.includes(asset.name)) {
-                asset.value = (+(row.dataset.balance * asset.price)).toFixed(2);
                 asset.balance = (+(row.dataset.balance)).toFixed(8); 
-                if (asset.value >= 1) {
+                asset.value = (+(asset.balance * asset.price)).toFixed(2);
+                if (1 < asset.value) {
                     row.children[1].innerText = asset.price;
                     row.children[2].innerText = asset.value;
                     row.children[3].innerText = asset.balance;
@@ -55,6 +62,9 @@ const krakenPortfolioOnMessage = (event) => {
                     table.deleteRow(row.rowIndex);
                 }
             }
+            total += (+(row.children[2].innerText));
+            input.value = (+(total)).toFixed(2);
+            input.dispatchEvent(new Event('change'));
         }
     }
 };
