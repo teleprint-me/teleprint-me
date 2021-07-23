@@ -92,50 +92,9 @@
     <script src="/static/scripts/websocket/coinbase.js"></script>
     <script src="/static/scripts/websocket/coinbase-pro.js"></script>
     <script src="/static/scripts/websocket/kraken.js"></script>
+    <script src="/static/scripts/portfolio.js"></script>
     <script charset="utf-8">
         let map = new Map({{ context | tojson }});
-        let form = document.querySelector('form');
-        let table = document.querySelector('table#total-value');
-
-        for (let view of map) {
-            let client = view[0];
-            let context = view[1];
-            let products = [];
-            let socket = null;
-            let input = null;
-
-            switch(client) {
-                case 'coinbase':
-                    break
-                case 'coinbase-pro':
-                    products = getCoinbaseProProducts(context, 'USD');
-                    socket = new CoinbaseProWebSocket(products, coinbaseProPortfolioOnMessage);
-                    socket.send();
-                    input = document.querySelector('input#coinbase-pro-value');
-                    input.onchange = (event) => {
-                        let total = 0;
-                        for (let element of form.elements) {
-                            total += (+(element.value));
-                        }
-                        table.tBodies[0].rows[0].cells[0].innerText = (+(total)).toFixed(2);
-                    };
-                    break;
-                case 'kraken':
-                    products = getKrakenProducts(context, 'USD');
-                    socket = new KrakenWebSocket(products, krakenPortfolioOnMessage);
-                    socket.send();
-                    input = document.querySelector('input#kraken-value');
-                    input.onchange = (event) => {
-                        let total = 0;
-                        for (let element of form.elements) {
-                            total += (+(element.value));
-                        }
-                        table.tBodies[0].rows[0].cells[0].innerText = (+(total)).toFixed(2);
-                    };
-                    break;
-                default:
-                    throw new Error(`[Error] ${client} is currently unsupported`);
-            }
-        }
+        runWebSocketFactory(map, 'USD');
     </script>
 {% endblock %}
