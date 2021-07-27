@@ -14,57 +14,55 @@
 ** You should have received a copy of the GNU Affero General Public License
 ** along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-const setAssetPairDatalist = (response) => {
-    let assets = JSON.parse(response);
-    let datalist = document.querySelector('#asset-pairs');
-    removeChildrenFromElement(datalist);
-    for (let asset of assets) {
-        let node = document.createElement('option');
-        node.setAttribute('value', asset['display']);
-        node.setAttribute('data-id', asset['id']);
-        node.setAttribute('data-min', asset['min-size']);
-        node.setAttribute('data-name', asset['name']);
-        datalist.appendChild(node);
-    }
-};
-
-
 const error = (message) => {
     console.log('[Error]', message);
 };
 
 
-const setAssetPairPromise = (method, url) => {
+const setAssetPromise = (method, url) => {
     let promise = request(method, url);
-    promise.then(setAssetPairDatalist).catch(error);
+    promise.then((response) => {
+        let assets = JSON.parse(response);
+        let datalist = document.querySelector('#pairs');
+        removeChildrenFromElement(datalist);
+        for (let asset of assets) {
+            if (!asset['display']) { continue; }
+            let node = document.createElement('option');
+            node.setAttribute('value', asset['display']);
+            node.setAttribute('data-id', asset['id']);
+            node.setAttribute('data-min', asset['min-size']);
+            node.setAttribute('data-name', asset['name']);
+            datalist.appendChild(node);
+        }
+    }).catch(error);
     return promise;
 };
 
 
-const setDefaultDatalist = (form) => {
-    let datalist = document.querySelector('#asset-pairs');
+const setDefaultDatalist = () => {
+    let datalist = document.querySelector('#pairs');
     let node = document.createElement('option');
-    node.setAttribute('value', 'Not Available');
     removeChildrenFromElement(datalist);
+    node.setAttribute('value', 'Not Available');
     datalist.appendChild(node);
 };
 
 
-const toggleAccount = (event) => {
+const togglePlatformOnChange = (event) => {
     let platform = event.target.value;
     switch (platform) {
         case 'coinbase-pro':
         case 'kraken':
-            setAssetPairPromise('GET', `/client/${platform}/assets`);
+            setAssetPromise('GET', `/client/${platform}/assets`);
             break;
         default:
-            setDefaultDatalist(event.target.form);
+            setDefaultDatalist();
             break;
     };
 };
 
 
-const toggleStrategy = (event) => {
+const toggleStrategyOnChange = (event) => {
     let apy = event.target.form.apy;
     switch (event.target.value) {
         case 'value-average':
@@ -85,12 +83,12 @@ const toggleStrategy = (event) => {
 const getMessageOnError = (object) => {
     let message;
 
-    if (!object.account) {
-        message = '[Error] account field is empty';
+    if (!object.platform) {
+        message = '[Error] platform field is empty';
     } else if (!object.asset) { 
         message = '[Error] asset field is empty';
     } else if (!object.id) { 
-        message = `[Error] failed to set id=${id}`;
+        message = `[Error] failed to set id=${object.id}`;
     } else if (!object.min) {
         message = `[Error] failed to set min=${min}`;
     }
@@ -114,16 +112,16 @@ const getPrincipleData = (datalist) => {
 };
 
 
-const togglePrinciple = (event) => {
+const togglePrincipleOnFocus = (event) => {
     // grab elements
     let form = event.target.form;
-    let datalist = document.querySelector('#asset-pairs');
+    let datalist = document.querySelector('#pairs');
 
     // grab required attributes
     let data = getPrincipleData(datalist);
 
     let fields = {
-        'account': form.account.value,
+        'platform': form.platform.value,
         'asset': form.asset.value,
         'id': data.id,
         'min': data.min
@@ -141,20 +139,23 @@ const togglePrinciple = (event) => {
     }
 
     // grab data
-    let promise = request('GET', `/client/${fields.account}/price/${fields.id}`);
+    let promise = request('GET', `/client/${fields.platform}/price/${fields.id}`);
 
     // commit promise
     promise.then((response) => {
         // update principle min value
         let amount = undefined;
         let price = JSON.parse(response);
-        switch (fields.account) {
+        switch (fields.platform) {
             case 'coinbase-pro':
             case 'kraken':
                 if (fields.min > 0 && fields.min < 1) {
                     amount = Math.ceil(price.ask * fields.min);
                 } else {
                     amount = fields.min;
+                }
+                if (amount <= 5) {
+                    amount = 5;
                 }
                 form.principle.setAttribute('min', amount);
                 console.log(`[Info] set amount=${amount} using price['ask']=${price['ask']}`)

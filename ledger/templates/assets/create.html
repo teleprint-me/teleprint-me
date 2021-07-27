@@ -31,103 +31,50 @@
           action="/assets/create" 
           method="post"
           novalidate>
+
+        {{ form.csrf_token() }}
         <div class="mb-3">
-            <select name="account" 
-                    class="form-select p-3" 
-                    id="accounts" 
-                    aria-label="Select a brokerage account" 
-                    required>
-                <option value="" selected>Account</option>
-                {% for option in g.data['accounts'] %}
-                    <option value="{{option['value']}}">{{option['inner-text']}}</option>
-                {% endfor %}
-            </select>
+            {{ form.platform(class_='form-select p-3', placeholder='Account') }}
             <div class="invalid-feedback">
                 Please select a brokerage account.
             </div>
         </div>
-
         <div class="form-floating mb-3">
-            <input name="asset"
-                   list="asset-pairs" 
-                   class="form-control" 
-                   id="assets" 
-                   aria-label="Search for an asset" 
-                   placeholder="Search for an asset"
-                   required>
-            <label for="assets">Asset Pair</label>
-            <datalist id="asset-pairs">
+            {{ form.asset(list='pairs', class_='form-control', aria_label='Asset', placeholder='Asset') }}
+            {{ form.asset.label(for_='asset') }}
+            <datalist id="pairs">
                 <option id="null" value="Not Available">
             </datalist>
             <div class="invalid-feedback">
                 Please select an asset.
             </div>
         </div>
-    
         <div class="mb-3">
-            <select name="strategy" 
-                    class="form-select p-3" 
-                    id="strategies" 
-                    aria-label="Select a strategy" 
-                    required>
-                <option value="" selected>Strategy</option>
-                <option value="cost-average">Cost Average</option>
-                <option value="dynamic-cost-average">Dynamic Cost Average</option>
-                <option value="value-average">Value Average</option>
-                <option value="dynamic-value-average">Dynamic Value Average</option>
-            </select>
+            {{ form.strategy(class_='form-select p-3', placeholder='Strategy') }}
             <div class="invalid-feedback">
                 Please select a strategy.
             </div>
         </div>
-
         <div class="form-floating mb-3">
-            <input type="number" 
-                   name="principle" 
-                   min="5"
-                   class="form-control" 
-                   id="principle-amount" 
-                   placeholder="Priciple Amount"
-                   required>
-            <label for="floatingInput">Principle Amount</label>
+            {{ form.principle(class_='form-control', aria_label='Principle', placeholder='Principle') }}
+            {{ form.principle.label(for_='principle') }}
             <div class="invalid-feedback">
                 Please provide a principle amount.
             </div>
         </div>
-    
         <div class="mb-3">
-            <select name="period" 
-                    class="form-select p-3" 
-                    id="periods" 
-                    aria-label="Select a periodic frequency" 
-                    required>
-                <option value="" selected>Period</option>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-            </select>
+            {{ form.period(class_='form-select p-3', aria_label='Period', placeholder='Period') }}
             <div class="invalid-feedback">
                 Please select a periodic frequency.
             </div>
         </div>
-
         <div class="mb-3 d-none">
-            <select name="apy" 
-                    class="form-select p-3" 
-                    id="apy" 
-                    aria-label="Select a annual percentage yield" 
-                    required>
-                <option value="" selected>Annual Percentage Yield</option>
-                {% for value in [5, 7, 9, 10, 12, 15] %}
-                    <option value="{{ value / 100 }}">{{value}}%</option>
-                {% endfor %}
-            </select>
+            {{ form.apy(class_='form-select p-3', aria_label='Yield', placeholder='Yield') }}
             <div class="invalid-feedback">
                 Please select a annual percentage yield.
             </div>
         </div>
-
-        <button type="submit" name="submit" class="btn btn-primary w-100">Add Asset</button>
+        {{ form.submit(class_='btn btn-primary w-100', value='Add Asset') }}
     </form>
 {% endblock %}
 
@@ -139,8 +86,11 @@
     <script charset="utf-8">
         let form = document.querySelector('#create-assets');
         formsValidateRequired();
-        form.account.addEventListener('change', toggleAccount);
-        form.strategy.addEventListener('change', toggleStrategy);
-        form.principle.addEventListener('focus', togglePrinciple);
+        form.platform.addEventListener('change', togglePlatformOnChange);
+        form.strategy.addEventListener('change', toggleStrategyOnChange);
+        form.principle.addEventListener('focus', togglePrincipleOnFocus);
+        form.asset.addEventListener('input', (event) => {
+            event.target.value = event.target.value.toUpperCase();
+        });
     </script>
 {% endblock %}

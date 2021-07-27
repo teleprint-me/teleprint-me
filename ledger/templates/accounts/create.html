@@ -33,7 +33,6 @@
           novalidate>
 
         {{ form.csrf_token() }}
-
         <div class="mb-3">
             {{ form.platform(class_='form-select p-3', placeholder='Platform') }}
             <div class="invalid-feedback">
@@ -47,7 +46,6 @@
                 Please provide the API key.
             </div>
         </div>
-    
         <div class="form-floating mb-3">
             {{ form.secret(class_='form-control', placeholder='REST API Secret') }}
             {{ form.secret.label(for_='secret') }}
@@ -55,7 +53,6 @@
                 Please provide the API secret.
             </div>
         </div>
-    
         <div class="form-floating mb-3">
             {{ form.passphrase(class_='form-control', placeholder='REST API Passphrase', required='true') }}
             {{ form.passphrase.label(for_='passphrase') }}
@@ -63,7 +60,6 @@
                 Please provide the API passphrase.
             </div>
         </div>
-    
         {{ form.submit(class_='btn btn-primary w-100', value='Add Account') }}
     </form>
 {% endblock %}

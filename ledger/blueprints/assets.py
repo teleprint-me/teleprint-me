@@ -23,15 +23,9 @@ from flask import url_for
 
 from ledger.blueprints import auth
 
+from ledger.forms.assets import AssetsCreateForm
+
 bp = Blueprint('assets', __name__, url_prefix='/assets')
-
-
-def get_account_options() -> list:
-    options = []
-    for client in g.clients:
-        inner_text = ' '.join(word.capitalize() for word in client.name.split('-'))
-        options.append({'value': client.name, 'inner-text': inner_text})
-    return options
 
 
 def get_asset_options() -> list:
@@ -52,58 +46,33 @@ def assets_menu():
 @bp.route("/create", methods=('GET', 'POST'))
 @auth.required
 def assets_create():
-    g.data = {
-        'accounts': get_account_options(),
-        'assets': get_asset_options()
-    }
-
+    form = AssetsCreateForm(request.form)
     if request.method == "POST":
-        message = None
-
-        # get the form fields
-        account = request.form.get('account')
-        asset = request.form.get('asset')
-        strategy = request.form.get('strategy')
-        principle = request.form.get('principle')
-        period = request.form.get('period')
-        apy = request.form.get('apy')
-
-        # check the form fields
-        if not account:
-            message = 'Error', '`Account` is required'
-        elif not asset:
-            message = 'Error', '`Asset Pair` is required'
-        elif not strategy:
-            message = 'Error', '`Strategy` is required'
-        elif not principle:
-            message = 'Error', '`Principle Amount` is required'
-        elif not apy:
-            message = 'Error', '`Annual Percentage Yield` is required'
-
-        # check to see if the record already exists
-        record = g.db.assets.find_one({'account': account, 'asset': asset})
-        if record:
-            message = 'Error', f'{account} and {asset} pair already exists!'
-
-        # insert the document into the database
-        if not message:
-            result = g.db.assets.insert_one({
-                'ledger': [],
-                'account': account,
-                'asset': asset,
-                'strategy': strategy,
-                'principle': principle,
-                'period': period,
-                'apy': apy
-            })
+        messages = []
+        if form.validate_on_submit():
+            product = {
+                'platform': form.platform.data,
+                'asset': form.asset.data,
+                'strategy': form.strategy.data,
+                'principle': form.principle.data,
+                'period': form.period.data,
+                'apy': form.apy.data,
+                'data': []
+            }
+            result = g.db.assets.insert_one(product)
             if result.acknowledged:
-                message = 'Info', f'Created {asset} pair using {strategy}'
+                messages.append(('Success', f'{product["asset"]} asset added successfully'))
             else:
-                message = 'Error', f'Failed to create {asset} pair using {strategy}'
-
-        flash(message, message[0].lower())
-
-    return render_template('assets/create.html')
+                messages.append(('Failure', f'Oops! failed to add {product["asset"]}'))
+        for key, value in form.errors.items():
+            try:
+                messages.append((key, value[0]))
+            except (IndexError,) as e:
+                messages.append(('Error', e))
+        if messages:
+            flash(tuple(messages), 'info')
+        return redirect(url_for('assets.assets_create'))
+    return render_template('assets/create.html', form=form)
 
 
 @bp.route('/view', methods=(('GET',)))
