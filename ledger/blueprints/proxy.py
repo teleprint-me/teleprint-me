@@ -43,6 +43,24 @@ def proxy_history(platform, asset):
     return jsonify([])
 
 
+@bp.route('/<platform>/deposits/<asset>', methods=('GET',))
+@auth.required
+def proxy_deposits(platform, asset):
+    for client in g.clients:
+        if client.name == platform:
+            return jsonify(client.get_deposits(asset))
+    return jsonify({})
+
+
+@bp.route('/<platform>/withdrawals/<asset>', methods=('GET',))
+@auth.required
+def proxy_withdrawals(platform, asset):
+    for client in g.clients:
+        if client.name == platform:
+            return jsonify(client.get_withdrawals(asset))
+    return jsonify({})
+
+
 @bp.route('/<platform>/price/<asset>', methods=('GET',))
 @auth.required
 def proxy_price(platform, asset):

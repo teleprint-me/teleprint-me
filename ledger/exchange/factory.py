@@ -136,6 +136,14 @@ class AbstractClient(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def get_deposits(self, asset: str) -> list:
+        pass
+
+    @abc.abstractmethod
+    def get_withdrawals(self, asset: str) -> list:
+        pass
+
+    @abc.abstractmethod
     def get_price(self, asset: str) -> dict:
         pass
 

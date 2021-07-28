@@ -20,6 +20,45 @@ from ledger.exchange.factory import AbstractFactory
 from ledger.exchange.cbpro.auth import Auth
 from ledger.exchange.cbpro.messenger import Messenger
 
+from time import sleep
+
+
+def on_error(response) -> bool:
+    if isinstance(response, dict):
+        return bool(response.get('message'))
+    return False
+
+
+def get_fee(transfer: dict) -> str:
+    has_fee = 'details' in transfer and 'fee' in transfer['details']
+    return transfer['details']['fee'] if has_fee else '0'
+
+
+def has_product(asset: str, transfer: dict, account: dict) -> bool:
+    product = account['currency'] in asset.split('-')[0]
+    matched = account['id'] == transfer['account_id']
+    canceled = transfer['canceled_at'] is not None
+    return product and matched and not canceled
+
+
+def get_product(transfer: dict, account: dict) -> dict:
+    return {
+        'type': transfer['type'],
+        'currency': account['currency'],
+        'amount': transfer['amount'],
+        'fee': get_fee(transfer),
+        'timestamp': transfer['created_at']
+    }
+
+
+def get_transfers(asset, transfers, accounts) -> list:
+    products = []
+    for transfer in transfers:
+        for account in accounts:
+            if has_product(asset, transfer, account):
+                products.append(get_product(transfer, account))
+    return products
+
 
 class CoinbaseProClient(AbstractClient):
     def __init__(self, messenger: AbstractMessenger):
@@ -34,56 +73,60 @@ class CoinbaseProClient(AbstractClient):
     def messenger(self) -> AbstractMessenger:
         return self.__messenger
 
-    def has_error(self, response: object) -> bool:
-        if isinstance(response, dict):
-            return bool(response.get('message'))
-        return False
-
     def get_assets(self) -> list:
-        assets = list()
         response = self.messenger.get('/products')
-        if self.has_error(response):
+        if on_error(response):
             return response
-        for item in response:
-            assets.append({
-                'id': item['id'],
-                'display': item['display_name'],
-                'name': item['base_currency'],
-                'min-size': item['min_market_funds']
-            })
-        return assets
+        return [{
+                'id': asset['id'],
+                'display': asset['display_name'],
+                'name': asset['base_currency'],
+                'min-size': asset['min_market_funds']
+                } for asset in response]
 
     def get_accounts(self) -> list:
-        accounts = list()
         response = self.messenger.get('/accounts')
-        if self.has_error(response):
+        if on_error(response):
             return response
-        for item in response:
-            accounts.append({
-                'name': item['currency'],
-                'balance': item['available']
-            })
-        return accounts
+        return [{
+                'name': account['currency'],
+                'balance': account['available']
+                } for account in response]
 
     def get_history(self, asset: str) -> list:
-        fills = list()
-        response = self.messenger.paginate('/fills', {'product_id': asset})
-        if self.has_error(response):
+        response = self.messenger.page('/fills', {'product_id': asset})
+        if on_error(response):
             return response
-        for fill in response:
-            fills.append({
-                'timestamp': fill['created_at'],
+        return [{
                 'id': fill['product_id'],
                 'side': fill['side'],
                 'price': fill['price'],
-                'size': fill['size']
-            })
-        return fills
+                'size': fill['size'],
+                'timestamp': fill['created_at']
+                } for fill in response]
+
+    def get_deposits(self, asset: str) -> list:
+        transfers = self.messenger.page('/transfers', {'type': 'deposit'})
+        if on_error(transfers):
+            return transfers
+        sleep(0.25)
+        accounts = self.messenger.get('/accounts')
+        if on_error(accounts):
+            return accounts
+        return get_transfers(asset, transfers, accounts)
+
+    def get_withdrawals(self, asset: str) -> list:
+        transfers = self.messenger.page('/transfers', {'type': 'withdraw'})
+        if on_error(transfers):
+            return transfers
+        sleep(0.25)
+        accounts = self.messenger.get('/accounts')
+        if on_error(accounts):
+            return accounts
+        return get_transfers(asset, transfers, accounts)
 
     def get_price(self, asset: str) -> dict:
         response = self.messenger.get(f'/products/{asset}/ticker')
-        if self.has_error(response):
-            return response
         return {
             'bid': response['bid'],
             'ask': response['ask'],
@@ -93,8 +136,6 @@ class CoinbaseProClient(AbstractClient):
     def post_order(self, data: dict) -> dict:
         # TODO: Filter out redundent data
         response = self.messenger.post('/orders', data)
-        if self.has_error(response):
-            return response
         return {
             'timestamp': response['created_at'],
             'id': response['product_id'],

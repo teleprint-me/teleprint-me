@@ -87,10 +87,8 @@
         let form = document.querySelector('#create-assets');
         formsValidateRequired();
         form.platform.addEventListener('change', togglePlatformOnChange);
+        form.asset.addEventListener('input', toggleAssetOnInput);
         form.strategy.addEventListener('change', toggleStrategyOnChange);
         form.principle.addEventListener('focus', togglePrincipleOnFocus);
-        form.asset.addEventListener('input', (event) => {
-            event.target.value = event.target.value.toUpperCase();
-        });
     </script>
 {% endblock %}

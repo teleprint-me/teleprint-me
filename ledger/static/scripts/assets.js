@@ -62,6 +62,11 @@ const togglePlatformOnChange = (event) => {
 };
 
 
+const toggleAssetOnInput = (event) => {
+    event.target.value = event.target.value.toUpperCase();
+};
+
+
 const toggleStrategyOnChange = (event) => {
     let apy = event.target.form.apy;
     switch (event.target.value) {

@@ -104,6 +104,12 @@ class KrakenClient(AbstractClient):
             time.sleep(0.25)
         return fills
 
+    def get_deposits(self, asset: str) -> list:
+        return []
+
+    def get_withdrawals(self, asset: str) -> list:
+        return []
+
     def get_price(self, asset: str) -> dict:
         response = self.messenger.get('/public/Ticker', {'pair': asset})
         if self.has_error(response):

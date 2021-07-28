@@ -36,8 +36,6 @@ class AssetExists(object):
 
     def __call__(self, form, field):
         for product in g.db.assets.find():
-            print(form.platform.data, product['platform'])
-            print(field.data, product['asset'])
             has_account = form.platform.data == product['platform']
             has_asset = field.data == product['asset']
             if has_account and has_asset:
