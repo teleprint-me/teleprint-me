@@ -18,6 +18,8 @@ from ledger.exchange.factory import AbstractMessenger
 
 from ledger.exchange.kraken.auth import Auth
 
+from time import sleep
+
 import requests
 
 
@@ -125,8 +127,19 @@ class Messenger(AbstractMessenger):
 
         return self.__response.json(**self.options)
 
-    def page(self, endpoint: str, params: dict = None) -> dict:
-        pass
+    def page(self, context: object) -> list:
+        OFFSET, LIMIT, TIMEOUT = 50, 200, 0.275
+        collection = []
+        context.params['ofs'] = 0
+        while context.params['ofs'] < LIMIT:
+            response = self.post(context.endpoint, context.params)
+            if response['error']:
+                return response['error']
+            [collection.append(i)
+             for i in context.callback(context.asset, response)]
+            context.params['ofs'] += OFFSET
+            sleep(TIMEOUT)
+        return collection
 
     def close(self) -> None:
         self.session.close()

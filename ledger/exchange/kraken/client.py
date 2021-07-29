@@ -14,26 +14,87 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from ledger.exchange.factory import AbstractMessenger
+from ledger.exchange.factory import AbstractContext
 from ledger.exchange.factory import AbstractClient
 from ledger.exchange.factory import AbstractFactory
 
 from ledger.exchange.kraken.auth import Auth
 from ledger.exchange.kraken.messenger import Messenger
 
-import datetime
-import time
+from time import sleep
+from datetime import datetime
 
 
-def epoch2datetime(timestamp: float) -> str:
+def on_error(response: object) -> bool:
+    return bool(response.get('error'))
+
+
+def epoch_to_datetime(timestamp: float) -> str:
     '''convert timestamp from epoch to iso 8601'''
-    date = datetime.datetime.fromtimestamp(timestamp)
+    date = datetime.fromtimestamp(timestamp)
     return date.isoformat()
 
 
-def pricelist2average(prices: list) -> str:
+def get_average_price(prices: list) -> str:
     '''return average price based on approx bids and asks at market value'''
     pricelist = sum(float(p) for p in prices) / len(prices)
     return f'{pricelist:.5f}'
+
+
+def get_history(asset: str, response: object) -> object:
+    for trade in response['result']['trades'].values():
+        if trade['pair'] == asset:
+            yield {
+                'id': trade['pair'],
+                'side': trade['type'],
+                'price': trade['price'],
+                'size': trade['vol'],
+                'timestamp': epoch_to_datetime(trade['time'])
+            }
+
+
+def get_transfers(asset: str, response: object) -> object:
+    for transfer in response['result']['ledger'].values():
+        if asset == 'all' or transfer['asset'] == asset.split('Z')[0]:
+            yield {
+                'type': transfer['type'],
+                'currency': transfer['asset'],
+                'amount': transfer['amount'],
+                'fee': transfer['fee'],
+                'timestamp': epoch_to_datetime(transfer['time'])
+            }
+
+
+class Context(AbstractContext):
+    def __init__(self, endpoint: str, params: dict = None):
+        self.__endpoint = endpoint
+        self.__params = {} if params is None else params
+        self.__asset = ''
+        self.__callback = lambda default: None
+
+    @property
+    def endpoint(self) -> str:
+        return self.__endpoint
+
+    @property
+    def params(self) -> dict:
+        return self.__params
+
+    @property
+    def asset(self) -> str:
+        return self.__asset
+
+    @asset.setter
+    def asset(self, value: str):
+        self.__asset = value
+
+    @property
+    def callback(self) -> object:
+        return self.__callback
+
+    @callback.setter
+    def callback(self, value: object):
+        self.__callback = value
 
 
 class KrakenClient(AbstractClient):
@@ -49,76 +110,53 @@ class KrakenClient(AbstractClient):
     def messenger(self) -> AbstractMessenger:
         return self.__messenger
 
-    def has_error(self, response: object) -> bool:
-        return bool(response.get('error'))
-
     def get_assets(self) -> list:
-        assets = list()
         response = self.messenger.get('/public/AssetPairs')
-        if self.has_error(response):
+        if on_error(response):
             return response['error']
-        result = response['result']
-        for k, v in result.items():
-            assets.append({
+        return [{
                 'id': k,
                 'display': v.get('wsname'),
                 'name': v.get('base'),
                 'min-size': v.get('ordermin')
-            })
-        return assets
+                } for k, v in response['result'].items()]
 
     def get_accounts(self) -> list:
-        accounts = list()
         response = self.messenger.post('/private/Balance')
-        if self.has_error(response):
+        if on_error(response):
             return response['error']
-        result = response['result']
-        for k, v in result.items():
-            accounts.append({
+        return [{
                 'name': k,
                 'balance': v
-            })
-        return accounts
+                } for k, v in response['result'].items() if float(v) > 0]
 
-    def get_history(self, asset: str, limit: int = None) -> list:
-        limit = 250 if limit is None else limit
-        offset = 0
-        fills = list()
-        while offset < limit:
-            response = self.messenger.post(
-                '/private/TradesHistory', {'ofs': offset}
-            )
-            if self.has_error(response):
-                return response['error']
-            trades = response['result']['trades']
-            for fill in trades.values():
-                if fill['pair'] == asset:
-                    fills.append({
-                        'timestamp': epoch2datetime(fill['time']),
-                        'id': fill['pair'],
-                        'side': fill['type'],
-                        'price': fill['price'],
-                        'size': fill['vol']
-                    })
-            offset += 50
-            time.sleep(0.25)
-        return fills
+    def get_history(self, asset: str) -> list:
+        context = Context('/private/TradesHistory')
+        context.asset = asset
+        context.callback = get_history
+        return self.messenger.page(context)
 
     def get_deposits(self, asset: str) -> list:
-        return []
+        context = Context('/private/Ledgers', {'type': 'deposit'})
+        context.asset = asset
+        context.callback = get_transfers
+        return self.messenger.page(context)
 
     def get_withdrawals(self, asset: str) -> list:
-        return []
+        context = Context('/private/Ledgers', {'type': 'withdrawal'})
+        context.asset = asset
+        context.callback = get_transfers
+        return self.messenger.page(context)
 
     def get_price(self, asset: str) -> dict:
         response = self.messenger.get('/public/Ticker', {'pair': asset})
         if self.has_error(response):
             return response['error']
-        asset = response['result'][asset]
+        ticker = response['result'][asset]
         return {
-            'bid': asset['b'][0],
-            'ask': asset['a'][0],
-            'price': pricelist2average(asset['p'])
+            'bid': ticker['b'][0],
+            'ask': ticker['a'][0],
+            'price': get_average_price(ticker['p'])
         }
 
     def post_order(self, data: dict) -> dict:
@@ -126,17 +164,17 @@ class KrakenClient(AbstractClient):
         if self.has_error(order):
             return order['error']
         txid = order['result']['txid']
-        time.sleep(0.25)
+        sleep(0.265)
         query = self.messenger.post('/private/QueryOrders', {'txid': txid})
         if self.has_error(query):
             return query['error']
         info = query['result'][txid]
         return {
-            'timestamp': epoch2datetime(info['opentm']),
             'id': info['descr']['pair'],
             'side': info['descr']['type'],
             'price': info['price'],
-            'size': info['vol']
+            'size': info['vol'],
+            'timestamp': epoch_to_datetime(info['opentm'])
         }
 
 

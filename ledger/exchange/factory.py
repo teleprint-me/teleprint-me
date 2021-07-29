@@ -114,6 +114,27 @@ class AbstractMessenger(abc.ABC):
         pass
 
 
+class AbstractContext(abc.ABC):
+    def __init__(self, endpoint: str, params: dict):
+        pass
+
+    @abc.abstractproperty
+    def endpoint(self) -> str:
+        pass
+
+    @abc.abstractproperty
+    def params(self) -> dict:
+        pass
+
+    @abc.abstractproperty
+    def asset(self) -> str:
+        pass
+
+    @abc.abstractproperty
+    def callback(self) -> object:
+        pass
+
+
 class AbstractClient(abc.ABC):
     @abc.abstractproperty
     def name(self) -> str:

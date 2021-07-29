@@ -55,7 +55,9 @@ def get_transfers(asset, transfers, accounts) -> list:
     products = []
     for transfer in transfers:
         for account in accounts:
-            if has_product(asset, transfer, account):
+            full = asset == 'all'
+            search = has_product(asset, transfer, account)
+            if full or search:
                 products.append(get_product(transfer, account))
     return products
 
@@ -91,7 +93,7 @@ class CoinbaseProClient(AbstractClient):
         return [{
                 'name': account['currency'],
                 'balance': account['available']
-                } for account in response]
+                } for account in response if float(account['available']) > 0]
 
     def get_history(self, asset: str) -> list:
         response = self.messenger.page('/fills', {'product_id': asset})
