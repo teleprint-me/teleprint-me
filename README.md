@@ -2,7 +2,7 @@
 
 A web application to track cryptocurrency investments
 
-# Status
+## Status
 
 - This is a work in progress
 - Core application features may be broken, buggy, and/or missing
