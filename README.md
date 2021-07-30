@@ -2,24 +2,6 @@
 
 A web application to track cryptocurrency investments
 
-## Status
-
-### Notes
-
-- This application is currently in the prototype phase.
-- Core application features may be broken, buggy, and/or missing
-
-### Supports
-
-- Coinbase Pro
-- Kraken
-
-### TODO
-
-- Coinbase (Not Implemented)
-- Metamask (Not Implemented)
-- Web3
-
 ## Requirements
 
 - Linux 5.4.x or greater
@@ -41,6 +23,7 @@ $ source venv/bin/activate
 $ python setup.py install
 # using requirements is recommended
 $ pip install -r requirements.txt
+# add the mongo uri to shell environment
 $ echo 'MONGO_URI="mongodb://localhost:27017/ledger"' > .env
 # run the server
 $ ./run.sh
@@ -49,6 +32,35 @@ $ ./run.sh
 ## Screenshots
 
 ![login-screenshot](https://i.imgur.com/1MhPwdQ.png)
+
+## Status
+
+- This application is currently in the prototype phase.
+- Core application features may be broken, buggy, and/or missing.
+
+## Task List
+
+- [ ] Core
+    - [x] Sign up
+    - [x] Sign in
+    - [x] Sign out
+    - [x] Accounts
+    - [ ] Assets
+    - [ ] Trade
+    - [x] Portfolio
+    - [ ] Theme
+- [ ] REST API
+    - [x] Factory
+    - [x] Proxy 
+    - [ ] Coinbase
+    - [x] Coinbase Pro
+    - [x] Kraken
+- [ ] Web3
+    - [ ] Metamask
+    - [ ] Coinbase
+    - [ ] 1inch
+- [ ] Other
+    - [ ] Settings
 
 ## Tips
 
