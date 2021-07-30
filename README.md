@@ -1,8 +1,43 @@
 # teleprint-me
+
 A web application to track cryptocurrency investments
 
-## WIP
-Note: This is a work in progress.
+# Status
+
+- This is a work in progress
+- Core application features may be broken, buggy, and/or missing
+- This application is currenctly in the prototype phase.
+
+## Requirements
+
+- Linux 5.4.x or greater
+- Python 3.6.x or greater
+- [MongoDB](https://docs.mongodb.com/manual/installation/) 4.2.x or greater
+
+## Install and Run
+
+```sh
+# clone the repo
+$ git clone https://github.com/teleprint-me/ledger.git
+# change directory
+$ cd ledger
+# initialize virtual environment
+$ virtualenv venv
+# use/enter the virtual environment
+$ source venv/bin/activate 
+# using setup.py is optional
+$ python setup.py install
+# using requirements is recommended
+$ pip install -r requirements.txt
+# run the server
+$ ./run.sh
+```
+
+## Tips
+
+Bitcoin (Segwit): 3E1YSahzUnYYx2RTuRt4KWogDBCsdCS1n3
+Ethereum: 0x7be933221135468b9886632771fF289341144C3a
+Litecoin (Segwit): MMNDfhgc3jfs3XJoJ7DSCedBp742dH12jD
 
 ## License
 Copyright (C) 2021 teleprint.me
