@@ -48,7 +48,7 @@ $ ./run.sh
 
 ## Screenshots
 
-![login-screenshot](https://imgur.com/1MhPwdQ)
+![login-screenshot](https://i.imgur.com/1MhPwdQ.png)
 
 ## Tips
 
