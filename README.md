@@ -29,6 +29,7 @@ $ source venv/bin/activate
 $ python setup.py install
 # using requirements is recommended
 $ pip install -r requirements.txt
+$ echo 'MONGO_URI=\'mongodb://localhost:27017/ledger\'' > .env
 # run the server
 $ ./run.sh
 ```
