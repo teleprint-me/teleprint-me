@@ -35,9 +35,9 @@ $ ./run.sh
 
 ## Tips
 
-Bitcoin (Segwit): 3E1YSahzUnYYx2RTuRt4KWogDBCsdCS1n3
-Ethereum: 0x7be933221135468b9886632771fF289341144C3a
-Litecoin (Segwit): MMNDfhgc3jfs3XJoJ7DSCedBp742dH12jD
+- Bitcoin (Segwit): 3E1YSahzUnYYx2RTuRt4KWogDBCsdCS1n3
+- Ethereum: 0x7be933221135468b9886632771fF289341144C3a
+- Litecoin (Segwit): MMNDfhgc3jfs3XJoJ7DSCedBp742dH12jD
 
 ## License
 Copyright (C) 2021 teleprint.me
