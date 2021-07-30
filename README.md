@@ -46,6 +46,10 @@ $ echo 'MONGO_URI="mongodb://localhost:27017/ledger"' > .env
 $ ./run.sh
 ```
 
+## Screenshots
+
+![login-screenshot](https://imgur.com/1MhPwdQ)
+
 ## Tips
 
 - Bitcoin (Segwit): 3E1YSahzUnYYx2RTuRt4KWogDBCsdCS1n3
