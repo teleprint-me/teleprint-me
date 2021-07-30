@@ -4,9 +4,21 @@ A web application to track cryptocurrency investments
 
 ## Status
 
-- This is a work in progress
+### Notes
+
+- This application is currently in the prototype phase.
 - Core application features may be broken, buggy, and/or missing
-- This application is currenctly in the prototype phase.
+
+### Supports
+
+- Coinbase Pro
+- Kraken
+
+### TODO
+
+- Coinbase (Not Implemented)
+- Metamask (Not Implemented)
+- Web3
 
 ## Requirements
 
