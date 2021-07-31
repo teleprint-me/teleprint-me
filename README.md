@@ -46,6 +46,7 @@ $ ./run.sh
     - [x] Sign out
     - [x] Accounts
     - [ ] Assets
+    - [ ] Wallets
     - [ ] Settings
     - [ ] Trade
     - [x] Portfolio
