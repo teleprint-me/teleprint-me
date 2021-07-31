@@ -46,9 +46,9 @@ $ ./run.sh
     - [x] Sign out
     - [x] Accounts
     - [ ] Assets
+    - [ ] Settings
     - [ ] Trade
     - [x] Portfolio
-    - [ ] Theme
 - [ ] REST API
     - [x] Factory
     - [x] Proxy 
@@ -59,8 +59,7 @@ $ ./run.sh
     - [ ] Metamask
     - [ ] Coinbase
     - [ ] 1inch
-- [ ] Other
-    - [ ] Settings
+    - [ ] Compound
 
 ## Tips
 
