@@ -28,15 +28,6 @@ from ledger.forms.assets import AssetsCreateForm
 bp = Blueprint('assets', __name__, url_prefix='/assets')
 
 
-def get_asset_options() -> list:
-    options = []
-    for client in g.clients:
-        assets = client.get_assets()
-        if assets:
-            options.append({'platform': client.name, 'assets': assets})
-    return options
-
-
 @bp.route('/menu', methods=('GET',))
 @auth.required
 def assets_menu():
@@ -61,9 +52,9 @@ def assets_create():
             }
             result = g.db.assets.insert_one(product)
             if result.acknowledged:
-                messages.append(('Success', f'{product["asset"]} asset added successfully'))
+                messages.append(('Add', f'{product["asset"]} on {product["platform"]} added successfully'))
             else:
-                messages.append(('Failure', f'Oops! failed to add {product["asset"]}'))
+                messages.append(('Error', f'Oops! failed to add {product["asset"]}'))
         for key, value in form.errors.items():
             try:
                 messages.append((key, value[0]))
@@ -86,8 +77,15 @@ def assets_view():
 @auth.required
 def assets_delete():
     platform = request.args.get('platform')
-    account = g.db.accounts.find_one({'platform': platform})
-    if account is not None:
-        g.db.accounts.delete_one(account)
-        flash(('Delete', f'{platform} was deleted successfully'))
-    return render_template('assets/delete.html')
+    asset = request.args.get('asset')
+    product = g.db.assets.find_one({
+        'platform': platform,
+        'asset': asset
+    })
+    if product is not None:
+        messages = [('Delete', f'{asset} on {platform} deleted successfully')]
+        g.db.assets.delete_one(product)
+        flash(tuple(messages), 'info')
+        return redirect(url_for('assets.assets_delete'))
+    assets = [asset for asset in g.db.assets.find()]
+    return render_template('assets/delete.html', assets=assets)

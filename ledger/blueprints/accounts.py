@@ -30,12 +30,7 @@ bp = Blueprint('accounts', __name__, url_prefix='/accounts')
 
 def get_accounts() -> list:
     """return a list of tuples containing a (<platform>, <key>) value pair"""
-    keys = list()
-    for client in g.clients:
-        platform = client.name
-        key = client.messenger.auth.token.key[:24]
-        keys.append((platform, key))
-    return keys
+    return [(client.name, client.messenger.auth.token.key[:24]) for client in g.clients]
 
 
 @bp.route('/menu', methods=('GET',))
@@ -60,7 +55,7 @@ def accounts_create():
                 account.update({'passphrase': form.passphrase.data})
             result = g.db.accounts.insert_one(account)
             if result.acknowledged:
-                messages.append(('Success', f'{account["platform"]} account added successfully'))
+                messages.append(('Add', f'{account["platform"]} added successfully'))
             else:
                 messages.append(('Failure', f'Oops! failed to add {account["platform"]}'))
         for key, value in form.errors.items():
@@ -86,13 +81,10 @@ def accounts_view():
 def accounts_delete():
     platform = request.args.get('platform')
     account = g.db.accounts.find_one({'platform': platform})
-
     if account is not None:
-        messages = [('Delete', f'{platform} was deleted successfully')]
+        messages = [('Delete', f'{platform} deleted successfully')]
         g.db.accounts.delete_one(account)
         flash(tuple(messages), 'info')
         return redirect(url_for('accounts.accounts_delete'))
-
     accounts = get_accounts()
-
     return render_template('accounts/delete.html', accounts=accounts)

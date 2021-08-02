@@ -27,20 +27,23 @@
 
     <div class="list-group bg-light rounded shadow mx-auto">
         {% for product in assets %}
-            <a href="#" class="list-group-item list-group-item-primary">
+            <a href="#{{product['asset']}}" class="list-group-item list-group-item-primary">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{product['platform']}}</h5>
                     <small class="text-muted">Read-Only</small>
                 </div>
-                <p class="mb-1">{{product['asset']}}</p>
+                <div class="d-flex w-100 justify-content-between">
+                    <p class="mb-1">{{product['asset']}}</p>
+                    <p class="mb-1">{{product['strategy']}}</p>
+                </div>
             </a>
         {% else %}
-            <a href="/accounts/create" class="list-group-item list-group-item-action">
+            <a href="/assets/create" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Accounts</h5>
+                    <h5 class="mb-1">Assets</h5>
                     <small class="text-muted">Add</small>
                 </div>
-                <p class="mb-1">There are no existing accounts.</p>
+                <p class="mb-1">There are no existing assets.</p>
             </a>
         {% endfor %}
     </div>
