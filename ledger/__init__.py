@@ -70,11 +70,17 @@ def create_app(config: str = None) -> Flask:
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
 
-    @app.route('/menu.html')
+    @app.route('/menu')
     @auth.required
     def menu():
         return render_template('menu.html')
 
+    @app.route('/license')
+    @auth.required
+    def license():
+        return render_template('license.html')
+
     app.add_url_rule('/', endpoint='index')
     app.add_url_rule('/menu', endpoint='menu')
+    app.add_url_rule('/license', endpoint='license')
     return app

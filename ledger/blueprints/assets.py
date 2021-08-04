@@ -87,3 +87,12 @@ def assets_delete():
         return redirect(url_for('assets.assets_delete'))
     assets = [asset for asset in g.db.assets.find()]
     return render_template('assets/delete.html', assets=assets)
+
+
+@bp.route('/trade', methods=('GET', 'POST'))
+@auth.required
+def assets_trade():
+    if request.method == "POST":
+        pass
+    assets = [asset for asset in g.db.assets.find()]
+    return render_template('assets/trade.html', assets=assets)

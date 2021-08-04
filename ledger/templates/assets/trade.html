@@ -1,0 +1,89 @@
+{# Ledger - A web application to track cryptocurrency investments
+## Copyright (C) 2021 teleprint.me
+##
+## This program is free software: you can redistribute it and/or modify
+## it under the terms of the GNU Affero General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or
+## (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU Affero General Public License for more details.
+##
+## You should have received a copy of the GNU Affero General Public License
+## along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#}
+{% extends 'base.html' %}
+
+{% block main %}
+    <h2 class="border-bottom m-3 p-3">Trade</h2>
+    {% if not g.clients %}
+        <div class="card rounded mx-auto shadow" style="min-width: 14rem; max-width: 21rem;">
+            <div class="card-body">
+                <h5 class="card-title">Accounts</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Add an account</h6>
+                <p class="card-text">
+                    The Accounts page lets you view, create, and delete authentication methods 
+                    for tracking your cryptocurrency accounts.
+                </p>
+                <p class="card-text">
+                    Adding an authentication method allows this application to view, modify,
+                    record, and track your finances. 
+                </p>
+                <a href="/accounts/create" class="card-link">Add an account</a>
+            </div>
+        </div>
+    {% elif not assets %}
+        <div class="card rounded mx-auto shadow" style="min-width: 14rem; max-width: 21rem;">
+            <div class="card-body">
+                <h5 class="card-title">Assets</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Add a asset</h6>
+                <p class="card-text">
+                    The Assets page lets you view, create, and delete methods for tracking 
+                    your cryptocurrencies.
+                </p>
+                <p class="card-text">
+                    Adding an asset method allows this application to track your investments 
+                    based on a given strategy. 
+                </p>
+                <a href="/assets/create" class="card-link">Add an asset</a>
+            </div>
+        </div>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=7>Products</th>
+                </tr>
+                <tr>
+                    <th>Account</th>
+                    <th>Asset</th>
+                    <th>Strategy</th>
+                    <th>Principle</th>
+                    <th>Period</th>
+                    <th>Yield</th>
+                    <th>Trade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in assets %}
+                        <tr>
+                            <td data-label="account">{{product['platform']}}</td>
+                            <td data-label="asset">{{product['asset']}}</td>
+                            <td data-label="strategy">{{product['strategy']}}</td>
+                            <td data-label="principle">{{product['principle']}}</td>
+                            <td data-label="period">{{product['period']}}</td>
+                            <td data-label="yield">{{product['apy'] | float * 100}}%</td>
+                            <td data-label="trade">
+                                <a class="btn btn-primary"
+                                   href="/assets/trade/{{product['asset'].split('/')[0]}}">
+                                    Trade
+                                </a>
+                            </td>
+                        </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
