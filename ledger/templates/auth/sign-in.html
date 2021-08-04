@@ -26,7 +26,6 @@
           novalidate>
 
         {{ form.csrf_token() }}
-
         <div class="form-floating mb-3">
             {{ form.email(class_='form-control', placeholder='username@example.com') }}
             {{ form.email.label(for_='email') }}
@@ -34,7 +33,6 @@
                 Please provide a email.
             </div>
         </div>
-
         <div class="form-floating mb-3">
             {{ form.password(class_='form-control', placeholder='password') }}
             {{ form.password.label(for_='password') }}
@@ -42,9 +40,7 @@
                 Please provide a password.
             </div>
         </div>
-
         {{ form.submit(class_='btn btn-primary w-100 mb-3', value='Sign in') }}
-
         <a href="/auth/sign-up" class="btn btn-primary w-100">Sign up</a>
     </form>
 {% endblock %}

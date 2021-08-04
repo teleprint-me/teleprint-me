@@ -13,10 +13,10 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from ledger.exchange.factory import AbstractAPI
-from ledger.exchange.factory import AbstractMessenger
+from ledger.api.factory import AbstractAPI
+from ledger.api.factory import AbstractMessenger
 
-from ledger.exchange.cbpro.auth import Auth
+from ledger.api.coinbase.auth import Auth
 
 import requests
 
@@ -27,7 +27,7 @@ class API(AbstractAPI):
 
     @property
     def version(self) -> int:
-        pass
+        return 2
 
     @property
     def options(self) -> dict:
@@ -41,10 +41,10 @@ class API(AbstractAPI):
 
     @property
     def url(self) -> str:
-        return 'https://api.pro.coinbase.com'
+        return 'https://api.coinbase.com'
 
     def endpoint(self, value: str) -> str:
-        return f'/{value.lstrip("/")}'
+        return f'/v{self.version}/{value.lstrip("/")}'
 
     def path(self, value: str) -> str:
         return f'{self.url}/{self.endpoint(value).lstrip("/")}'
@@ -52,7 +52,6 @@ class API(AbstractAPI):
 
 class Messenger(AbstractMessenger):
     def __init__(self, auth: Auth = None) -> None:
-
         self.__auth = auth
         self.__api = API()
         self.__timeout = 30

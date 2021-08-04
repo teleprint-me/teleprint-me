@@ -15,42 +15,31 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from flask_wtf import FlaskForm
 
+from wtforms.fields import BooleanField
 from wtforms.fields import SelectField
-from wtforms.fields import StringField
 from wtforms.fields import SubmitField
 
 from wtforms.validators import DataRequired
-from wtforms.validators import ValidationError
-
-from flask import g
 
 
-class AccountExists(object):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Account already exists'
-        self.message = message
-
-    def __call__(self, form, field):
-        for account in g.db.accounts.find():
-            if account['platform'] == field.data:
-                raise ValidationError(self.message)
-
-
-class AccountsCreateForm(FlaskForm):
-    platform = SelectField('Platform', [
-        DataRequired('Platform is required'),
-        AccountExists()
+class SettingsUpdateForm(FlaskForm):
+    currency = SelectField('Currency', [
+        DataRequired('Currency is required')
     ], choices=[
-        ('coinbase', 'Coinbase'),
-        ('coinbase-pro', 'Coinbase Pro'),
-        ('kraken', 'Kraken')
+        ('', 'Currency'),
+        ('USD', 'USD'),
+        ('GBP', 'GBP'),
+        ('EUR', 'EUR')
     ])
 
-    key = StringField('Key', [DataRequired('Key is required')])
+    theme = SelectField('Theme', [
+        DataRequired('Theme is required')
+    ], choices=[
+        ('', 'Theme'),
+        ('light', 'Light'),
+        ('dark', 'Dark')
+    ])
 
-    secret = StringField('Secret', [DataRequired('Secret is required')])
+    tfa = BooleanField('Two Factor Authentication')
 
-    passphrase = StringField('Passphrase')
-
-    submit = SubmitField('Add Account')
+    submit = SubmitField('Save')

@@ -19,8 +19,8 @@ from ledger.core import mongo
 from ledger.forms.auth import SignUpForm
 from ledger.forms.auth import SignInForm
 
-from ledger.exchange.cbpro.client import CoinbaseProFactory
-from ledger.exchange.kraken.client import KrakenFactory
+from ledger.api.coinbase_pro.client import CoinbaseProFactory
+from ledger.api.kraken.client import KrakenFactory
 
 from flask import render_template
 from flask import flash
@@ -120,6 +120,8 @@ def sign_up():
                 'email': form.email.data,
                 'password': scrypt.hash(form.password.data),
                 'verified': False,
+                'currency': 'USD',
+                'theme': 'light',
                 '2fa': False
             })
             session['sid'] = str(result.inserted_id)
@@ -139,8 +141,8 @@ def sign_in():
     if request.method == 'POST':
         messages = []
         if form.validate_on_submit():
-            document = mongo.db.users.find_one({'email': form.email.data})
             session.clear()
+            document = mongo.db.users.find_one({'email': form.email.data})
             session['sid'] = str(document['_id'])
             return redirect(url_for('index'))
         for key, value in form.errors.items():
@@ -152,6 +154,6 @@ def sign_in():
 
 
 @bp.route('/sign-out')
-def logout():
+def sign_out():
     session.clear()
     return redirect(url_for('auth.sign_in'))

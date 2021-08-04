@@ -13,12 +13,11 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from ledger.exchange.factory import __agent__
-from ledger.exchange.factory import __source__
-from ledger.exchange.factory import __version__
-
-from ledger.exchange.factory import AbstractToken
-from ledger.exchange.factory import AbstractAuth
+from ledger.api.factory import __agent__
+from ledger.api.factory import __source__
+from ledger.api.factory import __version__
+from ledger.api.factory import AbstractToken
+from ledger.api.factory import AbstractAuth
 
 import base64
 import hashlib

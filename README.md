@@ -45,9 +45,9 @@ $ ./run.sh
     - [x] Sign in
     - [x] Sign out
     - [x] Accounts
-    - [ ] Assets
+    - [x] Assets
     - [ ] Wallets
-    - [ ] Settings
+    - [x] Settings
     - [ ] Trade
     - [x] Portfolio
 - [ ] REST API

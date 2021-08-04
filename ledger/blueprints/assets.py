@@ -76,14 +76,12 @@ def assets_view():
 @bp.route('/delete', methods=('GET', 'POST'))
 @auth.required
 def assets_delete():
-    platform = request.args.get('platform')
-    asset = request.args.get('asset')
     product = g.db.assets.find_one({
-        'platform': platform,
-        'asset': asset
+        'platform': request.args.get('platform'),
+        'asset': request.args.get('asset')
     })
     if product is not None:
-        messages = [('Delete', f'{asset} on {platform} deleted successfully')]
+        messages = [('Delete', f'{product["asset"]} on {product["platform"]} deleted successfully')]
         g.db.assets.delete_one(product)
         flash(tuple(messages), 'info')
         return redirect(url_for('assets.assets_delete'))

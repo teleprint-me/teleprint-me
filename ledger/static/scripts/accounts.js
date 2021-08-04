@@ -26,6 +26,7 @@ function toggleAccountsSelectField() {
                 element.classList.remove('d-none');
                 form.passphrase.setAttribute('type', 'password');
                 break;
+            case 'coinbase':
             case 'kraken':
                 element = form.passphrase.parentElement;
                 element.classList.add('d-none');

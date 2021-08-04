@@ -17,6 +17,7 @@ from ledger.core import mongo
 
 from ledger.blueprints import auth
 from ledger.blueprints import proxy
+from ledger.blueprints import settings
 from ledger.blueprints import accounts
 from ledger.blueprints import assets
 from ledger.blueprints import portfolio
@@ -30,6 +31,7 @@ import datetime
 blueprints = (
     auth.bp,
     proxy.bp,
+    settings.bp,
     accounts.bp,
     assets.bp,
     portfolio.bp

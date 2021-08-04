@@ -13,12 +13,10 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from ledger.exchange.factory import AbstractAPI
-from ledger.exchange.factory import AbstractMessenger
+from ledger.api.factory import AbstractAPI
+from ledger.api.factory import AbstractMessenger
 
-from ledger.exchange.kraken.auth import Auth
-
-from time import sleep
+from ledger.api.coinbase_pro.auth import Auth
 
 import requests
 
@@ -29,7 +27,7 @@ class API(AbstractAPI):
 
     @property
     def version(self) -> int:
-        return 0
+        pass
 
     @property
     def options(self) -> dict:
@@ -43,10 +41,10 @@ class API(AbstractAPI):
 
     @property
     def url(self) -> str:
-        return 'https://api.kraken.com'
+        return 'https://api.pro.coinbase.com'
 
     def endpoint(self, value: str) -> str:
-        return f'/{self.version}/{value.lstrip("/")}'
+        return f'/{value.lstrip("/")}'
 
     def path(self, value: str) -> str:
         return f'{self.url}/{self.endpoint(value).lstrip("/")}'
@@ -90,56 +88,60 @@ class Messenger(AbstractMessenger):
         return self.__response
 
     def get(self, endpoint: str, params: dict = None) -> dict:
-        url = self.api.path(endpoint)
-        endpoint = self.api.endpoint(endpoint)
-
-        if not params:
-            params = dict()
-
-        params['nonce'] = self.auth.nonce
-        headers = self.auth(endpoint, params)
+        url = self.__api.path(endpoint)
 
         self.__response = self.session.get(
             url,
             params=params,
-            headers=headers,
+            auth=self.auth,
             timeout=self.timeout
         )
 
         return self.__response.json(**self.options)
 
     def post(self, endpoint: str, data: dict = None) -> dict:
-        url = self.api.path(endpoint)
-        endpoint = self.api.endpoint(endpoint)
-
-        if not data:
-            data = dict()
-
-        data['nonce'] = self.auth.nonce
-        headers = self.auth(endpoint, data)
+        url = self.__api.path(endpoint)
 
         self.__response = self.session.post(
             url,
-            data=data,
-            headers=headers,
+            json=data,
+            auth=self.auth,
             timeout=self.timeout
         )
 
         return self.__response.json(**self.options)
 
-    def page(self, context: object) -> list:
-        OFFSET, LIMIT, TIMEOUT = 50, 200, 0.275
-        collection = []
-        context.params['ofs'] = 0
-        while context.params['ofs'] < LIMIT:
-            response = self.post(context.endpoint, context.params)
-            if response['error']:
-                return response['error']
-            [collection.append(i)
-             for i in context.callback(context.asset, response)]
-            context.params['ofs'] += OFFSET
-            sleep(TIMEOUT)
-        return collection
+    def page(self, endpoint: str, params: dict = None) -> object:
+        # source: https://docs.pro.coinbase.com/?python#pagination
+        url = self.__api.path(endpoint)
 
-    def close(self) -> None:
+        if params is None:
+            params = dict()
+
+        while True:
+            self.__response = self.session.get(
+                url,
+                params=params,
+                auth=self.auth,
+                timeout=self.timeout
+            )
+
+            results = self.__response.json(**self.options)
+
+            if self.__response.status_code != 200:
+                return results
+
+            for result in results:
+                yield result
+
+            after = self.__response.headers.get('CB-AFTER')
+            before = params.get('before')
+            end = not after or before
+
+            if end:
+                break
+
+            params['after'] = self.__response.headers['CB-AFTER']
+
+    def close(self):
         self.session.close()

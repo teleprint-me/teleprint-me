@@ -13,13 +13,13 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from ledger.exchange.factory import AbstractMessenger
-from ledger.exchange.factory import AbstractContext
-from ledger.exchange.factory import AbstractClient
-from ledger.exchange.factory import AbstractFactory
+from ledger.api.factory import AbstractMessenger
+from ledger.api.factory import AbstractContext
+from ledger.api.factory import AbstractClient
+from ledger.api.factory import AbstractFactory
 
-from ledger.exchange.kraken.auth import Auth
-from ledger.exchange.kraken.messenger import Messenger
+from ledger.api.kraken.auth import Auth
+from ledger.api.kraken.messenger import Messenger
 
 from time import sleep
 from datetime import datetime

@@ -95,6 +95,6 @@
     <script src="/static/scripts/portfolio.js"></script>
     <script charset="utf-8">
         let map = new Map({{ context | tojson }});
-        runWebSocketFactory(map, 'USD');
+        runWebSocketFactory(map, '{{ g.user["currency"] | escape }}');
     </script>
 {% endblock %}

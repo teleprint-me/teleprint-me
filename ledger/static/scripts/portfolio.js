@@ -16,15 +16,17 @@
 */
 const totalInputOnChange = () => {
     let form = document.querySelector('form');
-    let input = document.querySelector('input#kraken-value');
+    let inputs = document.querySelectorAll('input');
     let table = document.querySelector('table#total-value');
-    input.onchange = (event) => {
-        let total = 0;
-        for (let element of form.elements) {
-            total += (+(element.value));
-        }
-        table.tBodies[0].rows[0].cells[0].innerText = (+(total)).toFixed(2);
-    };
+    inputs.forEach((element) => {
+        element.addEventListener('change', (event) => {
+            let total = 0;
+            for (let element of form.elements) {
+                total += (+(element.value));
+            }
+            table.tBodies[0].rows[0].cells[0].innerText = (+(total)).toFixed(2);
+        });
+    });
 };
 
 
