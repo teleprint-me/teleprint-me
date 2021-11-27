@@ -1,0 +1,109 @@
+/* Ledger - A web application to track cryptocurrency investments
+** Copyright (C) 2021 teleprint.me
+**
+** This program is free software: you can redistribute it and/or modify
+** it under the terms of the GNU Affero General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU Affero General Public License for more details.
+**
+** You should have received a copy of the GNU Affero General Public License
+** along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+table {
+    border-collapse: collapse;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    margin: 0.625rem auto;
+    width: 50%;
+}
+
+table thead tr:first-child {
+    background: var(--bs-primary);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    color: var(--bs-white);
+    transform: scale(1.05);
+}
+
+table thead tr th {
+    font-size: 1.25rem;
+    text-align: center;
+    padding: 0.625rem;
+}
+
+table thead tr:first-child th {
+    text-align: center;
+    text-transform: capitalize;
+}
+
+table tbody tr {
+    transition: all 50ms ease-in-out;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: var(--bs-white);
+}
+
+table tbody tr:nth-child(even) {
+    background-color: var(--bs-light);
+}
+
+table tbody tr:hover,
+table tbody tr:focus,
+table tbody tr:active {
+    background: var(--bs-primary);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    color: var(--bs-white);
+    transform: scale(1.05);
+}
+
+table tbody tr td {
+    font-size: 1em;
+    text-align: right;
+    padding: 0.625rem;
+}
+
+@media screen and (max-width: 768px) {
+    table {
+        width: 100%;
+    }
+
+    table,
+    table thead,
+    table thead tr,
+    table thead td,
+    table tbody,
+    table tbody tr,
+    table tbody tr td {
+        display: block;
+    }
+
+    table thead tr:nth-child(2) {
+        display: none;
+    }
+
+    table tbody tr {
+        transition: all 250ms ease-in-out;
+    }
+
+    table tbody tr td {
+        padding: 0.9375rem 0.3125rem 0.9375rem 0;
+        position: relative;
+        text-align: right;
+    }
+
+    table tbody tr td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        left: 0;
+        padding-left: 0.3125rem;
+        position: absolute;
+        text-align: left;
+        text-transform: capitalize;
+        width: 50%;
+    }
+}

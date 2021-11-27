@@ -1,0 +1,32 @@
+{# Ledger - A web application to track cryptocurrency investments
+## Copyright (C) 2021 teleprint.me
+##
+## This program is free software: you can redistribute it and/or modify
+## it under the terms of the GNU Affero General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or
+## (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU Affero General Public License for more details.
+##
+## You should have received a copy of the GNU Affero General Public License
+## along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#}
+{% if g.user %}
+    <nav id="nav-dock" class="nav-main">
+        <a href="/">
+            <i class="bx bx-bar-chart"></i>
+            <span>Portfolio</span>
+        </a>
+        <a href="/assets/trade">
+            <i class="bx bx-coin-stack"></i>
+            <span>Trade</span>
+        </a>
+        <a href="/menu">
+            <i class="bx bx-menu"></i>
+            <span>Menu</span>
+        </a>
+    </nav>
+{% endif %}

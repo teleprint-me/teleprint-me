@@ -13,3 +13,27 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from flask import g
+from flask import render_template
+from flask import Blueprint
+
+from ledger.blueprints import auth
+
+blueprint = Blueprint('index', __name__)
+
+
+def get_client_context() -> tuple:
+    context = []
+    for client in g.clients:
+        context.append((client.name, {
+            'accounts': client.accounts(),
+            'assets': client.products()
+        }))
+    return tuple(context)
+
+
+@blueprint.route('/', methods=('GET',))
+@auth.required
+def portfolio():
+    context = get_client_context()
+    return render_template('portfolio.html', context=context)

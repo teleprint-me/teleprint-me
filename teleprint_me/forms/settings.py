@@ -13,3 +13,33 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+from flask_wtf import FlaskForm
+
+from wtforms.fields import BooleanField
+from wtforms.fields import SelectField
+from wtforms.fields import SubmitField
+
+from wtforms.validators import DataRequired
+
+
+class SettingsUpdateForm(FlaskForm):
+    currency = SelectField('Currency', [
+        DataRequired('Currency is required')
+    ], choices=[
+        ('', 'Currency'),
+        ('USD', 'USD'),
+        ('GBP', 'GBP'),
+        ('EUR', 'EUR')
+    ])
+
+    theme = SelectField('Theme', [
+        DataRequired('Theme is required')
+    ], choices=[
+        ('', 'Theme'),
+        ('light', 'Light'),
+        ('dark', 'Dark')
+    ])
+
+    tfa = BooleanField('Two Factor Authentication')
+
+    submit = SubmitField('Save')
