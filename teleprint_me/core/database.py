@@ -45,7 +45,7 @@ class Setting(Base):
 
 class Interface(Base):
     name = TextField(unique=True)                               # label
-    key = TextField()                                           # key
+    key = TextField(unique=True)                                # key
     secret = TextField()                                        # secret
     passphrase = TextField()                                    # passphrase
     rest = TextField(default='https://api.pro.coinbase.com')    # api url
