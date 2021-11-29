@@ -15,7 +15,7 @@ from teleprint_me.core import init_database
 from teleprint_me.blueprints import auth
 # from teleprint_me.blueprints import proxy
 # from teleprint_me.blueprints import settings
-from teleprint_me.blueprints import accounts
+from teleprint_me.blueprints import interfaces
 # from teleprint_me.blueprints import assets
 
 
@@ -64,7 +64,7 @@ def create_app() -> Flask:
 
     blueprints = (
         auth.blueprint,
-        accounts.blueprint
+        interfaces.blueprint
     )
 
     for bp in blueprints:
