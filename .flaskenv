@@ -1,4 +1,4 @@
-FLASK_APP=ledger
+FLASK_APP=teleprint_me
 FLASK_ENV=development
 FLASK_RUN_HOST=localhost
 FLASK_RUN_PORT=8080

@@ -1,9 +1,6 @@
 flask
-pymongo
+peewee
 requests
-wtforms[email]
-flask-pymongo
-flask-wtf
 scrypt
 jwcrypto
 blinker
@@ -11,3 +8,9 @@ click
 simplejson
 python-dotenv
 watchdog
+wtforms[email]
+flask-wtf
+flask-admin
+flask-security
+flask-peewee
+git+https://github.com/teleprint-me/coinbase-pro.git#egg=coinbase-pro

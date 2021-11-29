@@ -1,66 +1,77 @@
 # teleprint-me
 
-A web application to track cryptocurrency investments
+Apply averaging strategies to cryptocurrency with this web application.
+
+## About
+
+A web application to apply averaging strategies to cryptocurrency investments.
+
+- Use Fiat to trade crypto to maximize capital gains.
+- Use Bitcoin or Ether to trade between cryptos to maximize stacking Sats and Gwei.
+- Set a target with, or without, a yield to pump up returns over time.
+- Get an analysis on your investment strategy so you can optimize returns.
+
+Supports Multiple Averaging Strategies
+
+- Cost Averaging
+- Dynamic Cost Averaging
+- Value Averaging
+- Dynamic Value Averaging
+
+## Status
+
+- This application is currently in the planning phase.
+- Core application features may be broken, buggy, and/or missing.
+- Ideas and Contributions are welcome
 
 ## Requirements
 
 - Linux 5.4.x or greater
 - Python 3.6.x or greater
 - [MongoDB](https://docs.mongodb.com/manual/installation/) 4.2.x or greater
+- Coinbase Account
+- Coinbase Pro API Key
 
-## Install and Run
+## Setup and Run
+
+### Pip Setup
 
 ```sh
-# clone the repo
-$ git clone https://github.com/teleprint-me/ledger.git
-# change directory
-$ cd ledger
-# initialize virtual environment
-$ virtualenv venv
-# use/enter the virtual environment
-$ source venv/bin/activate 
-# using setup.py is optional
-$ python setup.py install
-# using requirements is recommended
-$ pip install -r requirements.txt
-# add the mongo uri to shell environment
-$ echo 'MONGO_URI="mongodb://localhost:27017/ledger"' > .env
-# run the server
-$ ./run.sh
+# This is not recommended because this project is still in planning phase
+pip install --user git+https://github.com/teleprint-me/teleprint-me.git#egg=teleprint-me
 ```
 
-## Screenshots
+### Manual Setup
 
-![login-screenshot](https://i.imgur.com/1MhPwdQ.png)
-
-## Status
-
-- This application is currently in the prototype phase.
-- Core application features may be broken, buggy, and/or missing.
+```sh
+git clone https://github.com/teleprint-me/teleprint-me.git
+cd teleprint-me
+virtualenv venv
+source venv/bin/activate 
+pip install -r requirements.txt  # recommended
+python setup.py install  # not recommended
+echo 'MONGO_URI="mongodb://localhost:27017/ledger"' > .env
+./run.sh  # run the server
+```
 
 ## Task List
 
-- [ ] Core
-    - [x] Sign up
-    - [x] Sign in
-    - [x] Sign out
-    - [x] Accounts
-    - [x] Assets
-    - [ ] Wallets
-    - [x] Settings
-    - [ ] Trade
-    - [x] Portfolio
-- [ ] REST API
-    - [x] Factory
-    - [x] Proxy 
-    - [ ] Coinbase
+- [ ] Client Support
     - [x] Coinbase Pro
-    - [x] Kraken
-- [ ] Web3
-    - [ ] Metamask
-    - [ ] Coinbase
-    - [ ] 1inch
-    - [ ] Compound
+- [ ] Core
+    - [ ] Server Side Rest API
+    - [ ] Client Side Websocket
+- [ ] Management
+    - [ ] Session
+    - [ ] Settings
+    - [ ] Account
+    - [ ] Asset
+    - [ ] Strategy
+    - [ ] Wallet
+    - [ ] Portfolio
+- [ ] Trade
+    - [ ] Manual
+    - [ ] Automatic
 
 ## Tips
 
