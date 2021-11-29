@@ -89,9 +89,6 @@ def sign_up():
             try:
                 session.clear()
                 hashed = scrypt.hash(form.password.data)
-                print(f'[form.email] {form.email.data}')
-                print(f'[form.password] {form.password.data}')
-                print(f'[hashed] {hashed}')
                 user = User.create(name=form.email.data, password=hashed)
                 user.save()
                 Setting.create(user=user).save()
@@ -117,8 +114,6 @@ def sign_in():
             try:
                 session.clear()
                 user = User.get(User.name == form.email.data)
-                user.sid = str(uuid4())
-                user.save()
                 session['sid'] = user.sid
                 return redirect(url_for('index'))
             except (OperationalError,) as error:
@@ -133,8 +128,5 @@ def sign_in():
 
 @blueprint.route('/sign-out')
 def sign_out():
-    user = User.get(User.sid == session.get('sid'))
-    user.sid = str()
-    user.save()
     session.clear()
     return redirect(url_for('auth.sign_in'))
