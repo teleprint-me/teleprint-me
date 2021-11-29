@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <nav class="mt-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
+            <li class="breadcrumb-item"><a href="/interfaces/menu">Interfaces</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </nav>
+
+    <form class="needs-validation" 
+          id="create-accounts"
+          enctype="application/x-www-form-urlencoded" 
+          action="/interfaces/create" 
+          method="post"
+          novalidate>
+
+        {{ form.csrf_token() }}
+        <div class="form-floating mb-3">
+            {{ form.name(class_='form-control', placeholder='REST API Nickname') }}
+            {{ form.name.label(for_='name') }}
+            <div class="invalid-feedback">
+                Please provide a API nickname.
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.key(class_='form-control', placeholder='REST API Key') }}
+            {{ form.key.label(for_='key') }}
+            <div class="invalid-feedback">
+                Please provide the API key.
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.secret(class_='form-control', placeholder='REST API Secret') }}
+            {{ form.secret.label(for_='secret') }}
+            <div class="invalid-feedback">
+                Please provide the API secret.
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.passphrase(class_='form-control', placeholder='REST API Passphrase') }}
+            {{ form.passphrase.label(for_='passphrase') }}
+            <div class="invalid-feedback">
+                Please provide the API passphrase.
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.rest(class_='form-control',
+                         value='https://api.pro.coinbase.com',
+                         placeholder='REST API URL') }}
+            {{ form.rest.label(for_='rest') }}
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.feed(class_='form-control',
+                         value='wss://ws-feed.pro.coinbase.com',
+                         placeholder='WSS Feed') }}
+            {{ form.feed.label(for_='feed') }}
+        </div>
+        <div class="form-check form-switch mb-3">
+            {{ form.active(class_='form-check-input',
+                           type_='checkbox',
+                           role='switch',
+                           value='off',
+                           placeholder='Active Profile') }}
+            {{ form.active.label(class_='form-check-label', for_='active') }}
+        </div>
+        {{ form.submit(class_='btn btn-primary w-100', value='Create Interface') }}
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/scripts/forms.js"></script>
+    <script charset="utf-8">
+        formsValidateRequired();
+
+        let checkbox = document.querySelector('.form-check-input');
+        let label = document.querySelector('.form-check-label');
+
+        checkbox.onchange = (event) => {
+            if (event.target.checked) {
+                checkbox.value = 'on';
+                label.innerText = 'Active Profile';
+            } else {
+                checkbox.value = 'off';
+                label.innerText = 'Inactive Profile';
+            }
+        };
+    </script>
+{% endblock %}
