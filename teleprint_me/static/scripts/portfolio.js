@@ -1,9 +1,10 @@
 const updatePortfolioOnMessage = (event) => {
     let total = 0;
     let product = {};
-    let message = JSON.parse(event.data);
     let table = document.querySelector('table#coinbase_pro');
     let input = document.querySelector('input#coinbase_pro_value');
+    let currency = document.querySelector('input#currency_value');
+    let message = JSON.parse(event.data);
     //console.log('[CoinbaseProWebSocketMessage]', message);
     if (message instanceof Object) {
         product.name = message.product_id ? message.product_id.split('-')[0] : '';
@@ -12,7 +13,7 @@ const updatePortfolioOnMessage = (event) => {
             return;
         }
         for (let row of table.tBodies[0].rows) {
-            if (row.dataset.name.includes('USD')) {
+            if (row.dataset.name.includes(currency.value)) {
                 product.balance = (+(row.dataset.balance)).toFixed(2); 
                 if (0 < product.balance) {
                     row.children[3].innerText = product.balance;

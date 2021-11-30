@@ -38,7 +38,6 @@ def get_context() -> dict:
     product_ids = get_product_ids(products)
     return {
         'name': g.client.label(),
-        'currency': g.setting.currency,
         'feed': g.interface.feed,
         'accounts': accounts,
         'products': products,
