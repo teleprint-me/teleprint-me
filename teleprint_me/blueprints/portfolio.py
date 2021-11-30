@@ -1,39 +1,53 @@
-# Ledger - A web application to track cryptocurrency investments
-# Copyright (C) 2021 teleprint.me
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from flask import g
 from flask import render_template
 from flask import Blueprint
 
-from ledger.blueprints import auth
+from teleprint_me.blueprints import auth
 
 blueprint = Blueprint('index', __name__)
 
 
-def get_client_context() -> tuple:
-    context = []
-    for client in g.clients:
-        context.append((client.name, {
-            'accounts': client.accounts(),
-            'assets': client.products()
-        }))
-    return tuple(context)
+def get_accounts() -> list[dict]:
+    accounts = g.client.account.list()
+    if 'message' in accounts:
+        return [accounts]
+    return [account for account in accounts if 0 < float(account['balance'])]
+
+
+def get_products(accounts: list[dict]) -> list[dict]:
+    data = []
+    products = g.client.product.list()
+    if 'message' in products:
+        return [products]
+    for account in accounts:
+        for product in products:
+            product_id = product.get('id')
+            target_id = f'{account.get("currency")}-{g.setting.currency}'
+            if product_id == target_id:
+                data.append(product)
+    return data
+
+
+def get_product_ids(products: list[dict]) -> list[str]:
+    return [product['id'] for product in products]
+
+
+def get_context() -> dict:
+    accounts = get_accounts()
+    products = get_products(accounts)
+    product_ids = get_product_ids(products)
+    return {
+        'name': g.client.label(),
+        'currency': g.setting.currency,
+        'feed': g.interface.feed,
+        'accounts': accounts,
+        'products': products,
+        'product_ids': product_ids
+    }
 
 
 @blueprint.route('/', methods=('GET',))
 @auth.required
 def portfolio():
-    context = get_client_context()
+    context = get_context()
     return render_template('portfolio.html', context=context)

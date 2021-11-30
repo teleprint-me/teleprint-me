@@ -70,7 +70,7 @@ def load_user_client(interface: Interface) -> Client:
 def load_user_session():
     try:
         g.user = User.get(User.sid == session.get('sid'))
-        g.settings = g.user.settings[:]
+        g.setting = Setting.get(Setting.user == g.user)
         g.interfaces = g.user.interfaces[:]
         g.strategies = g.user.strategies[:]
         g.interface = load_user_interface(g.interfaces)

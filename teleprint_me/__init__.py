@@ -13,6 +13,7 @@ from teleprint_me.core import database
 from teleprint_me.core import init_database
 
 from teleprint_me.blueprints import auth
+from teleprint_me.blueprints import portfolio
 # from teleprint_me.blueprints import proxy
 # from teleprint_me.blueprints import settings
 from teleprint_me.blueprints import interfaces
@@ -64,17 +65,12 @@ def create_app() -> Flask:
 
     blueprints = (
         auth.blueprint,
+        portfolio.blueprint,
         interfaces.blueprint
     )
 
     for bp in blueprints:
         app.register_blueprint(bp)
-
-    # Routes
-    @app.route('/')
-    @auth.required
-    def index():
-        return render_template('portfolio.html', context=tuple())
 
     @app.route('/menu')
     @auth.required

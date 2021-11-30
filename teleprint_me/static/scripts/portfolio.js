@@ -1,71 +1,60 @@
-/* Ledger - A web application to track cryptocurrency investments
-** Copyright (C) 2021 teleprint.me
-**
-** This program is free software: you can redistribute it and/or modify
-** it under the terms of the GNU Affero General Public License as published by
-** the Free Software Foundation, either version 3 of the License, or
-** (at your option) any later version.
-**
-** This program is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU Affero General Public License for more details.
-**
-** You should have received a copy of the GNU Affero General Public License
-** along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
-const totalInputOnChange = () => {
-    let form = document.querySelector('form');
-    let inputs = document.querySelectorAll('input');
-    let table = document.querySelector('table#total-value');
-    inputs.forEach((element) => {
-        element.addEventListener('change', (event) => {
-            let total = 0;
-            for (let element of form.elements) {
-                total += (+(element.value));
+const updatePortfolioOnMessage = (event) => {
+    let total = 0;
+    let product = {};
+    let message = JSON.parse(event.data);
+    let table = document.querySelector('table#coinbase_pro');
+    let input = document.querySelector('input#coinbase_pro_value');
+    //console.log('[CoinbaseProWebSocketMessage]', message);
+    if (message instanceof Object) {
+        product.name = message.product_id ? message.product_id.split('-')[0] : '';
+        product.price = message.price ? (+(message.price)).toFixed(2) : 0;
+        if (!product.name) { 
+            return;
+        }
+        for (let row of table.tBodies[0].rows) {
+            if (row.dataset.name.includes('USD')) {
+                product.balance = (+(row.dataset.balance)).toFixed(2); 
+                if (0 < product.balance) {
+                    row.children[3].innerText = product.balance;
+                } else {
+                    table.deleteRow(row.rowIndex);
+                }
+                total += (+(product.balance));
             }
-            table.tBodies[0].rows[0].cells[0].innerText = (+(total)).toFixed(2);
-        });
+            if (row.dataset.name.includes(product.name)) {
+                product.balance = (+(row.dataset.balance)).toFixed(8); 
+                product.value = (+(product.balance * product.price)).toFixed(2);
+                if (0 < product.value) {
+                    row.children[1].innerText = product.price;
+                    row.children[2].innerText = product.value;
+                    row.children[3].innerText = product.balance;
+                } else {
+                    table.deleteRow(row.rowIndex);
+                }
+            }
+            total += (+(row.children[2].innerText));
+            input.value = (+(total)).toFixed(2);
+            input.dispatchEvent(new Event('change'));
+        }
+    }
+};
+
+
+const set_total_on_change = () => {
+    let form = document.querySelector('form');
+    form.coinbase_pro.addEventListener('change', (event) => {
+        let table = document.querySelector('table#total_value');
+        table.
+            tBodies[0].
+            rows[0].
+            cells[0].
+            innerText = (+(form.coinbase_pro.value)).toFixed(2);
     });
 };
 
 
-const coinbaseWebSocketFactory = (context, currency) => {
-    return null;
-};
-
-
-const coinbaseProWebSocketFactory = (context, currency) => {
-    let products = getCoinbaseProProducts(context, currency);
-    let socket = new CoinbaseProWebSocket(products, coinbaseProPortfolioOnMessage);
-    totalInputOnChange();
+const run_websocket = (context) => {
+    set_total_on_change();
+    let socket = new CoinbaseProWebSocket(context, updatePortfolioOnMessage);
     socket.send();
-};
-
-
-const krakenWebSocketFactory = (context, currency) => {
-    let products = getKrakenProducts(context, currency);
-    let socket = new KrakenWebSocket(products, krakenPortfolioOnMessage);
-    totalInputOnChange();
-    socket.send();
-};
-
-
-const runWebSocketFactory = (map, currency) => {
-    for (let view of map) {
-        let client = view[0];
-        let context = view[1];
-        switch(client) {
-            case 'coinbase':
-                break
-            case 'coinbase-pro':
-                coinbaseProWebSocketFactory(context, currency);
-                break;
-            case 'kraken':
-                krakenWebSocketFactory(context, currency);
-                break;
-            default:
-                throw new Error(`[Error] ${client} is currently unsupported`);
-        }
-    }
 };
