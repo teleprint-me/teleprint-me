@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <nav class="mt-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
+            <li class="breadcrumb-item"><a href="/strategy/menu">Strategies</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </nav>
+    {% if not g.interfaces %}
+        <div class="list-group bg-light rounded shadow mx-auto">
+            <a href="/interface/create" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Interfaces</h5>
+                    <small class="text-muted">Create</small>
+                </div>
+                <p class="mb-1">There are no existing interfaces.</p>
+            </a>
+        </div>
+    {% else %}
+        <form class="needs-validation" 
+              id="create_strategy"
+              enctype="application/x-www-form-urlencoded" 
+              action="/strategy/create" 
+              method="post"
+              novalidate>
+
+            {{ form.csrf_token() }}
+            <div class="mb-3 form-floating">
+                {{ form.name(class_='form-control', placeholder='Name') }}
+                {{ form.name.label(for_='name') }}
+                <div class="invalid-feedback">
+                    Please provide a unique name.
+                </div>
+            </div>
+            <div class="mb-3 form-floating">
+                {{ form.product(list='products',
+                                class_='form-control',
+                                aria_label='Product',
+                                placeholder='Product') }}
+                {{ form.product.label(for_='product') }}
+                <datalist id="products">
+                    <option id="null" value="Not Available">
+                </datalist>
+                <div class="invalid-feedback">
+                    Please select a product.
+                </div>
+            </div>
+            <div class="mb-3 form-floating">
+                {{ form.principal(class_='form-control', aria_label='Principal', placeholder='Principal') }}
+                {{ form.principal.label(for_='principal') }}
+                <div class="invalid-feedback">
+                    Please provide a principal amount.
+                </div>
+            </div>
+            <div class="mb-3">
+                {{ form.type_(class_='form-select p-3', placeholder='Type') }}
+                <div class="invalid-feedback">
+                    Please select a strategy.
+                </div>
+            </div>
+            <div class="mb-3">
+                {{ form.frequency(class_='form-select p-3', aria_label='Frequency', placeholder='Frequency') }}
+                <div class="invalid-feedback">
+                    Please select a periodic frequency.
+                </div>
+            </div>
+            <div class="mb-3 d-none">
+                {{ form.yield_(class_='form-select p-3', aria_label='Yield', placeholder='Yield') }}
+                <div class="invalid-feedback">
+                    Please select a annual percentage yield.
+                </div>
+            </div>
+            {{ form.submit(class_='btn btn-primary w-100', value='Create Strategy') }}
+        </form>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {% if g.interfaces %}
+        <script src="/static/scripts/utilities.js"></script>
+        <script src="/static/scripts/requests.js"></script>
+        <script src="/static/scripts/forms.js"></script>
+        <script src="/static/scripts/strategy.js"></script>
+        <script charset="utf-8">
+            let promise = set_datalist_products('GET', '/client/product/list')
+            let form = document.querySelector('#create_strategy');
+            formsValidateRequired();
+            form.product.addEventListener('input', toggle_product_oninput);
+            form.type_.addEventListener('change', toggle_strategy_onchange);
+            form.principal.addEventListener('focus', toggle_principal_onfocus);
+        </script>
+    {% endif %}
+{% endblock %}

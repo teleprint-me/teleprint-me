@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <nav class="mt-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Strategies</li>
+        </ol>
+    </nav>
+
+    <nav id="nav-assets" class="nav-menu">
+        <div class="mb-1">
+            <a href="/strategy/create" class="btn btn-primary w-100">Create Strategy</a>
+        </div>
+        <div class="mb-1">
+            <a href="/strategy/read" class="btn btn-primary w-100">Read Strategy</a>
+        </div>
+        <div class="mb-0">
+            <a href="/strategy/delete" class="btn btn-primary w-100">Delete Strategy</a>
+        </div>
+    </nav>
+{% endblock %}
