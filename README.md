@@ -58,7 +58,7 @@ pip install -r requirements.txt
 - [ ] Nav
     - [ ] Portfolio
     - [ ] Trade
-    - [ ] Menu
+    - [x] Menu
 - [ ] Portfolio
     - [x] Ticker
     - [ ] ???
