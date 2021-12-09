@@ -56,7 +56,7 @@ pip install -r requirements.txt
     - [x] Sqlite
     - [ ] Database
 - [ ] Nav
-    - [ ] Portfolio
+    - [x] Portfolio
     - [ ] Trade
     - [x] Menu
 - [ ] Portfolio
