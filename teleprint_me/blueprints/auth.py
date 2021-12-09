@@ -1,6 +1,5 @@
 from teleprint_me.core import scrypt
 from teleprint_me.core import User
-from teleprint_me.core import Setting
 from teleprint_me.core import Interface
 
 from teleprint_me.forms.auth import SignUpForm
@@ -21,8 +20,6 @@ from flask import url_for
 from peewee import ModelSelect
 from peewee import OperationalError
 from peewee import DoesNotExist
-
-from uuid import uuid4
 
 import functools
 
@@ -70,7 +67,6 @@ def load_user_client(interface: Interface) -> Client:
 def load_user_session():
     try:
         g.user = User.get(User.sid == session.get('sid'))
-        g.setting = Setting.get(Setting.user == g.user)
         g.interfaces = g.user.interfaces[:]
         g.strategies = g.user.strategies[:]
         g.interface = load_user_interface(g.interfaces)
@@ -91,7 +87,6 @@ def sign_up():
                 hashed = scrypt.hash(form.password.data)
                 user = User.create(name=form.email.data, password=hashed)
                 user.save()
-                Setting.create(user=user).save()
                 session['sid'] = user.sid
                 return redirect(url_for('index'))
             except (OperationalError,) as error:

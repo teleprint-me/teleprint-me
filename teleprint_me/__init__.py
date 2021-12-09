@@ -13,15 +13,14 @@ from teleprint_me.core import database
 from teleprint_me.core import init_database
 
 from teleprint_me.blueprints import auth
+from teleprint_me.blueprints import interface
+from teleprint_me.blueprints import strategy
+from teleprint_me.blueprints import setting
+from teleprint_me.blueprints import client
 from teleprint_me.blueprints import portfolio
-# from teleprint_me.blueprints import proxy
-# from teleprint_me.blueprints import settings
-from teleprint_me.blueprints import interfaces
-# from teleprint_me.blueprints import assets
 
 
 def create_app() -> Flask:
-    # Flask
     secret_key = environ.get('SECRET_KEY', generate.bytes())
 
     app = Flask(
@@ -65,8 +64,11 @@ def create_app() -> Flask:
 
     blueprints = (
         auth.blueprint,
-        portfolio.blueprint,
-        interfaces.blueprint
+        interface.blueprint,
+        strategy.blueprint,
+        setting.blueprint,
+        client.blueprint,
+        portfolio.blueprint
     )
 
     for bp in blueprints:

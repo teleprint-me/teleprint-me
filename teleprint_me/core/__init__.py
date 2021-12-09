@@ -8,10 +8,9 @@ from teleprint_me.core.database import pragmas
 
 from teleprint_me.core.database import database
 from teleprint_me.core.database import User
-from teleprint_me.core.database import Setting
 from teleprint_me.core.database import Interface
 from teleprint_me.core.database import Strategy
-from teleprint_me.core.database import Data
+from teleprint_me.core.database import Dataset
 from teleprint_me.core.database import init_database
 
 generate = Generate()

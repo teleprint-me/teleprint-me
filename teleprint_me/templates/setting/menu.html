@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <nav class="mt-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Settings</li>
+        </ol>
+    </nav>
+
+    <nav id="nav-interface" class="nav-menu">
+        <div class="mb-1">
+            <a href="/setting/read" class="btn btn-primary w-100">Read Settings</a>
+        </div>
+        <div class="mb-1">
+            <a href="/setting/general" class="btn btn-primary w-100">General Settings</a>
+        </div>
+        <div class="mb-1">
+            <a href="/setting/name" class="btn btn-primary w-100">Email Setting</a>
+        </div>
+        <div class="mb-1">
+            <a href="/setting/password" class="btn btn-primary w-100">Password Setting</a>
+        </div>
+        <div class="mb-0">
+            <a href="#" class="btn btn-secondary w-100">Encryption Setting</a>
+        </div>
+    </nav>
+{% endblock %}

@@ -10,7 +10,7 @@ from wtforms.validators import ValidationError
 from flask import g
 
 
-class NameExists(object):
+class ValidateName(object):
     def __init__(self, message: str = None):
         if not message:
             message = 'API Name already exists'
@@ -22,7 +22,7 @@ class NameExists(object):
                 raise ValidationError(self.message)
 
 
-class KeyExists(object):
+class ValidateKey(object):
     def __init__(self, message: str = None):
         if not message:
             message = 'API Key already exists'
@@ -35,8 +35,8 @@ class KeyExists(object):
 
 
 class InterfaceCreateForm(FlaskForm):
-    name = StringField('Name', [DataRequired('Name is required'), NameExists()])
-    key = StringField('Key', [DataRequired('Key is required'), KeyExists()])
+    name = StringField('Name', [DataRequired('Name is required'), ValidateName()])
+    key = StringField('Key', [DataRequired('Key is required'), ValidateKey()])
     secret = StringField('Secret', [DataRequired('Secret is required')])
     passphrase = StringField('Passphrase', [DataRequired('Passphrase is required')])
     rest = StringField('Interface')

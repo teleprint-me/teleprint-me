@@ -32,15 +32,12 @@ class Base(Model):
 
 
 class User(Base):
-    name = TextField(unique=True)        # username/email
-    password = TextField()               # hashed password
+    name = TextField(unique=True)         # username/email
+    password = TextField()                # hashed password
+    key = TextField(default=str())        # encryption key
+    currency = TextField(default='USD')   # quote currency
+    theme = TextField(default='Light')    # applied ui theme
     sid = TextField(unique=True, default=str(uuid4()))
-
-
-class Setting(Base):
-    currency = TextField(default='USD')  # quote currency
-    theme = TextField(default='Light')   # applied ui theme
-    user = ForeignKeyField(User, backref='settings')
 
 
 class Interface(Base):
@@ -55,18 +52,17 @@ class Interface(Base):
 
 
 class Strategy(Base):
-    # unique table identifier: str(uuid4())
-    table_id = TextField(unique=True, default=str(uuid4()))
-    name = TextField()            # label
-    product_id = TextField()             # product identifier: BTC-USD
-    frequency = TextField()       # daily, weekly, monthly, yearly
-    principal = FloatField()      # principal amount
-    apy = FloatField()            # annual percentage yield
-    period = IntegerField()       # targets current period
+    name = TextField(unique=True)      # strategy identifier
+    product = TextField()              # product identifier: BTC-USD
+    type_ = TextField()                # strategy type
+    principal = FloatField()           # principal amount
+    frequency = TextField()            # daily, weekly, monthly, yearly
+    yield_ = FloatField()              # annual percentage yield
+    period = IntegerField(default=0)   # targets current period
     user = ForeignKeyField(User, backref='strategies')
 
 
-class Data(Base):
+class Dataset(Base):
     date = DateTimeField()
     price = FloatField()
     target = FloatField()
@@ -82,9 +78,10 @@ class Data(Base):
     quote_total = FloatField()
     quote_prev = FloatField(default=0.)
     period = IntegerField()
+    strategy = ForeignKeyField(Strategy, backref='rows')
 
 
 def init_database(db: SqliteDatabase):
     db.connect()
-    db.create_tables([User, Setting, Interface, Strategy])
+    db.create_tables([User, Interface, Strategy, Dataset])
     db.close()

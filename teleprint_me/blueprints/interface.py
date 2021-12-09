@@ -10,9 +10,9 @@ from peewee import DoesNotExist
 
 from teleprint_me.blueprints import auth
 from teleprint_me.core import Interface
-from teleprint_me.forms.interfaces import InterfaceCreateForm
+from teleprint_me.forms.interface import InterfaceCreateForm
 
-blueprint = Blueprint('interfaces', __name__, url_prefix='/interfaces')
+blueprint = Blueprint('interface', __name__, url_prefix='/interface')
 
 
 def get_interface(name: str) -> Interface:
@@ -22,10 +22,19 @@ def get_interface(name: str) -> Interface:
         return None
 
 
+def update(interface: Interface):
+    for i in g.interfaces:
+        if i == interface:
+            i.active = True
+        else:
+            i.active = False
+    return Interface.bulk_update(g.interfaces, fields=[Interface.active])
+
+
 @blueprint.route('/menu', methods=('GET',))
 @auth.required
 def menu():
-    return render_template('interfaces/menu.html')
+    return render_template('interface/menu.html')
 
 
 @blueprint.route("/create", methods=('GET', 'POST'))
@@ -42,15 +51,13 @@ def create():
                 passphrase=form.passphrase.data,
                 rest=form.rest.data,
                 feed=form.feed.data,
-                active=True if 'on' == form.active.data else False,
+                active=form.active.data,
                 user=g.user
             )
-            if 1 == interface.save():
-                messages.append(
-                    ('Create', f'Created {interface.name}'))
-            else:
-                messages.append(
-                    ('Error', f'Failed to create {interface.name}'))
+            interface.save()
+            if g.interfaces:
+                update(interface)
+            messages.append(('Create', f'Created {interface.name}'))
         for key, value in form.errors.items():
             try:
                 messages.append((key, value[0]))
@@ -58,8 +65,8 @@ def create():
                 messages.append(('Error', e))
         if messages:
             flash(tuple(messages), 'info')
-        return redirect(url_for('interfaces.create'))
-    return render_template('interfaces/create.html', form=form)
+        return redirect(url_for('interface.create'))
+    return render_template('interface/create.html', form=form)
 
 
 @blueprint.route('/read', methods=(('GET',)))
@@ -68,16 +75,11 @@ def read():
     name = request.args.get('name')
     interface = get_interface(name)
     if name and interface:
-        for i in g.interfaces:
-            if i == interface:
-                i.active = True
-            else:
-                i.active = False
-        Interface.bulk_update(g.interfaces, fields=[Interface.active])
+        update(interface)
         messages = [('Update', f'Using {interface.name}')]
         flash(tuple(messages), 'info')
-        return redirect(url_for('interfaces.read'))
-    return render_template('interfaces/read.html', interfaces=g.interfaces)
+        return redirect(url_for('interface.read'))
+    return render_template('interface/read.html')
 
 
 @blueprint.route('/delete', methods=('GET', 'POST'))
@@ -92,5 +94,5 @@ def delete():
         else:
             messages = [('Error', f'Using {interface.name}')]
         flash(tuple(messages), 'info')
-        return redirect(url_for('interfaces.delete'))
-    return render_template('interfaces/delete.html', interfaces=g.interfaces)
+        return redirect(url_for('interface.delete'))
+    return render_template('interface/delete.html')

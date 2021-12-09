@@ -20,7 +20,7 @@
     {% else %}
         <form class="d-none">
             <input type="hidden" name="{{context['name']}}" id="{{context['name']}}_value" value="0">
-            <input type="hidden" name="currency" id="currency_value" value="{{g.setting.currency}}">
+            <input type="hidden" name="currency" id="currency_value" value="{{g.user.currency}}">
         </form>
         <table id="total_value">
             <thead>

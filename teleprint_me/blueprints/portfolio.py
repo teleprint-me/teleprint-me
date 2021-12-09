@@ -22,7 +22,7 @@ def get_products(accounts: list[dict]) -> list[dict]:
     for account in accounts:
         for product in products:
             product_id = product.get('id')
-            target_id = f'{account.get("currency")}-{g.setting.currency}'
+            target_id = f'{account.get("currency")}-{g.user.currency}'
             if product_id == target_id:
                 data.append(product)
     return data
@@ -48,5 +48,8 @@ def get_context() -> dict:
 @blueprint.route('/', methods=('GET',))
 @auth.required
 def portfolio():
-    context = get_context()
+    try:
+        context = get_context()
+    except (AttributeError,):
+        context = {}
     return render_template('portfolio.html', context=context)
