@@ -22,6 +22,25 @@ def get_strategy(name: str) -> Strategy:
         return None
 
 
+def get_model_as_dict(models: list[Strategy]) -> list[dict]:
+    data = []
+    for model in models:
+        if 0 < model.principal < 1:
+            principal = f'{model.principal:.8f}'
+        else:
+            principal = f'{model.principal:.2f}'
+        data.append({
+            'name': model.name.capitalize(),
+            'product': model.product,
+            'type': ' '.join(t.capitalize() for t in model.type_.split('_')),
+            'principal': principal,
+            'frequency': model.frequency.capitalize(),
+            'yield': f'{int(model.yield_ * 100)}%',
+            'period': model.period
+        })
+    return data
+
+
 @blueprint.route('/menu', methods=('GET',))
 @auth.required
 def menu():
@@ -60,20 +79,21 @@ def create():
 @blueprint.route('/read', methods=(('GET',)))
 @auth.required
 def read():
-    return render_template('strategy/read.html')
+    strategies = get_model_as_dict(g.strategies)
+    return render_template('strategy/read.html', strategies=strategies)
 
 
 @blueprint.route('/delete', methods=('GET', 'POST'))
 @auth.required
 def delete():
-    name = request.args.get('name')
-    strategy = get_strategy(name)
-    if name and strategy:
+    strategy = get_strategy(request.args.get('name'))
+    if strategy:
         strategy.delete_instance()
         messages = [('Delete', f'Deleted {strategy.name}')]
         flash(tuple(messages), 'info')
         return redirect(url_for('strategy.delete'))
-    return render_template('strategy/delete.html')
+    strategies = get_model_as_dict(g.strategies)
+    return render_template('strategy/delete.html', strategies=strategies)
 
 
 @blueprint.route('/trade', methods=('GET', 'POST'))

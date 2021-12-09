@@ -10,21 +10,20 @@
     </nav>
 
     <div class="list-group bg-light rounded shadow mx-auto">
-        {% for strategy in g.strategies %}
-            <a href="/strategy/delete?platform={{strategy['platform']}}&asset={{strategy['asset']}}"
+        {% for strategy in strategies %}
+            <a href="/strategy/delete?name={{strategy['name'] | lower}}"
                class="list-group-item list-group-item-action list-group-item-danger"
                type="button"
                data-bs-toggle="tooltip"
                data-bs-placement="top"
-               title="click to delete this account entry">
+               title="click to delete this strategy">
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{strategy['platform']}}</h5>
+                    <h5 class="mb-1">{{strategy['name']}}</h5>
                     <small>Delete</small>
                 </div>
-                <div class="d-flex w-100 justify-content-between">
-                    <p class="mb-1">{{strategy['asset']}}</p>
-                    <p class="mb-1">{{strategy['strategy']}}</p>
-                </div>
+                <p class="mb-1">Product: {{strategy['product']}}</p>
+                <p class="mb-1">Type: {{strategy['type']}}</p>
+                <p class="mb-1">Period: {{strategy['period']}}</p>
             </a>
         {% else %}
             <a href="/strategy/create" class="list-group-item list-group-item-action">
