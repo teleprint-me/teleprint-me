@@ -7,6 +7,7 @@ from flask import redirect
 from flask import url_for
 
 from peewee import DoesNotExist
+from peewee import Model
 
 from teleprint_me.blueprints import auth
 from teleprint_me.core import Strategy
@@ -22,20 +23,36 @@ def get_strategy(name: str) -> Strategy:
         return None
 
 
-def get_model_as_dict(models: list[Strategy]) -> list[dict]:
+# this needs to be fixed.
+# its okay for the prototype tho.
+def get_principal(model: Model) -> str:
+    if 0 < model.principal < 1:
+        return f'{model.principal:.8f}'
+    return f'{model.principal:.2f}'
+
+
+def get_yield(model: Model) -> str:
+    if model.yield_:
+        return f'{int(model.yield_ * 100)}%'
+    return '0%'
+
+
+def get_type(model: Model) -> str:
+    return ' '.join(t.capitalize() for t in model.type_.split('_'))
+
+
+def get_strategies(models: list[Model]) -> list[dict]:
     data = []
     for model in models:
-        if 0 < model.principal < 1:
-            principal = f'{model.principal:.8f}'
-        else:
-            principal = f'{model.principal:.2f}'
         data.append({
             'name': model.name.capitalize(),
+            'base': model.base,
+            'quote': model.quote,
             'product': model.product,
-            'type': ' '.join(t.capitalize() for t in model.type_.split('_')),
-            'principal': principal,
+            'type': get_type(model),
+            'principal': get_principal(model),
             'frequency': model.frequency.capitalize(),
-            'yield': f'{int(model.yield_ * 100)}%',
+            'yield': get_yield(model),
             'period': model.period
         })
     return data
@@ -47,68 +64,97 @@ def menu():
     return render_template('strategy/menu.html')
 
 
-@blueprint.route("/create", methods=('GET', 'POST'))
+@blueprint.route('/read', methods=('GET',))
+@auth.required
+def read():
+    path = 'strategy/read.html'
+    action = 'read'
+    strategies = get_strategies(g.strategies)
+    return render_template(path, action=action, strategies=strategies)
+
+
+@blueprint.route('/read/<name>', methods=(('GET',)))
+@auth.required
+def read_one(name):
+    path = 'strategy/read_one.html'
+    strategy = get_strategy(name)
+    return render_template(path, strategy=strategy)
+
+
+@blueprint.route('/read/write/<name>', methods=('GET',))
+@auth.required
+def read_write_one(name):
+    path = 'strategy/read_one.html'
+    strategy = get_strategy(name)
+    if strategy:
+        flash((('Write', f'Wrote fills to {name}'),), 'info')
+    else:
+        flash((('Error', f'Failed to write fills to {strategy.name}'),), 'error')
+    return render_template(path, strategy=strategy)
+
+
+@blueprint.route('/trade', methods=('GET',))
+@auth.required
+def trade():
+    path = 'strategy/read.html'
+    action = 'trade'
+    strategies = get_strategies(g.strategies)
+    return render_template(path, action=action, strategies=strategies)
+
+
+@blueprint.route('/delete', methods=('GET',))
+@auth.required
+def delete():
+    path = 'strategy/read.html'
+    action = 'delete'
+    strategies = get_strategies(g.strategies)
+    return render_template(path, action=action, strategies=strategies)
+
+
+@blueprint.route('/delete/<name>', methods=('GET',))
+@auth.required
+def delete_one(name):
+    try:
+        strategy = get_strategy(name)
+        strategy.delete_instance(recursive=True)
+        flash((('Delete', f'Deleted {strategy.name}'),), 'info')
+    except (AttributeError,):
+        flash((('Error', f'{name.upper()} does not exist'),), 'error')
+    path = 'strategy/read.html'
+    action = 'delete'
+    strategies = get_strategies(g.strategies)
+    return render_template(path, action=action, strategies=strategies)
+
+
+@blueprint.route('/create', methods=('GET', 'POST'))
 @auth.required
 def create():
     form = StrategyForm(request.form)
-    if request.method == "POST":
+    if request.method == 'POST':
         messages = []
         if form.validate_on_submit():
             strategy = Strategy.create(
-                name=form.name.data,
-                product=form.product.data,
+                name=form.name.data.lower(),
+                base=form.product.data.split('-')[0].upper(),
+                quote=form.product.data.split('-')[1].upper(),
+                product=form.product.data.upper(),
                 type_=form.type_.data,
-                principal=form.principal.data,
                 frequency=form.frequency.data,
+                principal=form.principal.data,
                 yield_=form.yield_.data,
                 user=g.user
             )
             strategy.save()
             messages.append(('Create', f'Created {strategy.name}'))
-        for key, value in form.errors.items():
-            try:
-                messages.append((key, value[0]))
-            except (IndexError,) as e:
-                messages.append(('Error', e))
+        messages = auth.error(form, messages)
         if messages:
             flash(tuple(messages), 'info')
         return redirect(url_for('strategy.create'))
     return render_template('strategy/create.html', form=form)
 
 
-@blueprint.route('/read', methods=(('GET',)))
+@blueprint.route('/update/<name>', methods=(('GET',)))
 @auth.required
-def read():
-    strategies = get_model_as_dict(g.strategies)
+def update(name):
+    strategies = get_strategies(g.strategies)
     return render_template('strategy/read.html', strategies=strategies)
-
-
-@blueprint.route('/delete', methods=('GET', 'POST'))
-@auth.required
-def delete():
-    strategy = get_strategy(request.args.get('name'))
-    if strategy:
-        strategy.delete_instance()
-        messages = [('Delete', f'Deleted {strategy.name}')]
-        flash(tuple(messages), 'info')
-        return redirect(url_for('strategy.delete'))
-    strategies = get_model_as_dict(g.strategies)
-    return render_template('strategy/delete.html', strategies=strategies)
-
-
-@blueprint.route('/trade', methods=('GET', 'POST'))
-@auth.required
-def trade():
-    context = [{'platform': client.name, 'assets': client.get_assets()} for client in g.clients]
-    products = [product for product in g.db.assets.find()]
-    if request.method == "POST":
-        pass
-    return render_template('strategy/trade.html', context=context, assets=products)
-
-
-@blueprint.route('/trade/<product>', methods=('GET', 'POST'))
-@auth.required
-def trade_product(product):
-    if request.method == 'POST':
-        pass
-    return {'asset', product}

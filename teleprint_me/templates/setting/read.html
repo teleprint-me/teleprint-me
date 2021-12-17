@@ -8,21 +8,25 @@
             <li class="breadcrumb-item active" aria-current="page">Read</li>
         </ol>
     </nav>
-
-    <div class="list-group bg-light rounded shadow mx-auto">
-        {% for key, value in context.items() %}
-            <a href="#{{key}}" 
-               class="list-group-item list-group-item-action list-group-item-primary"
-               type="button"
-               data-bs-toggle="tooltip"
-               data-bs-placement="top"
-               title="click to activate this interface">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{key}}</h5>
-                    <small class="text-muted">Read</small>
-                </div>
-                <p class="mb-1">{{value}}</p>
-            </a>
-        {% endfor %}
-    </div>
+    <table>
+        <thead>
+            <tr>
+                <th colspan="10">User</th>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <th>Currency</th>
+                <th>Theme</th>
+                <th>SID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="username">{{ g.user.name | lower}}</td>
+                <td data-label="currency">{{ g.user.currency | upper}}</td>
+                <td data-label="theme">{{ g.user.theme | capitalize}}</td>
+                <td data-label="sid">{{ g.user.sid | upper}}</td>
+            </tr>
+        </tbody>
+    </table>
 {% endblock %}

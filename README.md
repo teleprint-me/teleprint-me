@@ -47,6 +47,12 @@ pip install -r requirements.txt
 ./run.sh
 ```
 
+## Tips
+
+- Bitcoin (Segwit): 3E1YSahzUnYYx2RTuRt4KWogDBCsdCS1n3
+- Ethereum: 0x7be933221135468b9886632771fF289341144C3a
+- Litecoin (Segwit): MMNDfhgc3jfs3XJoJ7DSCedBp742dH12jD
+
 ## Task List
 
 - [x] Client Support
@@ -54,10 +60,10 @@ pip install -r requirements.txt
 - [ ] Core
     - [x] Security
     - [x] Sqlite
-    - [ ] Database
+    - [ ] Database (In progress...)
 - [ ] Nav
     - [x] Portfolio
-    - [ ] Trade
+    - [ ] Trade (In progress...)
     - [x] Menu
 - [ ] Portfolio
     - [x] Ticker
@@ -65,32 +71,42 @@ pip install -r requirements.txt
 - [ ] Trade
     - [ ] ???
 - [ ] Menu
-    - [x] Interfaces
-    - [x] Strategies
+    - [ ] Interfaces
+        - [x] Create
+        - [x] Read
+        - [ ] Update
+        - [x] Delete
+    - [ ] Strategies
+        - [x] Create
+        - [x] Read
+        - [ ] Update
+        - [x] Delete
+        - [ ] Trade (In progress...)
     - [ ] Wallets
-    - [x] Settings
+        - [ ] Read 
+    - [ ] Settings
+        - [x] Read
+        - [x] Update
+        - [ ] Delete
+        - [ ] Security
     - [ ] Tips
+        - [ ] Read
     - [x] License
+        - [x] Read
     - [x] Source
-
-## Tips
-
-- Bitcoin (Segwit): 3E1YSahzUnYYx2RTuRt4KWogDBCsdCS1n3
-- Ethereum: 0x7be933221135468b9886632771fF289341144C3a
-- Litecoin (Segwit): MMNDfhgc3jfs3XJoJ7DSCedBp742dH12jD
+        - [x] Link
 
 ## License
 Copyright (C) 2021 teleprint.me
 
 This program is free software: you can redistribute it and/or modify
-it under the terms of the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html) as published
-by the [Free Software Foundation](https://www.fsf.org/), either version 3 of the License, or
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-[GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html) for more details.
+GNU Affero General Public License for more details.
 
-You should have received a copy of the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl.html)
-along with this program.  If not, see [GNU Licenses](https://www.gnu.org/licenses/).
+You should have received a copy of the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl.html) along with this program.  If not, see [GNU Licenses](https://www.gnu.org/licenses/).

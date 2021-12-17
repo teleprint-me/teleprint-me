@@ -37,6 +37,44 @@ def menu():
     return render_template('interface/menu.html')
 
 
+@blueprint.route('/read', methods=('GET',))
+@auth.required
+def read():
+    return render_template('interface/read.html', action='read')
+
+
+@blueprint.route('/read/<name>', methods=(('GET',)))
+@auth.required
+def read_one(name):
+    interface = get_interface(name)
+    if interface:
+        update(interface)
+        flash((('Update', f'Activated {interface.name}'),), 'info')
+        return redirect(url_for('interface.read'))
+    return render_template('interface/read.html', action='read')
+
+
+@blueprint.route('/delete', methods=('GET', 'POST'))
+@auth.required
+def delete():
+    return render_template('interface/read.html', action='delete')
+
+
+@blueprint.route('/delete/<name>', methods=('GET', 'POST'))
+@auth.required
+def delete_one(name):
+    interface = get_interface(name)
+    if name and interface:
+        if not interface.active:
+            messages = [('Delete', f'Deleted {interface.name}')]
+            interface.delete_instance()
+        else:
+            messages = [('Error', f'Using {interface.name}')]
+        flash(tuple(messages), 'info')
+        return redirect(url_for('interface.delete'))
+    return render_template('interface/delete.html')
+
+
 @blueprint.route("/create", methods=('GET', 'POST'))
 @auth.required
 def create():
@@ -55,8 +93,7 @@ def create():
                 user=g.user
             )
             interface.save()
-            if g.interfaces:
-                update(interface)
+            update(interface)
             messages.append(('Create', f'Created {interface.name}'))
         for key, value in form.errors.items():
             try:
@@ -67,32 +104,3 @@ def create():
             flash(tuple(messages), 'info')
         return redirect(url_for('interface.create'))
     return render_template('interface/create.html', form=form)
-
-
-@blueprint.route('/read', methods=(('GET',)))
-@auth.required
-def read():
-    name = request.args.get('name')
-    interface = get_interface(name)
-    if name and interface:
-        update(interface)
-        messages = [('Update', f'Using {interface.name}')]
-        flash(tuple(messages), 'info')
-        return redirect(url_for('interface.read'))
-    return render_template('interface/read.html')
-
-
-@blueprint.route('/delete', methods=('GET', 'POST'))
-@auth.required
-def delete():
-    name = request.args.get('name')
-    interface = get_interface(name)
-    if name and interface:
-        if not interface.active:
-            messages = [('Delete', f'Deleted {interface.name}')]
-            interface.delete_instance()
-        else:
-            messages = [('Error', f'Using {interface.name}')]
-        flash(tuple(messages), 'info')
-        return redirect(url_for('interface.delete'))
-    return render_template('interface/delete.html')

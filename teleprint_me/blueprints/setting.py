@@ -28,13 +28,7 @@ def menu():
 @blueprint.route('/read', methods=('GET',))
 @auth.required
 def read():
-    context = {
-        'name': g.user.name,
-        'currency': g.user.currency,
-        'theme': g.user.theme,
-        'sid': g.user.sid
-    }
-    return render_template('setting/read.html', context=context)
+    return render_template('setting/read.html')
 
 
 @blueprint.route('/name', methods=('GET', 'POST'))

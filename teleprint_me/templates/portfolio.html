@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block main %}
+    <h2 class="border-bottom m-3 p-3">Portfolio</h2>
     {% if not g.client %}
-        <h2 class="border-bottom m-3 p-3">Portfolio</h2>
         <div class="card rounded mx-auto shadow" style="min-width: 14rem; max-width: 21rem;">
             <div class="card-body">
                 <h5 class="card-title">Interfaces</h5>
@@ -25,7 +25,7 @@
         <table id="total_value">
             <thead>
                 <tr>
-                    <th>Portfolio</th>
+                    <th>{{ ' '.join(context['name'].split('_')) }}</th>
                 </tr>
                 <tr>
                     <th>Total Value</th>
@@ -40,7 +40,7 @@
         <table id="{{ context['name'] }}">
             <thead>
                 <tr>
-                    <th colspan=4>{{ context['name'] }}</th>
+                    <th colspan="4">Portfolio</th>
                 </tr>
                 <tr>
                     <th>Product</th>

@@ -5,25 +5,53 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
             <li class="breadcrumb-item"><a href="/strategy/menu">Strategies</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Read</li>
+            <li class="breadcrumb-item active" aria-current="page">{{action | capitalize}}</li>
         </ol>
     </nav>
-
-    <div class="list-group bg-light rounded shadow mx-auto">
-        {% for strategy in strategies %}
-            <a href="#{{strategy['name']}}" class="list-group-item list-group-item-primary">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{strategy['name']}}</h5>
-                    <small class="text-muted">Read-Only</small>
-                </div>
-                <p class="mb-1">Product: {{strategy['product']}}</p>
-                <p class="mb-1">Type: {{strategy['type']}}</p>
-                <p class="mb-1">Principal: {{strategy['principal']}}</p>
-                <p class="mb-1">Frequency: {{strategy['frequency']}}</p>
-                <p class="mb-1">Yield: {{strategy['yield']}}</p>
-                <p class="mb-1">Period: {{strategy['period']}}</p>
-            </a>
-        {% else %}
+    {% if strategies %}
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="10">Strategies</th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Product</th>
+                    <th>Type</th>
+                    <th>Principal</th>
+                    <th>Frequency</th>
+                    <th>Yield</th>
+                    <th>Period</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for strategy in strategies %}
+                    <tr>
+                        <td data-label="name">{{strategy['name']}}</td>
+                        <td data-label="product">{{strategy['product']}}</td>
+                        <td data-label="type">{{strategy['type']}}</td>
+                        <td data-label="principal">{{strategy['principal']}}</td>
+                        <td data-label="frequency">{{strategy['frequency']}}</td>
+                        <td data-label="yield">{{strategy['yield']}}</td>
+                        <td data-label="period">{{strategy['period']}}</td>
+                        <td>
+                            <div class="mb-0">
+                                {% if action == 'delete' %}
+                                <a href="/strategy/{{action | lower}}/{{strategy['name'] | lower}}" 
+                                   class="btn btn-danger w-100">{{action | capitalize}}</a>
+                                {% else %}
+                                <a href="/strategy/{{action | lower}}/{{strategy['name'] | lower}}" 
+                                   class="btn btn-primary w-100">{{action | capitalize}}</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="list-group bg-light rounded shadow mx-auto">
             <a href="/strategy/create" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Strategies</h5>
@@ -31,6 +59,6 @@
                 </div>
                 <p class="mb-1">There are no existing strategies.</p>
             </a>
-        {% endfor %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}

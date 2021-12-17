@@ -53,11 +53,13 @@ class Interface(Base):
 
 class Strategy(Base):
     name = TextField(unique=True)      # strategy identifier
-    product = TextField()              # product identifier: BTC-USD
-    type_ = TextField()                # strategy type
-    principal = FloatField()           # principal amount
+    base = TextField()                 # product base: BTC
+    quote = TextField()                # product quote: USD
+    product = TextField()              # product: BTC-USD
+    type_ = TextField()                # strategy type: cost or value average
     frequency = TextField()            # daily, weekly, monthly, yearly
-    yield_ = FloatField()              # annual percentage yield
+    principal = FloatField()           # principal amount
+    yield_ = FloatField(default=0)     # annual percentage yield
     period = IntegerField(default=0)   # targets current period
     user = ForeignKeyField(User, backref='strategies')
 

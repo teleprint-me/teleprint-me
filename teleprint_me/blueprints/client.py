@@ -9,7 +9,7 @@ blueprint = Blueprint('client', __name__, url_prefix='/client')
 
 @blueprint.route('/name', methods=('GET',))
 @auth.required
-def client_label():
+def label():
     return jsonify({'client': g.client.label()})
 
 

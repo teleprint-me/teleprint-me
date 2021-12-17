@@ -68,7 +68,7 @@ def create_app() -> Flask:
         strategy.blueprint,
         setting.blueprint,
         client.blueprint,
-        portfolio.blueprint
+        portfolio.blueprint,
     )
 
     for bp in blueprints:

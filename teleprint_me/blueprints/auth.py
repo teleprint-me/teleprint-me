@@ -17,6 +17,8 @@ from flask import request
 from flask import session
 from flask import url_for
 
+from flask_wtf import FlaskForm
+
 from peewee import ModelSelect
 from peewee import OperationalError
 from peewee import DoesNotExist
@@ -24,6 +26,15 @@ from peewee import DoesNotExist
 import functools
 
 blueprint = Blueprint('auth', __name__, url_prefix='/auth')
+
+
+def error(form: FlaskForm, messages: list) -> list:
+    for key, value in form.errors.items():
+        try:
+            messages.append((key, value[0]))
+        except (IndexError,) as e:
+            messages.append(('Error', e))
+    return messages
 
 
 def required(view):
@@ -67,8 +78,8 @@ def load_user_client(interface: Interface) -> Client:
 def load_user_session():
     try:
         g.user = User.get(User.sid == session.get('sid'))
-        g.interfaces = g.user.interfaces[:]
-        g.strategies = g.user.strategies[:]
+        g.interfaces = g.user.interfaces
+        g.strategies = g.user.strategies
         g.interface = load_user_interface(g.interfaces)
         g.client = load_user_client(g.interface)
     except (DoesNotExist,):
@@ -89,11 +100,9 @@ def sign_up():
                 user.save()
                 session['sid'] = user.sid
                 return redirect(url_for('index'))
-            except (OperationalError,) as error:
-                messages.append(('Database', error))
-        for key, value in form.errors.items():
-            if value:
-                messages.append((key, value[0]))
+            except (OperationalError,) as e:
+                messages.append(('Database', e))
+        messages = error(form, messages)
         if messages:
             flash(tuple(messages), 'error')
     return render_template('auth/sign-up.html', form=form)
@@ -111,11 +120,9 @@ def sign_in():
                 user = User.get(User.name == form.email.data)
                 session['sid'] = user.sid
                 return redirect(url_for('index'))
-            except (OperationalError,) as error:
-                messages.append(('Database', error))
-        for key, value in form.errors.items():
-            if value:
-                messages.append((key, value[0]))
+            except (OperationalError,) as e:
+                messages.append(('Database', e))
+        messages = error(form, messages)
         if messages:
             flash(tuple(messages), 'error')
     return render_template('auth/sign-in.html', form=form)

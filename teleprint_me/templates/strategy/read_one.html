@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <nav class="mt-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
+            <li class="breadcrumb-item"><a href="/strategy/menu">Strategies</a></li>
+            <li class="breadcrumb-item"><a href="/strategy/read">Read</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{strategy.name | capitalize}}</li>
+        </ol>
+    </nav>
+
+    <table id="overview">
+        <thead>
+            <tr>
+                <th colspan=6>Overview</th>
+            </tr>
+            <tr>
+                <th>Product</th>
+                <th>Base</th>
+                <th>Quote</th>
+                <th>Platform</th>
+                <th>Strategy</th>
+                <th>Frequency</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="product">{{strategy.product}}</td>
+                <td data-label="base">{{strategy.base}}</td>
+                <td data-label="quote">{{strategy.quote}}</td>
+                <td data-label="platform">{{g.client.label()}}</td>
+                <td data-label="strategy">{{strategy.type_}}</td>
+                <td data-label="frequency">{{strategy.frequency}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table id="strategy">
+        <thead>
+            <tr>
+                <th colspan=7>Strategy</th>
+            </tr>
+            <tr>
+                <th>Principal</th>
+                <th>Period</th>
+                <th>Yield</th>
+                <th>Target</th>
+                <th>Value</th>
+                <th>Amount</th>
+                <th>Side</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="principal">{{strategy.principal | float}}</td>
+                <td data-label="period">{{strategy.period}}</td>
+                <td data-label="yield">{{strategy.yield_ or None}}</td>
+                <td data-label="target">0</td>
+                <td data-label="value">0</td>
+                <td data-label="amount">0</td>
+                <td data-label="side">Buy</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table id="stats-i">
+        <thead>
+            <tr>
+                <th colspan=6>Stats I</th>
+            </tr>
+            <tr>
+                <th>Average Cost</th>
+                <th>Bought</th>
+                <th>Sold</th>
+                <th>Total Cost</th>
+                <th>ROI</th>
+                <th>ROI Ratio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table id="stats-ii">
+        <thead>
+            <tr>
+                <th colspan=6>Stats II</th>
+            </tr>
+            <tr>
+                <th>Market Price</th>
+                <th>Estimated Tax Due</th>
+                <th>Cost Per Coin</th>
+                <th>Total Coin</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table id="history">
+        <thead>
+            <tr>
+                <th colspan=10>History</th>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Target</th>
+                <th>Recommend</th>
+                <th>Side</th>
+                <th>Quote</th>
+                <th>Quote Total</th>
+                <th>Base</th>
+                <th>Base Total</th>
+                <th>Period</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in strategy.rows %}
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan=14>
+                    <div class="mb-0 d-flex justify-content-center">
+                        <a href="/strategy/read/write/{{strategy['name'] | lower}}" 
+                           class="btn btn-primary w-50">Auto Fill</a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -5,28 +5,49 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
             <li class="breadcrumb-item"><a href="/interface/menu">Interfaces</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Read</li>
+            <li class="breadcrumb-item active" aria-current="page">{{action | capitalize}}</li>
         </ol>
     </nav>
-
-    <div class="list-group bg-light rounded shadow mx-auto">
-        {% for interface in g.interfaces %}
-            <a href="/interface/read?name={{interface.name}}" 
-               class="list-group-item list-group-item-action list-group-item-primary"
-               type="button"
-               data-bs-toggle="tooltip"
-               data-bs-placement="top"
-               title="click to activate this interface">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{interface.name}}</h5>
-                    <small class="text-muted">Read</small>
-                </div>
-                <p class="mb-1">Key: {{interface.key}}</p>
-                <p class="mb-1">Rest: {{interface.rest}}</p>
-                <p class="mb-1">Feed: {{interface.feed}}</p>
-                <p class="mb-1">Active: {{interface.active}}</p>
-            </a>
-        {% else %}
+    {% if g.interfaces %}
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="10">Interfaces</th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Key</th>
+                    <th>Rest</th>
+                    <th>Feed</th>
+                    <th>Active</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for interface in g.interfaces %}
+                    <tr>
+                        <td data-label="name">{{interface.name | capitalize}}</td>
+                        <td data-label="key">{{interface.key | upper}}</td>
+                        <td data-label="rest">{{interface.rest | lower}}</td>
+                        <td data-label="feed">{{interface.feed | lower}}</td>
+                        <td data-label="active">{{interface.active | capitalize}}</td>
+                        <td>
+                            <div class="mb-0">
+                                {% if action == 'delete' %}
+                                <a href="/interface/delete/{{interface.name | lower}}" 
+                                   class="btn btn-danger w-100">{{action | capitalize}}</a>
+                                {% else %}
+                                <a href="/interface/read/{{interface.name | lower}}" 
+                                   class="btn btn-primary w-100">{{action | capitalize}}</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="list-group bg-light rounded shadow mx-auto">
             <a href="/interface/create" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Interfaces</h5>
@@ -34,6 +55,6 @@
                 </div>
                 <p class="mb-1">There are no existing interfaces.</p>
             </a>
-        {% endfor %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}
