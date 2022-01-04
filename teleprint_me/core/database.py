@@ -3,8 +3,6 @@ from os import path
 
 from peewee import Model
 from peewee import BooleanField
-from peewee import IntegerField
-from peewee import FloatField
 from peewee import TextField
 from peewee import DateTimeField
 from peewee import ForeignKeyField
@@ -15,6 +13,8 @@ from uuid import uuid4
 instance_path = environ.get('INSTANCE_PATH', f'{environ.get("PWD")}/instance')
 database_name = environ.get('DATABASE_NAME', 'database.sqlite')
 database_path = path.join(instance_path, database_name)
+settings_name = environ.get('SETTINGS_NAME', 'settings.json')
+settings_path = path.join(instance_path, settings_name)
 
 pragmas = {
     'journal_mode': 'wal',
@@ -58,32 +58,32 @@ class Strategy(Base):
     product = TextField()              # product: BTC-USD
     type_ = TextField()                # strategy type: cost or value average
     frequency = TextField()            # daily, weekly, monthly, yearly
-    principal = FloatField()           # principal amount
-    yield_ = FloatField(default=0)     # annual percentage yield
-    period = IntegerField(default=0)   # targets current period
+    principal = TextField()            # principal amount
+    yield_ = TextField(default='0')    # annual percentage yield
+    period = TextField(default='1')    # targets current period
     user = ForeignKeyField(User, backref='strategies')
 
 
 class Dataset(Base):
     date = DateTimeField()
-    price = FloatField()
-    target = FloatField()
-    value = FloatField()
-    recommend = FloatField()
+    price = TextField()
+    target = TextField()
+    value = TextField()
+    recommend = TextField()
     side = TextField()
-    base = FloatField()
-    base_fee = FloatField(default=0.)
-    base_total = FloatField()
-    base_prev = FloatField(default=0.)
-    quote = FloatField()
-    quote_fee = FloatField(default=0.)
-    quote_total = FloatField()
-    quote_prev = FloatField(default=0.)
-    period = IntegerField()
-    strategy = ForeignKeyField(Strategy, backref='rows')
+    base = TextField()
+    base_fee = TextField(default=f'{0.:.8f}')
+    base_total = TextField()
+    base_prev = TextField(default=f'{0.:.8f}')
+    quote = TextField()
+    quote_fee = TextField(default=f'{0.:.8f}')
+    quote_total = TextField()
+    quote_prev = TextField(default=f'{0.:.8f}')
+    period = TextField(default='1')
+    strategy = ForeignKeyField(Strategy, backref='datasets')
 
 
-def init_database(db: SqliteDatabase):
-    db.connect()
-    db.create_tables([User, Interface, Strategy, Dataset])
-    db.close()
+def initialize():
+    database.connect()
+    database.create_tables([User, Interface, Strategy, Dataset])
+    database.close()
