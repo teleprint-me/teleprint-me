@@ -1,8 +1,21 @@
-# teleprint-me
+# Teleprint-Me
 
-Apply averaging strategies to cryptocurrency with this web application.
+## License
+Copyright (C) 2021 [teleprint.me](https://teleprint.me)
 
-## project status
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl.html) along with this program.  If not, see [GNU Licenses](https://www.gnu.org/licenses/).
+
+## Project Status
 
 - This application is currently in the planning phase.
 - Core application features may be broken, buggy, and/or missing.
@@ -18,21 +31,19 @@ Apply averaging strategies to cryptocurrency with this web application.
 
 ## About
 
-- A web application to apply averaging strategies to cryptocurrency investments.
-    - Use Fiat to trade crypto to maximize capital gains.
-    - Use Bitcoin or Ether to trade between cryptos to maximize stacking Sats and Gwei.
-    - Set a target with, or without, a yield to pump up returns over time.
-    - Get an analysis on your investment strategy so you can optimize returns.
+Apply averaging strategies to cryptocurrency with this web application.
+
+- A web application to apply averaging strategies to cryptocurrency investments
+    - Trade between Crypto and Fiat or Crypto and Crypto
+    - Set a target with, or without, a yield
+    - Get a basic analysis on your investment strategy
 
 - Supports Multiple Averaging Strategies
     - Cost Averaging
     - Dynamic Cost Averaging
     - Value Averaging
-    - Dynamic Value Averaging
 
 ## Setup and Run
-
-_Note: You may experience issues if `sqlite3` is not installed and properly configured._
 
 ```sh
 # download the repository
@@ -95,18 +106,3 @@ pip install -r requirements.txt
         - [x] Read
     - [x] Source
         - [x] Link
-
-## License
-Copyright (C) 2021 teleprint.me
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl.html) along with this program.  If not, see [GNU Licenses](https://www.gnu.org/licenses/).
