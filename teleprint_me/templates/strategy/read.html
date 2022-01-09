@@ -3,12 +3,13 @@
 {% block main %}
     <nav class="mt-3" aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
             <li class="breadcrumb-item"><a href="/strategy/menu">Strategies</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{action | capitalize}}</li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{action | capitalize}}
+            </li>
         </ol>
     </nav>
-    {% if strategies %}
+    {% if g.user.strategies | list %}
         <table>
             <thead>
                 <tr>
@@ -26,15 +27,15 @@
                 </tr>
             </thead>
             <tbody>
-                {% for strategy in strategies %}
+                {% for strategy in g.user.strategies | list %}
                     <tr>
-                        <td data-label="name">{{strategy['name']}}</td>
-                        <td data-label="product">{{strategy['product']}}</td>
-                        <td data-label="type">{{strategy['type']}}</td>
-                        <td data-label="principal">{{strategy['principal']}}</td>
-                        <td data-label="frequency">{{strategy['frequency']}}</td>
-                        <td data-label="yield">{{strategy['yield']}}</td>
-                        <td data-label="period">{{strategy['period']}}</td>
+                        <td data-label="name">{{strategy.name}}</td>
+                        <td data-label="product">{{strategy.product}}</td>
+                        <td data-label="type">{{strategy.type_.split('_') | join(' ')}}</td>
+                        <td data-label="principal">{{strategy.principal}}</td>
+                        <td data-label="frequency">{{strategy.frequency}}</td>
+                        <td data-label="yield">{{strategy.yield_}}</td>
+                        <td data-label="period">{{strategy.period}}</td>
                         <td>
                             <div class="mb-0">
                                 {% if action == 'delete' %}

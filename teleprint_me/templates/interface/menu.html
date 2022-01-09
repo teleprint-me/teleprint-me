@@ -1,22 +1,19 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    <nav class="mt-3" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Interfaces</li>
-        </ol>
-    </nav>
-
+    <h2 class="border-bottom m-3 p-3">Interfaces</h2>
     <nav id="nav-interface" class="nav-menu">
         <div class="mb-1">
-            <a href="/interface/create" class="btn btn-primary w-100">Create Interface</a>
+            <a href="/interface/create" class="btn btn-primary w-100">Create</a>
         </div>
         <div class="mb-1">
-            <a href="/interface/read" class="btn btn-primary w-100">Read Interface</a>
+            <a href="/interface/read" class="btn btn-primary w-100">Read</a>
+        </div>
+        <div class="mb-1">
+            <a href="#" class="btn btn-secondary w-100">Update</a>
         </div>
         <div class="mb-0">
-            <a href="/interface/delete" class="btn btn-primary w-100">Delete Interface</a>
+            <a href="/interface/delete" class="btn btn-primary w-100">Delete</a>
         </div>
     </nav>
 {% endblock %}

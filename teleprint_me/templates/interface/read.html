@@ -3,12 +3,11 @@
 {% block main %}
     <nav class="mt-3" aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
             <li class="breadcrumb-item"><a href="/interface/menu">Interfaces</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{action | capitalize}}</li>
         </ol>
     </nav>
-    {% if g.interfaces %}
+    {% if g.user.interfaces %}
         <table>
             <thead>
                 <tr>
@@ -24,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for interface in g.interfaces %}
+                {% for interface in g.user.interfaces %}
                     <tr>
                         <td data-label="name">{{interface.name | capitalize}}</td>
                         <td data-label="key">{{interface.key | upper}}</td>
