@@ -1,5 +1,5 @@
+from teleprint_me.core import sqlite
 from teleprint_me.core import scrypt
-from teleprint_me.core import User
 from teleprint_me.forms.auth import SignUpEmail
 from teleprint_me.forms.auth import SignInEmail
 
@@ -13,7 +13,7 @@ from wtforms.fields import BooleanField
 from wtforms.fields import PasswordField
 from wtforms.fields import SelectField
 from wtforms.fields import SubmitField
-from wtforms.fields.html5 import EmailField
+from wtforms.fields import EmailField
 from wtforms.validators import DataRequired
 from wtforms.validators import Email
 from wtforms.validators import EqualTo
@@ -29,7 +29,7 @@ class ValidatePassword(object):
 
     def __call__(self, form, field):
         try:
-            user = User.get(User.sid == session.get('sid'))
+            user = sqlite.User.get(sqlite.User.sid == session.get('sid'))
             if not scrypt.verify(user.password, field.data):
                 raise ValidationError(self.message)
         except (DoesNotExist,):

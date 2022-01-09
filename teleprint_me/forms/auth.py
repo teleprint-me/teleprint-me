@@ -1,13 +1,13 @@
-from teleprint_me.core import scrypt
-from teleprint_me.core import User
-
 from flask_wtf import FlaskForm
 
 from peewee import DoesNotExist
 
+from teleprint_me.core import sqlite
+from teleprint_me.core import scrypt
+
 from wtforms.fields import PasswordField
 from wtforms.fields import SubmitField
-from wtforms.fields.html5 import EmailField
+from wtforms.fields import EmailField
 from wtforms.validators import Email
 from wtforms.validators import DataRequired
 from wtforms.validators import EqualTo
@@ -23,7 +23,7 @@ class SignUpEmail(object):
 
     def __call__(self, form, field):
         try:
-            if User.get(User.name == field.data):
+            if sqlite.User.get(sqlite.User.name == field.data):
                 raise ValidationError(self.message)
         except (DoesNotExist,):
             pass
@@ -37,7 +37,7 @@ class SignInEmail(object):
 
     def __call__(self, form, field):
         try:
-            if User.get(User.name == form.email.data):
+            if sqlite.User.get(sqlite.User.name == form.email.data):
                 pass
         except (DoesNotExist,):
             raise ValidationError(self.message)
@@ -51,7 +51,7 @@ class SignInPassword(object):
 
     def __call__(self, form, field):
         try:
-            user = User.get(User.name == form.email.data)
+            user = sqlite.User.get(sqlite.User.name == form.email.data)
             if not scrypt.verify(user.password, field.data):
                 raise ValidationError(self.message)
         except (DoesNotExist,):
