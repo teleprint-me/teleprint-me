@@ -42,9 +42,7 @@ def create_app() -> Flask:
     # Blueprints
     @app.context_processor
     def utility_processor() -> dict:
-        utils = {"zip": zip, "list": list, "sqlite": sqlite, "timestamp": timestamp}
-
-        return utils
+        return {"zip": zip, "list": list, "sqlite": sqlite, "timestamp": timestamp}
 
     blueprints = (
         auth.blueprint,
