@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from coinbase_pro.client import Client
+from coinbase_pro.client import CoinbasePro
 from peewee import ModelSelect
 from teleprint_me.core import proxy, sqlite
 
@@ -105,14 +105,13 @@ class Strategy(object):
 @dataclass(frozen=True)
 class Data(object):
     fills: list[dict]
-    withdrawals: list[dict]
-    deposits: list[dict]
+    transfers: list[dict]
 
     def __len__(self) -> int:
-        return len(self.fills + self.withdrawals + self.deposits)
+        return len(self.fills + self.transfers)
 
     def list_(self) -> tuple[dict]:
-        return tuple(self.fills + self.withdrawals + self.deposits)
+        return tuple(self.fills + self.transfers)
 
     def sorted_(self) -> tuple[dict]:
         return tuple(sorted(self.list_(), key=lambda item: item["created_at"]))
@@ -124,15 +123,14 @@ class Data(object):
 
 
 class Product(object):
-    def __init__(self, client: Client, name: str):
+    def __init__(self, client: CoinbasePro, name: str):
         strategy = Strategy(name)
         fills = proxy.get_fills(client, strategy.product)
-        _, withdrawals = proxy.get_withdrawals(client, strategy.product)
-        account, deposits = proxy.get_deposits(client, strategy.product)
+        account, transfers = proxy.get_transfers(client, strategy.base)
 
         self.__strategy: Strategy = strategy
         self.__account: dict = account
-        self.__data: Data = Data(fills, withdrawals, deposits)
+        self.__data: Data = Data(fills, transfers)
 
     def __repr__(self) -> str:
         return f"Product({self.strategy.product}, txs={len(self.data)})"
@@ -220,40 +218,40 @@ class Builder(object):
     def set_transfer_data(self, data):
         self.row.side = data["type"]
         self.row.period = data["type"][0].upper()
-        self.row.quote = float(data["amount"])
-        self.row.quote_prev = self.quote_prev
+        self.row.base = float(data["amount"])
+        self.row.base_prev = self.base_prev
 
     def set_transfer_fee(self, data):
         try:
-            self.row.quote_fee = float(data["details"]["fee"])
+            self.row.base_fee = float(data["details"]["fee"])
         except (KeyError,):
-            self.row.quote_fee = float()
+            self.row.base_fee = float()
 
-    def set_transfer_quote_prev(self):
+    def set_transfer_base_prev(self):
         if self.row.side == "deposit":
-            self.quote_prev += self.row.quote
+            self.base_prev += self.row.base
         elif self.row.side == "withdraw":
-            if self.quote_prev - self.row.quote > 0:
-                self.quote_prev -= self.row.quote
+            if self.base_prev - self.row.base > 0:
+                self.base_prev -= self.row.base
 
-    def set_transfer_quote_total(self):
-        self.row.quote_total = self.quote_prev
+    def set_transfer_base_total(self):
+        self.row.base_total = self.base_prev
 
     def set_transfer(self, data):
         self.set_transfer_data(data)
         self.set_transfer_fee(data)
-        self.set_transfer_quote_prev()
-        self.set_transfer_quote_total()
+        self.set_transfer_base_prev()
+        self.set_transfer_base_total()
 
     def set_trade_data(self, data: dict):
         self.row.period = self.product.strategy.period
         self.row.target = self.product.strategy.target
         self.row.price = float(data["price"])
-        self.row.value = self.row.price * self.quote_prev
+        self.row.value = self.row.price * self.base_prev
         self.row.recommend = self.product.strategy.target - self.row.value
         self.row.side = data["side"]
-        self.row.quote = float(data["size"])
-        self.row.base = self.row.price * self.row.quote
+        self.row.base = float(data["size"])
+        self.row.quote = self.row.price * self.row.base
         self.row.base_fee = float(data["fee"])
         self.row.base_prev = self.base_prev
 
@@ -288,9 +286,9 @@ class Builder(object):
         return self.rows
 
 
-def get_builder(client: Client, name: str) -> Builder:
+def get_builder(client: CoinbasePro, name: str) -> Builder:
     return Builder(Product(client, name))
 
 
-def get_rows(client: Client, name: str) -> list[Row]:
+def get_rows(client: CoinbasePro, name: str) -> list[Row]:
     return Builder(Product(client, name)).build()
