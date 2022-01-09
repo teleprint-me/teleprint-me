@@ -1,85 +1,189 @@
-from flask import g
-from flask import jsonify
-from flask import Blueprint
-
+from flask import Blueprint, g, jsonify
 from teleprint_me.blueprints import auth
+from teleprint_me.core import proxy, sqlite
 
-blueprint = Blueprint('client', __name__, url_prefix='/client')
+blueprint = Blueprint("client", __name__, url_prefix="/client")
 
 
-@blueprint.route('/name', methods=('GET',))
+#
+# Client
+#
+@blueprint.route("/name", methods=("GET",))
 @auth.required
-def label():
-    return jsonify({'client': g.client.label()})
+def get_name():
+    return jsonify({"client": g.client.name})
 
 
-@blueprint.route('/time', methods=('GET',))
+@blueprint.route("/time", methods=("GET",))
 @auth.required
-def time_get():
+def get_time():
     return jsonify(g.client.time.get())
 
 
-@blueprint.route('/currency/list', methods=('GET',))
+#
+# Product
+#
+@blueprint.route("/product", methods=("GET",))
 @auth.required
-def currency_list():
-    return jsonify(g.client.currency.list())
-
-
-@blueprint.route('/currency/get/<currency_id>', methods=('GET',))
-@auth.required
-def currency_get(currency_id):
-    return jsonify(g.client.currency.get(currency_id))
-
-
-@blueprint.route('/product/list', methods=('GET',))
-@auth.required
-def product_list():
+def get_product_list():
     return jsonify(g.client.product.list())
 
 
-@blueprint.route('/product/list/ids', methods=('GET',))
+@blueprint.route("/product/id", methods=("GET",))
 @auth.required
-def product_list_ids():
-    return jsonify([product['id'] for product in g.client.product.list()])
+def get_product_id_list():
+    return jsonify(proxy.get_product_ids(g.client))
 
 
-@blueprint.route('/product/ticker/<product_id>', methods=('GET',))
+@blueprint.route("/product/<product_id>", methods=("GET",))
 @auth.required
-def product_ticker(product_id):
-    return jsonify(g.client.product.ticker(product_id))
+def get_product(product_id):
+    return jsonify(g.client.product.get(product_id.upper()))
 
 
-@blueprint.route('/account/list', methods=('GET',))
+@blueprint.route("/product/ticker/<product_id>", methods=("GET",))
 @auth.required
-def account_list():
+def get_product_ticker(product_id):
+    return jsonify(g.client.product.ticker(product_id.upper()))
+
+
+#
+# Currency
+#
+@blueprint.route("/currency", methods=("GET",))
+@auth.required
+def get_currency_list():
+    return jsonify(g.client.currency.list())
+
+
+@blueprint.route("/currency/<currency_id>", methods=("GET",))
+@auth.required
+def get_currency(currency_id):
+    return jsonify(g.client.currency.get(currency_id.upper()))
+
+
+#
+# Account
+#
+@blueprint.route("/account", methods=("GET",))
+@auth.required
+def get_account_list():
     return jsonify(g.client.account.list())
 
 
-@blueprint.route('/order/fills/<product_id>', methods=('GET',))
+@blueprint.route("/account/<currency_id>", methods=("GET",))
 @auth.required
-def order_fills(product_id):
-    return jsonify(g.client.order.fills({'product_id': product_id}))
+def get_account(currency_id):
+    return jsonify(proxy.get_account(g.client, currency_id.upper()))
 
 
-@blueprint.route('/order/<product_id>', methods=('POST',))
+#
+# Transfer
+#
+@blueprint.route("/transfer", methods=("GET",))
 @auth.required
-def order_post(product_id):
-    return jsonify({})
-
-
-@blueprint.route('/transfer/list', methods=('GET',))
-@auth.required
-def transfer_list():
+def get_transfer_list():
     return jsonify(g.client.transfer.list())
 
 
-@blueprint.route('/deposits/<product_id>', methods=('GET',))
+@blueprint.route("/transfer/<currency_id>", methods=("GET",))
 @auth.required
-def transfer_list_deposits(product_id):
+def get_transfer_filter(currency_id):
+    return jsonify(proxy.get_transfers(g.client, currency_id.upper()))
+
+
+@blueprint.route("/transfer/deposit/<currency_id>", methods=("GET",))
+@auth.required
+def get_deposit_filter(currency_id):
+    return jsonify(proxy.get_deposits(g.client, currency_id.upper()))
+
+
+@blueprint.route("/transfer/withdraw/<currency_id>", methods=("GET",))
+@auth.required
+def get_withdraw_filter(currency_id):
+    return jsonify(proxy.get_withdrawals(g.client, currency_id.upper()))
+
+
+#
+# Order
+#
+@blueprint.route("/order/fill/<product_id>", methods=("GET",))
+@auth.required
+def get_order_fill_list(product_id):
+    return jsonify(proxy.get_fills(g.client, product_id.upper()))
+
+
+@blueprint.route("/order/<product_id>", methods=("POST",))
+@auth.required
+def post_order(product_id):
     return jsonify({})
 
 
-@blueprint.route('/withdrawals/<product_id>', methods=('GET',))
+#
+# User
+#
+@blueprint.route("/user", methods=("GET",))
 @auth.required
-def transfer_list_withdrawals(product_id):
-    return jsonify({})
+def get_user():
+    return jsonify(sqlite.user_to_dict(g.user))
+
+
+#
+# Interface
+#
+@blueprint.route("/interface", methods=("GET",))
+@auth.required
+def get_interface_list():
+    return jsonify(sqlite.get_interface_list(g.user))
+
+
+@blueprint.route("/interface/active", methods=("GET",))
+@auth.required
+def get_interface_active():
+    interface = sqlite.get_interface_active(g.user.interfaces)
+    interface_dict = sqlite.interface_to_dict(interface)
+    return jsonify(interface_dict)
+
+
+@blueprint.route("/interface/<name>", methods=("GET",))
+@auth.required
+def get_interface(name):
+    interface = sqlite.get_interface(name)
+    interface_dict = sqlite.interface_to_dict(interface)
+    return jsonify(interface_dict)
+
+
+#
+# Strategy
+#
+@blueprint.route("/strategy", methods=("GET",))
+@auth.required
+def get_strategy_list():
+    return jsonify(sqlite.get_strategy_list(g.user))
+
+
+@blueprint.route("/strategy/<name>", methods=("GET",))
+@auth.required
+def get_strategy(name):
+    strategy = sqlite.get_strategy(name)
+    strategy_dict = sqlite.strategy_to_dict(strategy)
+    return jsonify(strategy_dict)
+
+
+#
+# Data
+#
+@blueprint.route("/strategy/<name>/datum", methods=("GET",))
+@auth.required
+def get_strategy_data_list(name):
+    strategy = sqlite.get_strategy(name)
+    strategy_list = sqlite.get_data_list(strategy)
+    return jsonify(strategy_list)
+
+
+@blueprint.route("/strategy/<name>/data", methods=("GET",))
+@auth.required
+def get_strategy_data(name):
+    strategy = sqlite.get_strategy(name)
+    strategy_dict = sqlite.data_to_dict(strategy)
+    return jsonify(strategy_dict)
