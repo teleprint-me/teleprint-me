@@ -2,7 +2,7 @@ import base64
 import hmac
 import json
 import os
-import random
+import secrets
 import string
 import time
 import uuid
@@ -36,9 +36,9 @@ class Generate(object):
     def identifer(self, size: int = None) -> str:
         if size is None:
             size = self.size
-        prefix = random.SystemRandom().choice(string.ascii_letters)
+        prefix = secrets.SystemRandom().choice(string.ascii_letters)
         body = "".join(
-            random.SystemRandom().choice(self.symbols) for _ in range(size - 1)
+            secrets.SystemRandom().choice(self.symbols) for _ in range(size - 1)
         )
         return f"{prefix}{body}"
 
