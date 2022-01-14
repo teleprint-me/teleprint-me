@@ -51,7 +51,7 @@ class ProxyClient(ProxyBase):
         self.__filter = ProxyFilter(client)
 
     @property
-    def filter(self) -> ProxyFilter:
+    def filter_(self) -> ProxyFilter:
         return self.__filter
 
     def get_account(self, currency: str) -> dict:
@@ -66,17 +66,17 @@ class ProxyClient(ProxyBase):
 
     def get_transfers(self, currency: str) -> list[dict, list[dict]]:
         account = self.get_account(currency)
-        txs = self.filter.account.id(account)
+        txs = self.filter_.account.id(account)
         return [account, txs]
 
     def get_withdrawals(self, currency: str) -> list[dict, list[dict]]:
         account = self.get_account(currency)
-        withdrawals = self.filter.account.type(account, "withdraw")
+        withdrawals = self.filter_.account.type(account, "withdraw")
         return [account, withdrawals]
 
     def get_deposits(self, currency: str) -> list[dict, list[dict]]:
         account = self.get_account(currency)
-        deposits = self.filter.account.type(account, "deposit")
+        deposits = self.filter_.account.type(account, "deposit")
         return [account, deposits]
 
     def get_price(self, product_id: str) -> dict:

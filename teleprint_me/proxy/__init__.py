@@ -8,5 +8,5 @@ from teleprint_me.proxy.database import (
     ProxyUser,
 )
 
+client = ProxyClient(g.client) if g.client else None
 database = ProxyDatabase(ProxyUser(), ProxyInterface(), ProxyStrategy(), ProxyData())
-client = ProxyClient(g.client)
