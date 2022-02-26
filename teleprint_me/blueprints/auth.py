@@ -12,8 +12,10 @@ from flask import (
 )
 from flask_wtf import FlaskForm
 from peewee import DoesNotExist, OperationalError
-from teleprint_me.core import scrypt, sqlite
+from teleprint_me.core import log, scrypt, sqlite
 from teleprint_me.forms.auth import SignInForm, SignUpForm
+from teleprint_me.proxy import Proxy
+from teleprint_me.proxy.client import ProxyClient
 
 blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -50,11 +52,15 @@ def redirect_user(view):
 @blueprint.before_app_request
 def set_user_session():
     try:
+        g.proxy = Proxy()
         g.user = sqlite.User.get(sqlite.User.sid == session.get("sid"))
-        g.interface = sqlite.get_interface_active(g.user.interfaces)
-        g.client = sqlite.get_client(g.interface)
-    except (DoesNotExist,):
+        g.interface = g.proxy.database.interface.get_active(g.user)
+        g.client = g.proxy.database.interface.get_client(g.interface)
+        g.proxy.client = ProxyClient(g.client)
+        log.session(g)
+    except (DoesNotExist,) as e:
         g.user = None
+        log.session_error(g, e)
 
 
 @blueprint.route("/sign-up", methods=("GET", "POST"))

@@ -1,6 +1,6 @@
 from flask import Blueprint, g, jsonify
 from teleprint_me.blueprints import auth
-from teleprint_me.core import proxy, sqlite
+from teleprint_me.core import sqlite
 
 blueprint = Blueprint("client", __name__, url_prefix="/client")
 
@@ -32,7 +32,7 @@ def get_product_list():
 @blueprint.route("/product/id", methods=("GET",))
 @auth.required
 def get_product_id_list():
-    return jsonify(proxy.get_product_ids(g.client))
+    return jsonify(g.proxy.get_product_ids(g.client))
 
 
 @blueprint.route("/product/<product_id>", methods=("GET",))
@@ -74,7 +74,7 @@ def get_account_list():
 @blueprint.route("/account/<currency_id>", methods=("GET",))
 @auth.required
 def get_account(currency_id):
-    return jsonify(proxy.get_account(g.client, currency_id.upper()))
+    return jsonify(g.proxy.get_account(g.client, currency_id.upper()))
 
 
 #
@@ -89,19 +89,19 @@ def get_transfer_list():
 @blueprint.route("/transfer/<currency_id>", methods=("GET",))
 @auth.required
 def get_transfer_filter(currency_id):
-    return jsonify(proxy.get_transfers(g.client, currency_id.upper()))
+    return jsonify(g.proxy.get_transfers(g.client, currency_id.upper()))
 
 
 @blueprint.route("/transfer/deposit/<currency_id>", methods=("GET",))
 @auth.required
 def get_deposit_filter(currency_id):
-    return jsonify(proxy.get_deposits(g.client, currency_id.upper()))
+    return jsonify(g.proxy.get_deposits(g.client, currency_id.upper()))
 
 
 @blueprint.route("/transfer/withdraw/<currency_id>", methods=("GET",))
 @auth.required
 def get_withdraw_filter(currency_id):
-    return jsonify(proxy.get_withdrawals(g.client, currency_id.upper()))
+    return jsonify(g.proxy.get_withdrawals(g.client, currency_id.upper()))
 
 
 #
@@ -110,7 +110,7 @@ def get_withdraw_filter(currency_id):
 @blueprint.route("/order/fill/<product_id>", methods=("GET",))
 @auth.required
 def get_order_fill_list(product_id):
-    return jsonify(proxy.get_fills(g.client, product_id.upper()))
+    return jsonify(g.proxy.get_fills(g.client, product_id.upper()))
 
 
 @blueprint.route("/order/<product_id>", methods=("POST",))

@@ -16,7 +16,7 @@ from peewee import (
 # Environment
 #
 instance_path = environ.get("INSTANCE_PATH", f'{environ.get("PWD")}/instance')
-database_name = environ.get("DATABASE_NAME", "database.sqlite")
+database_name = environ.get("DATABASE_NAME", "teleprint-me.sqlite")
 database_path = path.join(instance_path, database_name)
 settings_name = environ.get("SETTINGS_NAME", "settings.json")
 settings_path = path.join(instance_path, settings_name)

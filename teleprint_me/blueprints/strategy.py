@@ -1,6 +1,7 @@
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 from teleprint_me.blueprints import auth
-from teleprint_me.core import product, sqlite
+from teleprint_me.core import sqlite
+from teleprint_me.facade import product
 from teleprint_me.forms.strategy import StrategyForm
 
 blueprint = Blueprint("strategy", __name__, url_prefix="/strategy")
@@ -27,9 +28,9 @@ def read_one(name):
 @blueprint.route("/write/<name>", methods=("GET",))
 @auth.required
 def write_one(name):
+    models = []
     strategy = sqlite.get_strategy(name)
-    if strategy and not list(strategy.datum):
-        selection = []
+    if strategy:
         for row in product.get_rows(g.client, strategy.name):
             data = sqlite.Data(
                 date=row.date,
@@ -51,9 +52,14 @@ def write_one(name):
             )
             if row.period not in ("W", "D"):
                 strategy.period = str(row.period)
-            selection.append(data)
+            models.append(data)
         with sqlite.database.atomic():
-            sqlite.Data.bulk_create(selection, batch_size=50)
+            if list(strategy.datum):
+                sqlite.Data.bulk_update(
+                    models, fields=sqlite.data_fields, batch_size=50
+                )
+            else:
+                sqlite.Data.bulk_create(models, batch_size=50)
         strategy.save()
         flash((("Write", f"Wrote fills to {strategy.name}"),), "info")
     else:

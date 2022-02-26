@@ -107,7 +107,7 @@ class ProxyField:
 
 class ProxyBuild:
     @classmethod
-    def model(cls: Model, attr: str, val: object) -> object:
+    def model(self, cls: Model, attr: str, val: object) -> object:
         try:
             return cls.get(getattr(cls, attr) == val)
         except (DoesNotExist,):
@@ -168,7 +168,7 @@ class ProxyUser(ProxyBase):
         return self.model.build.user(name)
 
 
-class ProxyInterface(ProxyModel):
+class ProxyInterface(ProxyBase):
     def to_dict(self, interface: sqlite.Interface) -> dict:
         return self.model.to_dict(interface, exclude=self.model.exclude.interface)
 
@@ -189,10 +189,11 @@ class ProxyInterface(ProxyModel):
             return client.get_client(
                 self.model.to_dict(
                     interface,
-                    exclude=self.exclude.client,
+                    exclude=self.model.exclude.client,
                 )
             )
-        except (AttributeError,):
+        except (AttributeError,) as e:
+            print("[ProxyInterface]", self, "[interface]", interface.name, "[error]", e)
             return None
 
     @staticmethod
@@ -220,7 +221,7 @@ class ProxyInterface(ProxyModel):
             )
 
 
-class ProxyStrategy(ProxyModel):
+class ProxyStrategy(ProxyBase):
     def to_dict(self, strategy: sqlite.Strategy) -> dict:
         return self.model.to_dict(strategy, exclude=self.exclude.strategy)
 
@@ -251,7 +252,7 @@ class ProxyStrategy(ProxyModel):
         return strategy.principal * strategy.period
 
 
-class ProxyData(ProxyModel):
+class ProxyData(ProxyBase):
     def to_dict(self, strategy: sqlite.Strategy) -> dict:
         return self.model.to_dict(strategy.datum, exclude=self.exclude.data)
 

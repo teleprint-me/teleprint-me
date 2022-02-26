@@ -2,10 +2,7 @@
 
 # Scratch Pads
 main.py
-test.py
-scratch.py
-pad.py
-scratchpad.py
+settings.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -148,7 +145,7 @@ dmypy.json
 cython_debug/
 
 # Linters
-.flake8
+#.flake8
 
 # Sqlite Database Path
 db/

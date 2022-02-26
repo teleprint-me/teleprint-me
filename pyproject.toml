@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "teleprint-me"
+version = "0.1.0"
+description = "Apply averaging strategies to cryptocurrency with this web application."
+authors = ["teleprint-me <77757836+teleprint-me@users.noreply.github.com>"]
+license = "teleprint-me"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = ">=2.0.3"
+peewee = "^3.14.8"
+requests = "^2.26.0"
+scrypt = "^0.8.18"
+jwcrypto = "^1.0"
+dateutils = "^0.6.12"
+click = "^8.0.4"
+simplejson = "^3.17.6"
+python-dateutil = "^2.8.2"
+python-dotenv = "^0.19.2"
+watchdog = "^2.1.6"
+WTForms = {version = "^3.0.1", extras = ["email"]}
+flask-wtf = "^1.0.0"
+flask-admin = "^1.6.0"
+flask-security = "^3.0.0"
+flask-peewee = "^3.0.4"
+coinbase = {git = "https://github.com/teleprint-me/coinbase.git", branch = "main"}
+coinbase-pro = {git = "https://github.com/teleprint-me/coinbase-pro.git", branch = "main"}
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+flake8 = "^4.0.1"
+pytest = "^7.0.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

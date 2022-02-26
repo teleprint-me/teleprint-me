@@ -21,7 +21,7 @@ def read():
 @blueprint.route("/read/<name>", methods=(("GET",)))
 @auth.required
 def read_one(name):
-    interface = sqlite.get_interface(name)
+    interface = g.proxy.database.interface.get(name)
     if interface:
         sqlite.set_interface_active(g.user, interface)
         flash((("Read", f"Reading {interface.name}"),), "info")
@@ -38,7 +38,7 @@ def delete():
 @blueprint.route("/delete/<name>", methods=("GET", "POST"))
 @auth.required
 def delete_one(name):
-    interface = sqlite.get_interface(name)
+    interface = g.proxy.database.interface.get(name)
     if name and interface:
         if interface.active:
             messages = (("Delete", f"Deleted active {interface.name}"),)
@@ -67,7 +67,7 @@ def create():
                 active=form.active.data,
                 user=g.user,
             )
-            sqlite.set_interface_active(g.user, interface)
+            g.proxy.database.interface.set_active(g.user, interface)
             messages.append(("Create", f"Created {interface.name}"))
         for key, value in form.errors.items():
             try:

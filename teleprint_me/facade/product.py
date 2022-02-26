@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from teleprint_me import proxy
+from flask import g
 from teleprint_me.core import sqlite
 
 
@@ -23,9 +23,9 @@ class Data(object):
 
 class Product(object):
     def __init__(self, name: str):
-        strategy = proxy.database.strategy.get(name)
-        fills = proxy.client.get_fills(strategy.product)
-        account, transfers = proxy.client.get_transfers(strategy.base)
+        strategy = g.proxy.database.strategy.get(name)
+        fills = g.proxy.client.get_fills(strategy.product)
+        account, transfers = g.proxy.client.get_transfers(strategy.base)
 
         self.__strategy: sqlite.Strategy = strategy
         self.__account: dict = account
@@ -121,7 +121,7 @@ class Builder(object):
 
     def set_trade_data(self, data: dict):
         self.row.period = self.product.strategy.period
-        self.row.target = proxy.database.strategy.get_target(self.product.strategy)
+        self.row.target = g.proxy.database.strategy.get_target(self.product.strategy)
         self.row.price = float(data.get("price"))
         self.row.value = self.row.price * self.base_prev
         self.row.recommend = self.row.target - self.row.value
