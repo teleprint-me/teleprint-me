@@ -1,0 +1,13 @@
+{
+    "python.formatting.provider": "black",
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "files.autoSave": "afterDelay",
+    "editor.fontSize": 12,
+    "editor.fontFamily": "'Noto Sans Mono', 'Source Code Pro', 'Droid Sans Mono', 'monospace', monospace",
+    "python.analysis.extraPaths": [
+        ".venv/bin",
+        ".venv/lib/python3.10/site-packages"
+    ],
+    "python.analysis.typeCheckingMode": "basic"
+}
