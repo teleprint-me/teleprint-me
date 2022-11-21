@@ -1,4 +1,12 @@
 #
+# Local
+#
+assets/*
+!assets/views
+!assets/styles
+!assets/scripts
+
+#
 # Visual Studio Code
 #
 .vscode/*
