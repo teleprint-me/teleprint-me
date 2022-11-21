@@ -5,6 +5,11 @@ from teleprint_me.static import static_path
 app = Bottle()
 
 
+@app.route("/images/<filepath:path>")
+def images(filepath):
+    return static_file(filepath, root=static_path.images)
+
+
 @app.route("/styles/<filepath:path>")
 def styles(filepath):
     return static_file(filepath, root=static_path.styles)
@@ -15,9 +20,9 @@ def scripts(filepath):
     return static_file(filepath, root=static_path.scripts)
 
 
-@app.route("/images/<filepath:path>")
-def images(filepath):
-    return static_file(filepath, root=static_path.images)
+@app.route("/modules/<filepath:path>")
+def modules(filepath):
+    return static_file(filepath, root=static_path.modules)
 
 
 @app.route("/")

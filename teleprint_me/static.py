@@ -14,20 +14,24 @@ class StaticPath:
         return f"{self.__cwd}/assets"
 
     @property
-    def templates(self) -> str:
-        return f"{self.assets}/templates"
+    def styles(self) -> str:
+        return f"{self.assets}/styles"
 
     @property
     def views(self) -> str:
         return f"{self.assets}/views"
 
     @property
-    def styles(self) -> str:
-        return f"{self.assets}/styles"
+    def templates(self) -> str:
+        return f"{self.assets}/templates"
 
     @property
     def scripts(self) -> str:
         return f"{self.assets}/scripts"
+
+    @property
+    def modules(self) -> str:
+        return f"{self.assets}/modules"
 
     @property
     def images(self) -> str:
