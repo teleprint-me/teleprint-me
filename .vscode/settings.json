@@ -1,8 +1,35 @@
 {
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "editor.defaultFormatter": null,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": false, // enable per language
+    "editor.formatOnType": true,
+    "editor.stickyTabStops": true,
+    "editor.tabCompletion": "on",
+    "editor.wordWrap": "on",
+    "files.autoSave": "afterDelay",
+    "html.format.wrapLineLength": 80,
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "javascript.format.semicolons": "insert",
+    "javascript.format.insertSpaceAfterConstructor": true,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "prettier.tabWidth": 4,
     "python.formatting.provider": "black",
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
-    "files.autoSave": "afterDelay",
     "editor.fontSize": 12,
     "editor.fontFamily": "'Noto Sans Mono', 'Source Code Pro', 'Droid Sans Mono', 'monospace', monospace",
     "python.analysis.extraPaths": [
