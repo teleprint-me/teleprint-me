@@ -1,10 +1,13 @@
 from bottle import Bottle, static_file, run
-from teleprint_me.static import static_path
+from teleprint_me.static import static_path, module_path
 
 
 app = Bottle()
 
 
+#
+# Static Content
+#
 @app.route("/images/<filepath:path>")
 def images(filepath):
     return static_file(filepath, root=static_path.images)
@@ -20,11 +23,14 @@ def scripts(filepath):
     return static_file(filepath, root=static_path.scripts)
 
 
-@app.route("/modules/<filepath:path>")
-def modules(filepath):
-    return static_file(filepath, root=static_path.modules)
+@app.route("/grassroots/<filepath:path>")
+def grassroots(filepath):
+    return static_file(filepath, root=module_path.grassroots)
 
 
+#
+# Dynamic Content
+#
 @app.route("/")
 def root():
     return static_file("index.html", root=static_path.views)
@@ -45,4 +51,5 @@ def view_contact():
     return static_file("contact.html", root=static_path.views)
 
 
+# these settings are not to be used in production
 run(app, host="localhost", port=8080, reloader=True, debug=True)

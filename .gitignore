@@ -1,10 +1,10 @@
 #
 # Local
 #
-assets/*
-!assets/views
-!assets/styles
-!assets/scripts
+static/*
+!static/views
+!static/styles
+!static/scripts
 
 #
 # Visual Studio Code
@@ -21,12 +21,6 @@ assets/*
 
 # Built Visual Studio Code Extensions
 *.vsix
-
-# directories
-utils/
-assets/docs/
-assets/images/
-assets/videos/
 
 #
 # Python
