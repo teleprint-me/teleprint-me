@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>teleprint.me</title>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+        />
+        <link rel="stylesheet" href="/static/styles/main.css" />
+        <link rel="stylesheet" href="/static/styles/router.css" />
+        <script type="module" src="/static/modules/app.mjs"></script>
+    </head>
+
+    <body>
+        <header id="router">
+            <div class="container">
+                <nav class="router">
+                    <a class="theme-moon" data-theme="light">
+                        <i class="bx bxs-moon bx-md"></i>
+                        <span class="text">Dark</span>
+                    </a>
+                    <a href="/#!/">
+                        <i class="bx bxs-ghost bx-md"></i>
+                        <span class="text">Profile</span>
+                    </a>
+                    <a href="/#!/portfolio">
+                        <i class="bx bxl-git bx-md"></i>
+                        <span class="text">Portfolio</span>
+                    </a>
+                    <a href="/#!/contact">
+                        <i class="bx bxs-send bx-md"></i>
+                        <span class="text">Contact</span>
+                    </a>
+                </nav>
+            </div>
+        </header>
+        <main id="app"></main>
+    </body>
+</html>

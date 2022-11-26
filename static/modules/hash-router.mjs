@@ -44,7 +44,7 @@ export class HashRouter {
         const route = this.route();
         const anchors = document.querySelector('.router').querySelectorAll('a');
 
-        if (location.pathname === '/') {
+        if (!location.hash) {
             location = this.root;
         }
 
