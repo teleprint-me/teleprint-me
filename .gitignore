@@ -2,9 +2,11 @@
 # Local
 #
 static/*
-!static/views
 !static/styles
-!static/scripts
+!static/views
+!static/templates
+!static/components
+!static/modules
 
 #
 # Visual Studio Code
