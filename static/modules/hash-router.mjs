@@ -1,6 +1,4 @@
-import { AsyncRequest } from './request.mjs';
-
-const request = new AsyncRequest();
+import { AsyncRequest } from './async-request.mjs';
 
 export class HashRouter {
     constructor(selector, routes) {
@@ -13,6 +11,7 @@ export class HashRouter {
     }
 
     hashchange() {
+        const request = new AsyncRequest();
         const selector = this.selector;
         const routes = this.routes;
 
