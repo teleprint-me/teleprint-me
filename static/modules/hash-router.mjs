@@ -7,7 +7,7 @@ export class HashRouter {
     }
 
     get root() {
-        return '/#!/';
+        return '/#/';
     }
 
     hashchange() {
@@ -24,7 +24,7 @@ export class HashRouter {
         };
     }
 
-    route() {
+    click() {
         const hashchange = this.hashchange();
 
         return function (event) {
@@ -41,19 +41,17 @@ export class HashRouter {
 
     init() {
         const hashchange = this.hashchange();
-        const route = this.route();
+        const click = this.click();
         const anchors = document.querySelector('.router').querySelectorAll('a');
 
         if (!location.hash) {
             location = this.root;
         }
 
-        for (let anchor of anchors) {
-            if (anchor.getAttribute('data-theme')) {
-                continue;
+        for (let a of anchors) {
+            if (a.getAttribute('data-route')) {
+                a.addEventListener('click', click);
             }
-
-            anchor.addEventListener('click', route);
         }
 
         window.addEventListener('hashchange', hashchange);
