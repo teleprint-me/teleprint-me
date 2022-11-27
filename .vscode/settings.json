@@ -10,6 +10,8 @@
     "editor.stickyTabStops": true,
     "editor.tabCompletion": "on",
     "editor.wordWrap": "on",
+    "editor.fontSize": 12,
+    "editor.fontFamily": "'Noto Sans Mono', 'Source Code Pro', 'Droid Sans Mono', 'monospace'",
     "files.autoSave": "afterDelay",
     "html.format.wrapLineLength": 80,
     "[html]": {
@@ -26,17 +28,21 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true
     },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "prettier.configPath": ".prettierrc",
+    "prettier.prettierPath": "/usr/lib/prettier/",
     "prettier.tabWidth": 4,
-    "python.formatting.provider": "black",
-    "python.linting.flake8Enabled": true,
-    "python.linting.enabled": true,
-    "editor.fontSize": 12,
-    "editor.fontFamily": "'Noto Sans Mono', 'Source Code Pro', 'Droid Sans Mono', 'monospace'",
     "python.analysis.extraPaths": [
         ".venv/bin",
         ".venv/lib/python3.10/site-packages"
     ],
     "python.analysis.typeCheckingMode": "basic",
+    "python.formatting.provider": "black",
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
     "[python]": {
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true
