@@ -1,0 +1,50 @@
+<style>
+    .router {
+        align-items: center;
+        justify-content: space-evenly;
+        display: flex;
+        flex-flow: row nowrap;
+        min-height: 3.125em;
+    }
+
+    .router a {
+        display: flex;
+        flex-flow: column nowrap;
+        transition: all var(--duration) ease-in-out;
+        text-decoration: none;
+        align-items: center;
+    }
+
+    .router a:hover,
+    .router a:focus,
+    .router a:active {
+        color: var(--secondary);
+    }
+
+    .router .theme-sun:hover,
+    .router .theme-sun:active,
+    .router .theme-sun:focus {
+        color: rgb(247, 223, 30);
+    }
+</style>
+
+<div class="container">
+    <nav class="router">
+        <a href="/#/#" class="theme-moon" data-theme="light">
+            <i class="bx bxs-moon bx-md"></i>
+            <span class="text">Dark</span>
+        </a>
+        <a href="/#/" data-route>
+            <i class="bx bxs-ghost bx-md"></i>
+            <span class="text">Profile</span>
+        </a>
+        <a href="/#/portfolio" data-route>
+            <i class="bx bxl-git bx-md"></i>
+            <span class="text">Portfolio</span>
+        </a>
+        <a href="/#/contact" data-route>
+            <i class="bx bxs-send bx-md"></i>
+            <span class="text">Contact</span>
+        </a>
+    </nav>
+</div>
