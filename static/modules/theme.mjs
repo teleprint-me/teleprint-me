@@ -51,8 +51,8 @@ export class Theme {
 
     init() {
         const element = document.querySelector('[data-theme]');
-        const attribute = element.getAttribute('data-theme');
-        const store = localStorage.getItem('data-theme');
+        const attribute = element.getAttribute(this.attribute);
+        const store = localStorage.getItem(this.attribute);
 
         element.addEventListener('click', this.click());
 
