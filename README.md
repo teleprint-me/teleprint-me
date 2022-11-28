@@ -1,3 +1,4 @@
+## Pins
 <picture>
     <source 
     srcset="https://github-readme-stats.vercel.app/api/pin/?username=teleprint-me&repo=teleprint-me&layout=compact&show_icons=true&theme=dark"
@@ -10,6 +11,7 @@
     <img src="https://github-readme-stats.vercel.app/api/pin/?username=teleprint-me&repo=teleprint-me&show_icons=true" />
 </picture>
 
+## Languages
 <picture>
     <source 
     srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=teleprint-me&layout=compact&show_icons=true&theme=dark&include_all_commits=true"
@@ -22,6 +24,7 @@
     <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=teleprint-me&show_icons=true" />
 </picture>
 
+## Stats
 <picture>
     <source 
     srcset="https://github-readme-stats.vercel.app/api?username=teleprint-me&show_icons=true&theme=dark&include_all_commits=true&layout=compact"
