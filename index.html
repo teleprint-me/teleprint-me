@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>teleprint.me</title>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+        />
+        <link rel="stylesheet" href="/static/styles/main.css" />
+    </head>
+
+    <body>
+        <header>
+            <style>
+                .router {
+                    align-items: center;
+                    justify-content: space-evenly;
+                    display: flex;
+                    flex-flow: row nowrap;
+                    min-height: 3.125em;
+                }
+
+                .router a {
+                    display: flex;
+                    flex-flow: column nowrap;
+                    transition: all var(--duration) ease-in-out;
+                    text-decoration: none;
+                    align-items: center;
+                }
+
+                .router a:hover,
+                .router a:focus,
+                .router a:active {
+                    color: var(--secondary);
+                }
+
+                .router .theme-sun:hover,
+                .router .theme-sun:active,
+                .router .theme-sun:focus {
+                    color: rgb(247, 223, 30);
+                }
+            </style>
+
+            <div class="container">
+                <nav class="router">
+                    <a class="theme-moon" data-theme="light">
+                        <i class="bx bxs-moon bx-md"></i>
+                        <span class="text">Dark</span>
+                    </a>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <div class="wrapper">
+                    <h3 class="highlight">teleprint.me</h3>
+                    <div class="section">
+                        <h4 class="highlight">description</h4>
+                        <div class="description">
+                            <p class="text">
+                                This web application is under construction.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">zen</h4>
+                        <div class="description">
+                            <p class="text">
+                                Beautiful is better than ugly.<br />
+                                Explicit is better than implicit.<br />
+                                Simple is better than complex.<br />
+                                Complex is better than complicated.<br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script>
+            class Theme {
+                get attribute() {
+                    return 'data-theme';
+                }
+
+                light() {
+                    const attribute = this.attribute;
+
+                    return function (a) {
+                        const i = a.querySelector('i');
+                        const span = a.querySelector('span');
+
+                        a.setAttribute(attribute, 'dark');
+                        a.classList.replace('theme-moon', 'theme-sun');
+                        i.classList.replace('bxs-moon', 'bxs-sun');
+                        span.innerText = 'Light';
+                    };
+                }
+
+                dark() {
+                    const attribute = this.attribute;
+
+                    return function (a) {
+                        const i = a.querySelector('i');
+                        const span = a.querySelector('span');
+
+                        a.setAttribute(attribute, 'light');
+                        a.classList.replace('theme-sun', 'theme-moon');
+                        i.classList.replace('bxs-sun', 'bxs-moon');
+                        span.innerText = 'Dark';
+                    };
+                }
+
+                click() {
+                    const attribute = this.attribute;
+                    const light = this.light();
+                    const dark = this.dark();
+
+                    return function (event) {
+                        const a = event.target.closest('a');
+
+                        if ('light' === a.getAttribute(attribute)) {
+                            light(a);
+                        } else {
+                            dark(a);
+                        }
+
+                        localStorage.setItem(
+                            attribute,
+                            a.getAttribute(attribute)
+                        );
+                    };
+                }
+
+                init() {
+                    const element = document.querySelector('[data-theme]');
+                    const attribute = element.getAttribute(this.attribute);
+                    const store = localStorage.getItem(this.attribute);
+
+                    element.addEventListener('click', this.click());
+
+                    if (store != null) {
+                        if (store !== attribute) {
+                            element.click();
+                        }
+                    }
+                }
+            }
+            const theme = new Theme();
+            theme.init();
+        </script>
+    </body>
+</html>
