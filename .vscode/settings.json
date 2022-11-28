@@ -11,7 +11,7 @@
     "editor.tabCompletion": "on",
     "editor.wordWrap": "on",
     "editor.fontSize": 12,
-    "editor.fontFamily": "'Noto Sans Mono', 'Source Code Pro', 'Droid Sans Mono', 'monospace'",
+    "editor.fontFamily": "'Noto Sans Mono', 'Source Code Pro', 'Droid Sans Mono'",
     "files.autoSave": "afterDelay",
     "html.format.wrapLineLength": 80,
     "[html]": {
@@ -33,7 +33,7 @@
         "editor.formatOnSave": true
     },
     "prettier.configPath": ".prettierrc",
-    "prettier.prettierPath": "/usr/lib/prettier/",
+    "prettier.prettierPath": "/usr/lib/prettier",
     "prettier.tabWidth": 4,
     "python.analysis.extraPaths": [
         ".venv/bin",
