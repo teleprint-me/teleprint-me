@@ -2,13 +2,12 @@
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-Under_Construction-red)](https://teleprint.me/)
 
-## Info
-![OS](https://img.shields.io/badge/OS-Linux-yellow)
-![Dist](https://img.shields.io/badge/Dist-Ubuntu-orange)
-![Server](https://img.shields.io/badge/Server-Apache-red)
-![License](https://img.shields.io/badge/License-AGPL-blue)
+## About
+[![OS](https://img.shields.io/badge/OS-Linux-yellow)](https://www.kernel.org/doc/html/latest/)
+[![Dist](https://img.shields.io/badge/Dist-Ubuntu-orange)](https://ubuntu.com/server/docs)
+[![Server](https://img.shields.io/badge/Server-Apache-red)](https://httpd.apache.org/docs/)
+[![License](https://img.shields.io/badge/License-AGPL-blue)](https://www.gnu.org/licenses/agpl-3.0.html)
 
-## Pins
 <picture>
     <source 
     srcset="https://github-readme-stats.vercel.app/api/pin/?username=teleprint-me&repo=teleprint-me&layout=compact&show_icons=true&theme=dark"
