@@ -1,13 +1,17 @@
 #
 # Local
 #
-static/*
+static/data
+static/documents
+static/videos
+static/images/*
+
 !static/styles
 !static/views
 !static/templates
 !static/components
 !static/modules
-!static/images/qr-bitcoin.png
+!static/images/favicon_io
 
 #
 # Visual Studio Code
