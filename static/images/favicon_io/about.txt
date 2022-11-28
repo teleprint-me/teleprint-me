@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Miss Fajardose
+- Font Author: Copyright (c) 2004 Alejandro Paul (sudtipos@sudtipos.com), with Reserved Font Name "MissFajardose"
+- Font Source: http://fonts.gstatic.com/s/missfajardose/v22/E21-_dn5gvrawDdPFVl-N0Ajb8qvWPaJq4no.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
