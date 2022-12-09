@@ -1,24 +1,31 @@
-import { AsyncRequest } from './async-request.mjs';
+import { Register } from './register.mjs';
 import { HashRouter } from './hash-router.mjs';
 import { Theme } from './theme.mjs';
+import { AppRouter } from '../components/router.mjs';
+
+const components = [
+    {
+        name: 'app-router',
+        constructor: AppRouter
+    }
+];
+
+const register = new Register();
+console.log('Has Template Support:', register.hasTemplateSupport);
+console.log('Has Shadow Support:', register.hasShadowSupport);
+register.components(...components);
 
 const setup_router = async () => {
-    const request = new AsyncRequest();
-
-    const template = await request.template('/static/templates/router.html');
-
-    const header = document.querySelector('#router');
-    header.appendChild(template.content.cloneNode(true));
-
     const routes = {
         404: '/static/views/404.html',
-        '#/': '/static/views/profile.html',
-        '#/portfolio': '/static/views/portfolio.html',
-        '#/contact': '/static/views/contact.html'
+        '#!/': '/static/views/profile.html',
+        '#!/portfolio': '/static/views/portfolio.html',
+        '#!/contact': '/static/views/contact.html'
     };
 
     const router = new HashRouter('#app', routes);
-    router.init();
+
+    router.init('app-router');
 };
 
 const setup_theme = () => {
