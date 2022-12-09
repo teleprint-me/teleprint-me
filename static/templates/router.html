@@ -1,50 +1,61 @@
 <style>
-    .router {
-        align-items: center;
-        justify-content: space-evenly;
-        display: flex;
-        flex-flow: row nowrap;
-        min-height: 3.125em;
+    header {
+        margin: var(--spacing) auto;
     }
 
-    .router a {
-        display: flex;
-        flex-flow: column nowrap;
-        transition: all var(--duration) ease-in-out;
-        text-decoration: none;
-        align-items: center;
+    .container {
+        background: var(--background-secondary);
+        border: var(--border-primary);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin: var(--spacing);
     }
 
-    .router a:hover,
-    .router a:focus,
-    .router a:active {
-        color: var(--secondary);
+    @media (max-width: 7680px) {
+        header {
+            max-width: 30%;
+        }
     }
 
-    .router .theme-sun:hover,
-    .router .theme-sun:active,
-    .router .theme-sun:focus {
-        color: rgb(247, 223, 30);
+    @media (max-width: 3840px) {
+        header {
+            max-width: 35%;
+        }
+    }
+
+    @media (max-width: 1920px) {
+        header {
+            max-width: 40%;
+        }
+    }
+
+    @media (max-width: 1280px) {
+        header {
+            max-width: 50%;
+        }
+    }
+
+    @media (max-width: 720px) {
+        header {
+            max-width: 75%;
+        }
+    }
+
+    @media (max-width: 576px) {
+        header {
+            max-width: 85%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        header {
+            max-width: 95%;
+        }
     }
 </style>
 
-<div class="container">
-    <nav class="router">
-        <a class="theme-moon" data-theme="light">
-            <i class="bx bxs-moon bx-md"></i>
-            <span class="text">Dark</span>
-        </a>
-        <a href="/#/" data-route>
-            <i class="bx bxs-ghost bx-md"></i>
-            <span class="text">Profile</span>
-        </a>
-        <a href="/#/portfolio" data-route>
-            <i class="bx bxl-git bx-md"></i>
-            <span class="text">Portfolio</span>
-        </a>
-        <a href="/#/contact" data-route>
-            <i class="bx bxs-send bx-md"></i>
-            <span class="text">Contact</span>
-        </a>
-    </nav>
-</div>
+<header>
+    <div class="container">
+        <slot name="router"></slot>
+    </div>
+</header>
