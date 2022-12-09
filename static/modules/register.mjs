@@ -1,9 +1,9 @@
 export class Register {
-    static get hasTemplateSupport() {
+    get hasTemplateSupport() {
         return 'content' in document.createElement('template');
     }
 
-    static get hasShadowSupport() {
+    get hasShadowSupport() {
         return 'attachShadow' in document.createElement('div');
     }
 
