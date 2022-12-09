@@ -7,16 +7,21 @@ export class HashRouter {
     }
 
     get root() {
-        return '/#/';
+        return '/#!/';
     }
 
     hashchange() {
         const request = new AsyncRequest();
         const selector = this.selector;
         const routes = this.routes;
-
         return async function () {
-            const hash = window.location.hash;
+            let hash = window.location.hash;
+            // block empty hashes
+            // NOTE: hash and query params still need to be implemented
+            if (!hash) {
+                window.history.back();
+                return;
+            }
             const route = routes[hash] || routes[404];
             const html = await request.text(route);
 
@@ -34,18 +39,19 @@ export class HashRouter {
 
             event.preventDefault();
 
-            window.history.pushState({ location: a.href }, '', a.href);
+            window.history.pushState({}, '', a.href);
             hashchange();
         };
     }
 
-    init() {
+    init(selector) {
         const hashchange = this.hashchange();
         const click = this.click();
-        const anchors = document.querySelector('.router').querySelectorAll('a');
+        const element = document.querySelector(selector);
+        const anchors = element.querySelectorAll('a');
 
-        if (!location.hash) {
-            location = this.root;
+        if (!window.location.hash) {
+            window.location = this.root;
         }
 
         for (let a of anchors) {
