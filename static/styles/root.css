@@ -54,7 +54,158 @@ body {
     font-size: var(--font-size-sm);
 }
 
-app-router nav {
+h3,
+h4 {
+    border-bottom: var(--border-primary);
+    color: var(--secondary);
+    padding: var(--spacing);
+    text-transform: capitalize;
+}
+
+h3 {
+    font-size: var(--font-size-xl);
+}
+
+h4 {
+    font-size: var(--font-size-lg);
+}
+
+a {
+    color: var(--primary);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-position: under;
+    transition: all var(--duration) ease-in-out;
+}
+
+a:hover,
+a:focus,
+a:active {
+    text-decoration: none;
+    color: var(--secondary);
+}
+
+video,
+source {
+    display: block;
+    background-color: var(--background-primary);
+    border-radius: var(--border-radius);
+    padding: var(--nonce);
+    margin: var(--nonce) auto;
+    width: var(--full);
+}
+
+.highlight {
+    color: var(--secondary);
+}
+
+.container {
+    background: var(--background-secondary);
+    border: var(--border-primary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: var(--spacing);
+}
+
+.wrapper,
+.section,
+.section .menu,
+.section .description,
+.section .description .text,
+.section .description .note {
+    padding: var(--spacing);
+}
+
+.section video {
+    margin: var(--spacing) auto;
+    width: 100%;
+}
+
+.section .description {
+    text-align: left;
+}
+
+.section .description .note {
+    font-size: var(--font-size-xs);
+}
+
+.section .grid-row {
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.section .grid-row a {
+    display: block;
+    padding: var(--spacing);
+    text-decoration: none;
+}
+
+.section .grid-row a:hover,
+.section .grid-row a:active,
+.section .grid-row a:focus {
+    text-decoration: underline;
+    text-underline-position: under;
+    background: var(--background-tertiary);
+}
+
+.section.flex-row {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.section.flex-row ul {
+    flex: 1 1;
+    list-style-type: none;
+    margin: 1em;
+}
+
+.section.flex-row li {
+    font-size: 1em;
+    line-height: 1.5;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.section.profile h2 {
+    font-size: 2em;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.section.profile img {
+    background-color: var(--background-tertiary);
+    border: var(--border-primary);
+    border-radius: 75%;
+    display: block;
+    height: 128px;
+    margin: 0 auto;
+    object-fit: cover;
+    width: 128px;
+}
+
+.section .menu {
+    align-items: center;
+    justify-content: space-evenly;
+    display: flex;
+    min-height: 3.125em;
+}
+
+.section .menu a {
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+}
+
+.section .menu a:hover,
+.section .menu a:focus,
+.section .menu a:active {
+    color: var(--secondary);
+    transform: scale(1.25);
+}
+
+.router {
     align-items: center;
     justify-content: space-evenly;
     display: flex;
@@ -62,7 +213,7 @@ app-router nav {
     min-height: 3.125em;
 }
 
-app-router a {
+.router a {
     display: flex;
     color: var(--primary);
     flex-flow: column nowrap;
@@ -71,14 +222,14 @@ app-router a {
     align-items: center;
 }
 
-app-router a:hover,
-app-router a:focus,
-app-router a:active {
+.router a:hover,
+.router a:focus,
+.router a:active {
     color: var(--secondary);
 }
 
-app-router .theme-sun:hover,
-app-router .theme-sun:active,
-app-router .theme-sun:focus {
+.router .theme-sun:hover,
+.router .theme-sun:active,
+.router .theme-sun:focus {
     color: rgb(247, 223, 30);
 }
