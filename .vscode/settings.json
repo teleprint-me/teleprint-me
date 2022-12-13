@@ -3,7 +3,7 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true
     },
-    "editor.defaultFormatter": null,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnPaste": true,
     "editor.formatOnSave": false, // enable per language
     "editor.formatOnType": true,
@@ -12,7 +12,6 @@
     "editor.wordWrap": "on",
     "editor.fontSize": 12,
     "editor.fontFamily": "'Noto Sans Mono', 'Source Code Pro', 'Droid Sans Mono'",
-    "files.autoSave": "afterDelay",
     "html.format.wrapLineLength": 80,
     "[html]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -44,7 +43,7 @@
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
     "[python]": {
-        "editor.formatOnPaste": false,
+        "editor.formatOnPaste": false, // black doesn't support this feature
         "editor.formatOnSave": true
     }
 }
