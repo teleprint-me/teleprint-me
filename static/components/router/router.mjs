@@ -14,7 +14,7 @@ export class AppRouter extends HTMLElement {
         const style = await request.style(STYLE_URL);
         const node = template.content.cloneNode(true);
         const shadow = this.attachShadow({ mode: 'open' });
-        node.appendChild(style);
+        shadow.appendChild(style);
         shadow.appendChild(node);
     }
 }
