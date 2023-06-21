@@ -8,7 +8,7 @@
 [![Server](https://img.shields.io/badge/Server-Apache-red)](https://httpd.apache.org/docs/)
 [![License](https://img.shields.io/badge/License-AGPL-blue)](https://www.gnu.org/licenses/agpl-3.0.html)
 
-<picture>
+[<picture>
     <source 
     srcset="https://github-readme-stats.vercel.app/api/pin/?username=teleprint-me&repo=teleprint-me&layout=compact&show_icons=true&theme=dark"
     media="(prefers-color-scheme: dark)"
@@ -18,7 +18,7 @@
     media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
     />
     <img src="https://github-readme-stats.vercel.app/api/pin/?username=teleprint-me&repo=teleprint-me&show_icons=true" />
-</picture>
+</picture>](https://github.com/teleprint-me/teleprint-me)
 
 ## Languages
 <picture>
