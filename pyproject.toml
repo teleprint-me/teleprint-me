@@ -9,14 +9,13 @@ packages = [{include = "teleprint_me"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-bottle = "^0.12.23"
+bottle = "^0.12.25"
 WTForms = "^3.0.1"
-peewee = "^3.15.3"
 
 [tool.poetry.dev-dependencies]
-bpython = "^0.23"
-black = "^22.10.0"
-flake8 = "^5.0.4"
+bpython = "^0.24"
+black = "^23.3.0"
+flake8 = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
