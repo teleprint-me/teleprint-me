@@ -1,6 +1,5 @@
 {
-    // "editor.defaultFormatter": "ms-python.black-formatter",
-    "editor.formatOnPaste": true,
+    "editor.formatOnPaste": false, // enable per language
     "editor.formatOnSave": false, // enable per language
     "editor.formatOnType": true,
     "editor.stickyTabStops": true,
@@ -8,11 +7,29 @@
     "editor.wordWrap": "on",
     "editor.fontSize": 12,
     "editor.fontFamily": "'Noto Sans Mono', 'Source Code Pro', 'Droid Sans Mono'",
+    "prettier.configPath": ".prettierrc",
+    "prettier.prettierPath": "/usr/lib/prettier",
+    "prettier.tabWidth": 4,
+    "html.format.wrapLineLength": 80,
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true
     },
     "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "javascript.format.semicolons": "insert",
+    "javascript.format.insertSpaceAfterConstructor": true,
+    "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true
     },
@@ -23,7 +40,7 @@
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.languageServer": "Pylance",
     "python.analysis.typeCheckingMode": "basic",
-    "python.formatting.provider": "none",
+    "python.formatting.provider": "ms-python.black-formatter",
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Path": "${workspaceFolder}/.venv/bin/flake8",
     "python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",
@@ -36,8 +53,5 @@
             "source.organizeImports": true
         }
     },
-    "isort.args": ["--profile", "black"],
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    "isort.args": ["--profile", "black"]
 }
