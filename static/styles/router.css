@@ -1,0 +1,27 @@
+.router {
+    align-items: center;
+    justify-content: space-evenly;
+    display: flex;
+    flex-flow: row nowrap;
+    min-height: 3.125em;
+}
+
+.router a {
+    display: flex;
+    flex-flow: column nowrap;
+    transition: all var(--duration) ease-in-out;
+    text-decoration: none;
+    align-items: center;
+}
+
+.router a:hover,
+.router a:focus,
+.router a:active {
+    color: var(--secondary);
+}
+
+.router .theme-sun:hover,
+.router .theme-sun:active,
+.router .theme-sun:focus {
+    color: rgb(247, 223, 30);
+}

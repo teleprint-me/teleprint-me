@@ -1,0 +1,27 @@
+.menu {
+    align-items: center;
+    justify-content: space-evenly;
+    display: flex;
+    flex-flow: row nowrap;
+    min-height: 3.125em;
+}
+
+.menu a {
+    display: flex;
+    flex-flow: column nowrap;
+    transition: all var(--duration) ease-in-out;
+    text-decoration: none;
+    align-items: center;
+}
+
+.menu a:hover,
+.menu a:focus,
+.menu a:active {
+    color: var(--secondary);
+}
+
+.menu .theme-sun:hover,
+.menu .theme-sun:active,
+.menu .theme-sun:focus {
+    color: rgb(247, 223, 30);
+}

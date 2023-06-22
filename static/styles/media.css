@@ -1,0 +1,50 @@
+/* static/styles/media.css */
+
+@media (max-width: 7680px) {
+    header,
+    main {
+        max-width: 30%;
+    }
+}
+
+@media (max-width: 3840px) {
+    header,
+    main {
+        max-width: 35%;
+    }
+}
+
+@media (max-width: 1920px) {
+    header,
+    main {
+        max-width: 40%;
+    }
+}
+
+@media (max-width: 1280px) {
+    header,
+    main {
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 720px) {
+    header,
+    main {
+        max-width: 75%;
+    }
+}
+
+@media (max-width: 576px) {
+    header,
+    main {
+        max-width: 85%;
+    }
+}
+
+@media (max-width: 480px) {
+    header,
+    main {
+        max-width: 95%;
+    }
+}

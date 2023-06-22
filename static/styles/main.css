@@ -1,0 +1,44 @@
+/* static/styles/main.css */
+
+body {
+    background: var(--background-primary);
+    color: var(--primary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+}
+
+header,
+main {
+    margin: var(--spacing) auto;
+}
+
+h3,
+h4 {
+    border-bottom: var(--border-primary);
+    color: var(--secondary);
+    padding: var(--spacing);
+    text-transform: capitalize;
+}
+
+h3 {
+    font-size: var(--font-size-xl);
+}
+
+h4 {
+    font-size: var(--font-size-lg);
+}
+
+a {
+    color: var(--primary);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-position: under;
+    transition: all var(--duration) ease-in-out;
+}
+
+a:hover,
+a:focus,
+a:active {
+    text-decoration: none;
+    color: var(--secondary);
+}
