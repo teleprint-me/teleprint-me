@@ -1,0 +1,56 @@
+.contact {
+    padding: var(--spacing);
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.contact div {
+    display: flex;
+    flex: 1 1;
+    margin: var(--spacing);
+}
+
+.contact div textarea {
+    resize: none;
+}
+
+.contact div input,
+.contact div textarea {
+    outline: none;
+    flex: auto;
+    border-radius: var(--border-radius);
+    background: var(--background-tertiary);
+    border: var(--border-primary);
+    color: var(--primary);
+    padding: var(--spacing);
+    transition: all var(--duration) ease-in-out;
+}
+
+.contact div input:hover,
+.contact div input:focus,
+.contact div input:active,
+.contact div textarea:hover,
+.contact div textarea:focus,
+.contact div textarea:active {
+    border: 1px solid var(--secondary);
+    background: var(--background-primary);
+}
+
+.contact div input[type='submit']:hover,
+.contact div input[type='submit']:focus,
+.contact div input[type='submit']:active {
+    background: var(--secondary);
+    border: 1px solid var(--secondary);
+}
+
+:root:has([data-theme='light']) div input[type='submit']:hover,
+:root:has([data-theme='light']) div input[type='submit']:focus,
+:root:has([data-theme='light']) div input[type='submit']:active {
+    color: white;
+}
+
+:root:has([data-theme='dark']) div input[type='submit']:hover,
+:root:has([data-theme='dark']) div input[type='submit']:focus,
+:root:has([data-theme='dark']) div input[type='submit']:active {
+    color: black;
+}
