@@ -1,63 +1,49 @@
 export class Theme {
-    get attribute() {
+    get selector() {
         return 'data-theme';
     }
 
-    light() {
-        const attribute = this.attribute;
+    light = () => (a) => {
+        const i = a.querySelector('i');
+        const span = a.querySelector('span');
 
-        return function (a) {
-            const i = a.querySelector('i');
-            const span = a.querySelector('span');
+        a.setAttribute(this.selector, 'dark');
+        a.classList.replace('theme-moon', 'theme-sun');
+        i.classList.replace('bxs-moon', 'bxs-sun');
+        span.innerText = 'Light';
+    };
 
-            a.setAttribute(attribute, 'dark');
-            a.classList.replace('theme-moon', 'theme-sun');
-            i.classList.replace('bxs-moon', 'bxs-sun');
-            span.innerText = 'Light';
-        };
-    }
+    dark = () => (a) => {
+        const i = a.querySelector('i');
+        const span = a.querySelector('span');
 
-    dark() {
-        const attribute = this.attribute;
+        a.setAttribute(this.selector, 'light');
+        a.classList.replace('theme-sun', 'theme-moon');
+        i.classList.replace('bxs-sun', 'bxs-moon');
+        span.innerText = 'Dark';
+    };
 
-        return function (a) {
-            const i = a.querySelector('i');
-            const span = a.querySelector('span');
+    click = () => (event) => {
+        const a = event.target.closest('a');
 
-            a.setAttribute(attribute, 'light');
-            a.classList.replace('theme-sun', 'theme-moon');
-            i.classList.replace('bxs-sun', 'bxs-moon');
-            span.innerText = 'Dark';
-        };
-    }
+        if ('light' === a.getAttribute(this.selector)) {
+            this.light()(a);
+        } else {
+            this.dark()(a);
+        }
 
-    click() {
-        const attribute = this.attribute;
-        const light = this.light();
-        const dark = this.dark();
-
-        return function (event) {
-            const a = event.target.closest('a');
-
-            if ('light' === a.getAttribute(attribute)) {
-                light(a);
-            } else {
-                dark(a);
-            }
-
-            localStorage.setItem(attribute, a.getAttribute(attribute));
-        };
-    }
+        localStorage.setItem(this.selector, a.getAttribute(this.selector));
+    };
 
     init() {
-        const element = document.querySelector('[data-theme]');
-        const attribute = element.getAttribute(this.attribute);
-        const store = localStorage.getItem(this.attribute);
+        const element = document.querySelector(`[${this.selector}]`);
+        const selector = element.getAttribute(this.selector);
+        const store = localStorage.getItem(this.selector);
 
         element.addEventListener('click', this.click());
 
         if (store != null) {
-            if (store !== attribute) {
+            if (store !== selector) {
                 element.click();
             }
         }
