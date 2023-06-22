@@ -27,6 +27,12 @@
         max-width: 50%;
     }
 }
+@media (max-width: 1024px) {
+    header,
+    main {
+        max-width: 65%;
+    }
+}
 
 @media (max-width: 720px) {
     header,
