@@ -73,5 +73,5 @@
 .section.profile h2 {
     font-size: 2em;
     text-align: center;
-    text-transform: capitalize;
+    text-transform: full-width;
 }
