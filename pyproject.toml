@@ -9,8 +9,10 @@ packages = [{include = "teleprint_me"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-bottle = "^0.12.25"
 WTForms = "^3.0.1"
+email-validator = "^2.0.0.post2"
+flask = "^2.3.2"
+Flask-WTF = "^1.1.1"
 
 [tool.poetry.dev-dependencies]
 bpython = "^0.24"
