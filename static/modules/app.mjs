@@ -23,7 +23,7 @@ console.log('Has Shadow Support:', register.hasShadowSupport);
 register.components(...components);
 
 for (let component of components) {
-    console.log('registered', component);
+    console.log('Registered Component:', component.name);
 }
 
 const setup_router = async () => {
@@ -36,12 +36,13 @@ const setup_router = async () => {
 
     const router = new HashRouter('app-main', routes);
 
+    // Initialize the router using the app-router element as the container
+    // for the routing.
     router.init('app-router');
 };
 
 const setup_theme = () => {
     const theme = new Theme();
-
     theme.init();
 };
 
