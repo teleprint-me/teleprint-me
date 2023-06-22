@@ -24,6 +24,6 @@ class ContactForm(FlaskForm):
         validators=[DataRequired()],
         description="body",
         name="body",
-        render_kw={"placeholder": "message body"},
+        render_kw={"placeholder": "message body", "rows": 10},
     )
     submit = SubmitField("Send")
