@@ -1,60 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>teleprint.me</title>
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/static/images/favicon_io/apple-touch-icon.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/static/images/favicon_io/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/static/images/favicon_io/favicon-16x16.png"
-        />
-        <link
-            rel="manifest"
-            href="/static/images/favicon_io/site.webmanifest"
-        />
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-        />
-        <link rel="stylesheet" href="/static/styles/root.css" />
-    </head>
 
-    <body>
-        <app-router>
-            <nav slot="router" class="router">
-                <a href="#" class="theme-moon" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>teleprint.me</title>
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="/static/images/favicon_io/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="/static/images/favicon_io/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="/static/images/favicon_io/favicon-16x16.png" />
+    <link rel="manifest" href="/static/images/favicon_io/site.webmanifest" />
+    <link rel="stylesheet"
+        href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/root.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/main.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/media.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/container.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/router.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/menu.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/contact.css" />
+</head>
+
+<body>
+    <!-- Router -->
+    <header>
+        <div class="container">
+            <nav class="router">
+                <a class="theme-moon" data-theme="light">
                     <i class="bx bxs-moon bx-md"></i>
                     <span class="text">Dark</span>
                 </a>
-                <a href="/#!/" data-route>
-                    <i class="bx bxs-ghost bx-md"></i>
-                    <span class="text">Profile</span>
-                </a>
-                <a href="/#!/portfolio" data-route>
-                    <i class="bx bxl-git bx-md"></i>
-                    <span class="text">Portfolio</span>
-                </a>
-                <a href="/#!/contact" data-route>
-                    <i class="bx bxs-send bx-md"></i>
-                    <span class="text">Contact</span>
-                </a>
             </nav>
-        </app-router>
-        <app-main></app-main>
-        <script type="module" src="/static/modules/app.mjs"></script>
-    </body>
+        </div>
+    </header>
+
+    <!-- Application -->
+    <main>
+        <!-- Title -->
+        <div class="container">
+            <div class="wrapper">
+                <div class="section profile">
+                    <h2><span class="highlight">Austin</span> Berrio</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile -->
+        <div class="container">
+            <div class="wrapper">
+                <div class="section">
+                    <h4 class="highlight">about</h4>
+                    <div class="description">
+                        <p class="text">
+                            I enjoy advancing my knowledge and experience
+                            with programming as my primary subject of
+                            interest.
+                        </p>
+                    </div>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">skills</h4>
+                    <div class="section flex-row">
+                        <ul>
+                            <li>Shell</li>
+                            <li>Python</li>
+                            <li>C/C++</li>
+                        </ul>
+                        <ul>
+                            <li>HTML</li>
+                            <li>CSS</li>
+                            <li>JavaScript</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">interests</h4>
+                    <div class="section flex-row">
+                        <ul>
+                            <li>Software Development</li>
+                            <li>GNU + Linux</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">zen</h3>
+                        <div class="description">
+                            <p class="text" style="text-align: center">
+                                Beautiful is better than ugly.<br />
+                                Explicit is better than implicit.<br />
+                                Simple is better than complex.<br />
+                                Complex is better than complicated.<br />
+                            </p>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PyGPTPrompt -->
+        <div class="container">
+            <div class="wrapper">
+                <h3 class="highlight">PyGPTPrompt</h3>
+                <div class="section">
+                    <h4 class="highlight">description</h4>
+                    <div class="description">
+                        <p class="text">
+                            PyGPTPrompt is a Python interface for the <a
+                                href="https://platform.openai.com/docs/introduction">OpenAI
+                                REST API</a> that enables automation of
+                            GPT-specific tasks using prompts.
+                        </p>
+                        <p class="note">
+                            <span class="highlight">*</span>
+                            This application requires a
+                            <a href="https://platform.openai.com/account/api-keys"
+                                target="_blank">openai api key</a>.
+                        </p>
+                    </div>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">showcase</h4>
+                    <div class="gif-container">
+                        <img src="/static/videos/gpt-3.5-turbo-mobile.gif"
+                            type="image/gif" />
+                    </div>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">Application</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxs-home bx-md"></i>
+                        </a>
+                        <a href="https://github.com/teleprint-me/py.gpt.prompt"
+                            target="_blank">
+                            <i class="bx bxl-github bx-md"></i>
+                        </a>
+                    </nav>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">tool kit</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxl-python bx-sm"></i>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="wrapper">
+                <h3 class="highlight">snake</h3>
+                <div class="section">
+                    <h4 class="highlight">description</h4>
+                    <div class="description">
+                        <p class="text">
+                            A simple
+                            <a
+                                href="https://developer.mozilla.org/en-US/docs/Glossary/SPA">SPA</a>
+                            designed to explore the
+                            <a
+                                href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">Canvas
+                                API</a>.
+                        </p>
+                        <p class="note">
+                            <span class="highlight">*</span>
+                            This application requires a browser that
+                            supports html5 canvas.
+                        </p>
+                    </div>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">Application</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxs-home bx-md"></i>
+                        </a>
+                        <a href="https://github.com/teleprint-me/snake"
+                            target="_blank">
+                            <i class="bx bxl-github bx-md"></i>
+                        </a>
+                    </nav>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">tool kit</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxl-html5 bx-sm"></i>
+                        </a>
+                        <a>
+                            <i class="bx bxl-css3 bx-sm"></i>
+                        </a>
+                        <a>
+                            <i class="bx bxl-javascript bx-sm"></i>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="wrapper">
+                <h3 class="highlight">flashcards</h3>
+                <div class="section">
+                    <h4 class="highlight">description</h4>
+                    <div class="description">
+                        <p class="text">
+                            A simple
+                            <a
+                                href="https://developer.mozilla.org/en-US/docs/Glossary/SPA">SPA</a>
+                            designed to explore the
+                            <a
+                                href="https://developer.mozilla.org/en-US/docs/Web/API/Storage">Storage
+                                API</a>.
+                        </p>
+                    </div>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">Application</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxs-home bx-md"></i>
+                        </a>
+                        <a href="https://github.com/teleprint-me/flashcards"
+                            target="_blank">
+                            <i class="bx bxl-github bx-md"></i>
+                        </a>
+                    </nav>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">tool kit</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxl-html5 bx-sm"></i>
+                        </a>
+                        <a>
+                            <i class="bx bxl-css3 bx-sm"></i>
+                        </a>
+                        <a>
+                            <i class="bx bxl-javascript bx-sm"></i>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="wrapper">
+                <h3 class="highlight">coinbase pro</h3>
+                <div class="section">
+                    <h4 class="highlight">description</h4>
+                    <div class="description">
+                        <p class="text">
+                            A pythonic implementation of the
+                            <a href="https://pro.coinbase.com/"
+                                target="_blank">Coinbase Pro</a>
+                            REST API.
+                        </p>
+                        <p class="text">
+                            A library designed to explore the
+                            <a href="https://pypi.org/project/requests/"
+                                target="_blank">requests</a>
+                            and
+                            <a
+                                href="https://pypi.org/project/websocket/">websocket</a>
+                            libraries,
+                            <a href="https://pypi.org/project/pytest/"
+                                target="_blank">pytest</a>
+                            test suite,
+                            <a href="https://pypi.org/project/poetry/"
+                                target="_blank">poetry</a>
+                            package and dependency management, and the
+                            <a href="https://www.travis-ci.com/">Travis CI</a>
+                            service for building and testing.
+                        </p>
+                        <p class="note">
+                            <span class="highlight">*</span>
+                            This library includes comprehensive
+                            documentation and requires a coinbase pro api
+                            key.
+                        </p>
+                    </div>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">library</h4>
+                    <nav class="menu">
+                        <a href="https://github.com/teleprint-me/coinbase-pro/blob/main/docs/01-Quickstart.md#quickstart"
+                            target="_blank">
+                            <i class="bx bxs-file-md bx-md"></i>
+                        </a>
+                        <a href="https://github.com/teleprint-me/coinbase-pro"
+                            target="_blank">
+                            <i class="bx bxl-github bx-md"></i>
+                        </a>
+                    </nav>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">tool kit</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxl-python bx-sm"></i>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="wrapper">
+                <div class="section">
+                    <h4 class="highlight">contact</h4>
+                    <div class="description">
+                        <p class="text">
+                            If you like my work, then you should contact me!
+                        </p>
+                    </div>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">contact form</h4>
+                    <form class="contact" href="/" method="post" autocomplete="on">
+                        {{ form.csrf_token }}
+                        <div>
+                            {{ form.email }}
+                        </div>
+                        <div>
+                            {{ form.subject }}
+                        </div>
+                        <div>
+                            {{ form.body }}
+                        </div>
+                        <div>
+                            {{ form.submit }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="wrapper">
+                <h3 class="highlight">social</h3>
+                <div class="section">
+                    <nav class="wrapper router">
+                        <a href="https://www.reddit.com/user/teleprint-me"
+                            target="_blank">
+                            <i class="bx bxl-reddit bx-md"></i>
+                            <span class="text">Reddit</span>
+                        </a>
+                        <a href="https://github.com/teleprint-me"
+                            target="_blank">
+                            <i class="bx bxl-github bx-md"></i>
+                            <span class="text">Github</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/modules/theme.mjs" type="module"></script>
+    <script type="module">
+        import { Theme } from "/static/modules/theme.mjs";
+
+        const theme = new Theme();
+        theme.init();
+    </script>
+</body>
+
 </html>
