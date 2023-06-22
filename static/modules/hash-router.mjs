@@ -1,61 +1,39 @@
-import { AsyncRequest } from './async-request.mjs';
+import { RouterObserver } from './router-observer.mjs';
 
-export class HashRouter {
+class HashRouter {
     constructor(selector, routes) {
         this.selector = selector;
         this.routes = routes;
+        this.observer = null;
     }
 
     get root() {
         return '/#!/';
     }
 
-    hashchange() {
-        const request = new AsyncRequest();
-        const selector = this.selector;
-        const routes = this.routes;
-        return async function () {
-            let hash = window.location.hash;
-            // block empty hashes
-            // NOTE: hash and query params still need to be implemented
-            if (!hash) {
-                window.history.back();
-                return;
-            }
-            const route = routes[hash] || routes[404];
-            const html = await request.text(route);
-
-            document.querySelector(selector).innerHTML = html;
-        };
-    }
-
-    click() {
-        const hashchange = this.hashchange();
-
-        return function (event) {
-            event = event || window.event;
-
-            const a = event.target.closest('a');
-
-            event.preventDefault();
-
-            window.history.pushState({}, '', a.href);
-            hashchange();
-        };
+    // Set the observer property to the specified observer object.
+    observe(observer) {
+        this.observer = observer;
     }
 
     init(selector) {
-        const hashchange = this.hashchange();
-        const click = this.click();
+        const hashchange = this.observer.hashchange();
+        const click = this.observer.click();
+
         const element = document.querySelector(selector);
         const anchors = element.querySelectorAll('a');
+
+        // Create a new RouterObserver instance and register it as the observer
+        // for the HashRouter.
+        this.observe(new RouterObserver(this.selector, this.routes));
 
         if (!window.location.hash) {
             window.location = this.root;
         }
 
         for (let a of anchors) {
-            if (a.getAttribute('data-route')) {
+            if (a.hash.startsWith('#!/')) {
+                console.log('Registered Route:', a.hash);
                 a.addEventListener('click', click);
             }
         }
@@ -64,3 +42,5 @@ export class HashRouter {
         hashchange();
     }
 }
+
+export { HashRouter };
