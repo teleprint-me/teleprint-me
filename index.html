@@ -30,238 +30,17 @@
             rel="stylesheet"
             href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
         />
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap');
-
-            :root:has([data-theme='light']) {
-                --primary: rgb(50, 50, 50);
-                --secondary: rgb(0, 80, 140);
-                --background-primary: rgb(250, 250, 250);
-                --background-secondary: rgb(235, 235, 235);
-                --background-tertiary: rgb(225, 225, 225);
-                --box-shadow: 1px 1px 4px 2px rgba(50, 50, 50, 0.2);
-            }
-
-            :root:has([data-theme='dark']) {
-                --primary: rgb(250, 250, 250);
-                --secondary: rgb(180, 220, 255);
-                --background-primary: rgb(50, 50, 50);
-                --background-secondary: rgb(65, 65, 65);
-                --background-tertiary: rgb(75, 75, 75);
-                --box-shadow: 1px 1px 4px 2px rgba(0, 0, 0, 0.2);
-            }
-
-            @media (prefers-color-scheme: dark) {
-                :root:not(:has([data-theme='light'])) {
-                    --primary: rgb(250, 250, 250);
-                    --secondary: rgb(180, 220, 255);
-                    --background-primary: rgb(50, 50, 50);
-                    --background-secondary: rgb(65, 65, 65);
-                    --background-tertiary: rgb(75, 75, 75);
-                    --box-shadow: 1px 1px 4px 2px rgba(0, 0, 0, 0.2);
-                }
-            }
-
-            :root {
-                --secondary: rgb(45, 147, 255);
-                --success: rgb(0, 200, 50);
-                --warning: rgb(255, 255, 0);
-                --danger: rgb(200, 35, 35);
-                --border-primary: 1px solid var(--background-tertiary);
-                --border-secondary: 1px solid var(--primary);
-                --border-tertiary: 1px solid var(--secondary);
-                --border-radius: 0.625em;
-                --delay: 200ms;
-                --duration: 500ms;
-                --font-primary: 'Noto Sans Mono';
-                --font-family: var(--font-primary), Monospace, Arial, Helvetica,
-                    Times;
-                --font-size-xs: 0.75em;
-                --font-size-sm: 0.875em;
-                --font-size-md: 1em;
-                --font-size-lg: 1.25em;
-                --font-size-xl: 1.5em;
-                --spacing: 0.625em;
-            }
-
-            *,
-            ::before,
-            ::after {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
-
-            body {
-                background: var(--background-primary);
-                color: var(--primary);
-                font-family: var(--font-family);
-                font-size: var(--font-size-sm);
-            }
-
-            header,
-            main {
-                margin: var(--spacing) auto;
-            }
-
-            h3,
-            h4 {
-                border-bottom: var(--border-primary);
-                color: var(--secondary);
-                padding: var(--spacing);
-                text-transform: capitalize;
-            }
-
-            h3 {
-                font-size: var(--font-size-xl);
-            }
-
-            h4 {
-                font-size: var(--font-size-lg);
-            }
-
-            a {
-                color: var(--primary);
-                cursor: pointer;
-                text-decoration: underline;
-                text-underline-position: under;
-                transition: all var(--duration) ease-in-out;
-            }
-
-            a:hover,
-            a:focus,
-            a:active {
-                text-decoration: none;
-                color: var(--secondary);
-            }
-
-            .highlight {
-                color: var(--secondary);
-            }
-
-            .container {
-                background: var(--background-secondary);
-                border: var(--border-primary);
-                border-radius: var(--border-radius);
-                box-shadow: var(--box-shadow);
-                margin: var(--spacing);
-            }
-
-            .wrapper,
-            .section,
-            .section .menu,
-            .section .description,
-            .section .description .text,
-            .section .description .note {
-                padding: var(--spacing);
-            }
-
-            .section .description {
-                text-align: left;
-            }
-
-            .section.flex-row {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .section.flex-row ul {
-                flex: 1 1;
-                list-style-type: none;
-                margin: 1em;
-            }
-
-            .section.flex-row li {
-                font-size: 1em;
-                line-height: 1.5;
-                text-align: center;
-                text-transform: uppercase;
-            }
-
-            .section.profile h2 {
-                font-size: 2em;
-                text-align: center;
-                text-transform: capitalize;
-            }
-
-            .router {
-                align-items: center;
-                justify-content: space-evenly;
-                display: flex;
-                flex-flow: row nowrap;
-                min-height: 3.125em;
-            }
-
-            .router a {
-                display: flex;
-                flex-flow: column nowrap;
-                transition: all var(--duration) ease-in-out;
-                text-decoration: none;
-                align-items: center;
-            }
-
-            .router a:hover,
-            .router a:focus,
-            .router a:active {
-                color: var(--secondary);
-            }
-
-            .router .theme-sun:hover,
-            .router .theme-sun:active,
-            .router .theme-sun:focus {
-                color: rgb(247, 223, 30);
-            }
-
-            @media (max-width: 7680px) {
-                header,
-                main {
-                    max-width: 30%;
-                }
-            }
-
-            @media (max-width: 3840px) {
-                header,
-                main {
-                    max-width: 35%;
-                }
-            }
-
-            @media (max-width: 1920px) {
-                header,
-                main {
-                    max-width: 40%;
-                }
-            }
-
-            @media (max-width: 1280px) {
-                header,
-                main {
-                    max-width: 50%;
-                }
-            }
-
-            @media (max-width: 720px) {
-                header,
-                main {
-                    max-width: 75%;
-                }
-            }
-
-            @media (max-width: 576px) {
-                header,
-                main {
-                    max-width: 85%;
-                }
-            }
-
-            @media (max-width: 480px) {
-                header,
-                main {
-                    max-width: 95%;
-                }
-            }
-        </style>
+        <link rel="stylesheet" class="rel" href="/static/styles/root.css" />
+        <link rel="stylesheet" class="rel" href="/static/styles/main.css" />
+        <link rel="stylesheet" class="rel" href="/static/styles/media.css" />
+        <link
+            rel="stylesheet"
+            class="rel"
+            href="/static/styles/container.css"
+        />
+        <link rel="stylesheet" class="rel" href="/static/styles/router.css" />
+        <link rel="stylesheet" class="rel" href="/static/styles/menu.css" />
+        <link rel="stylesheet" class="rel" href="/static/styles/contact.css" />
     </head>
 
     <body>
@@ -279,20 +58,23 @@
 
         <!-- Application -->
         <main>
+            <!-- Title -->
             <div class="container">
                 <div class="wrapper">
                     <div class="section profile">
                         <h2>
-                            <span class="highlight">under</span> construction
+                            Hello. My name is
+                            <span class="highlight">Austin.</span>
                         </h2>
                     </div>
                 </div>
             </div>
 
+            <!-- Zen of Python -->
             <div class="container">
                 <div class="wrapper">
-                    <h3 class="highlight">zen</h3>
                     <div class="section">
+                        <h4 class="highlight">zen</h4>
                         <div class="description">
                             <p class="text" style="text-align: center">
                                 Beautiful is better than ugly.<br />
@@ -305,6 +87,311 @@
                 </div>
             </div>
 
+            <!-- Profile -->
+            <div class="container">
+                <div class="wrapper">
+                    <div class="section">
+                        <h4 class="highlight">about</h4>
+                        <div class="description">
+                            <p class="text">
+                                I enjoy advancing my knowledge and experience
+                                with programming as my primary subject of
+                                interest.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">skills</h4>
+                        <div class="section flex-row">
+                            <ul>
+                                <li>Shell</li>
+                                <li>Python</li>
+                                <li>C/C++</li>
+                            </ul>
+                            <ul>
+                                <li>HTML</li>
+                                <li>CSS</li>
+                                <li>JavaScript</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">interests</h4>
+                        <div class="section flex-row">
+                            <ul>
+                                <li>GNU + Linux</li>
+                                <li>Software Development</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bootstrap Arch Linux -->
+            <div class="container">
+                <div class="wrapper">
+                    <h3 class="highlight">bootstrap arch linux</h3>
+                    <div class="section">
+                        <h4 class="highlight">description</h4>
+                        <div class="description">
+                            <p class="text">
+                                Experimental, minimalistic, and modular shell
+                                scripts to bootstrap
+                                <a href="https://archlinux.org">Arch Linux</a>.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">Application</h4>
+                        <nav class="menu">
+                            <a>
+                                <i class="bx bx-play-circle bx-md"></i>
+                                <span class="text">Showcase</span>
+                            </a>
+                            <a
+                                href="https://github.com/teleprint-me/bootstrap-arch-linux"
+                                target="_blank"
+                            >
+                                <i class="bx bxl-github bx-md"></i>
+                                <span class="text">Github</span>
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">tool kit</h4>
+                        <nav class="menu">
+                            <a>
+                                <i class="bx bxl-tux bx-sm"></i>
+                                <span class="text">Linux</span>
+                            </a>
+                            <a>
+                                <i class="bx bx-terminal bx-sm"></i>
+                                <span class="text">Shell</span>
+                            </a>
+                            <a>
+                                <i class="bx bxl-git bx-sm"></i>
+                                <span class="text">Git</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PyGPTPrompt -->
+            <div class="container">
+                <div class="wrapper">
+                    <h3 class="highlight">PyGPTPrompt</h3>
+                    <div class="section">
+                        <h4 class="highlight">description</h4>
+                        <div class="description">
+                            <p class="text">
+                                PyGPTPrompt is a Python interface for the
+                                <a
+                                    href="https://platform.openai.com/docs/introduction"
+                                    >OpenAI REST API</a
+                                >
+                                that enables automation of GPT-specific tasks
+                                using prompts.
+                            </p>
+                            <p class="note">
+                                <span class="highlight">*</span>
+                                This application requires a
+                                <a
+                                    href="https://platform.openai.com/account/api-keys"
+                                    target="_blank"
+                                    >openai api key</a
+                                >.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">Application</h4>
+                        <nav class="menu">
+                            <a>
+                                <i class="bx bx-play-circle bx-md"></i>
+                                <span class="text">Showcase</span>
+                            </a>
+                            <a
+                                href="https://github.com/teleprint-me/py.gpt.prompt"
+                                target="_blank"
+                            >
+                                <i class="bx bxl-github bx-md"></i>
+                                <span class="text">Github</span>
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">showcase</h4>
+                        <div class="gif-container">
+                            <img
+                                src="/static/videos/gpt-3.5-turbo-mobile.gif"
+                                type="image/gif"
+                            />
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">tool kit</h4>
+                        <nav class="menu">
+                            <a>
+                                <i class="bx bxl-tux bx-sm"></i>
+                                <span class="text">Linux</span>
+                            </a>
+                            <a>
+                                <i class="bx bx-terminal bx-sm"></i>
+                                <span class="text">Shell</span>
+                            </a>
+                            <a>
+                                <i class="bx bxl-git bx-sm"></i>
+                                <span class="text">Git</span>
+                            </a>
+                            <a>
+                                <i class="bx bxl-python bx-sm"></i>
+                                <span class="text">Python</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Snake (Fork) -->
+            <div class="container">
+                <div class="wrapper">
+                    <h3 class="highlight">snake</h3>
+                    <div class="section">
+                        <h4 class="highlight">description</h4>
+                        <div class="description">
+                            <p class="text">
+                                A simple
+                                <a
+                                    href="https://developer.mozilla.org/en-US/docs/Glossary/SPA"
+                                    >SPA</a
+                                >
+                                designed to explore the
+                                <a
+                                    href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API"
+                                    >Canvas API</a
+                                >.
+                            </p>
+                            <p class="note">
+                                <span class="highlight">*</span>
+                                This application is a modified fork of
+                                <a
+                                    href="https://github.com/CodingWith-Adam/snake"
+                                    >CodingWith-Adam/snake</a
+                                >.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">Application</h4>
+                        <nav class="menu">
+                            <a>
+                                <i class="bx bx-play-circle bx-md"></i>
+                                <span class="text">Showcase</span>
+                            </a>
+                            <a
+                                href="https://github.com/teleprint-me/snake"
+                                target="_blank"
+                            >
+                                <i class="bx bxl-github bx-md"></i>
+                                <span class="text">Github</span>
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">tool kit</h4>
+                        <nav class="menu">
+                            <a>
+                                <i class="bx bxl-git bx-sm"></i>
+                                <span class="text">Git</span>
+                            </a>
+                            <a>
+                                <i class="bx bxl-html5 bx-sm"></i>
+                                <span class="text">HTML</span>
+                            </a>
+                            <a>
+                                <i class="bx bxl-css3 bx-sm"></i>
+                                <span class="text">CSS</span>
+                            </a>
+                            <a>
+                                <i class="bx bxl-javascript bx-sm"></i>
+                                <span class="text">JavaScript</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flashcards (Fork) -->
+            <div class="container">
+                <div class="wrapper">
+                    <h3 class="highlight">flashcards</h3>
+                    <div class="section">
+                        <h4 class="highlight">description</h4>
+                        <div class="description">
+                            <p class="text">
+                                A simple
+                                <a
+                                    href="https://developer.mozilla.org/en-US/docs/Glossary/SPA"
+                                    >SPA</a
+                                >
+                                designed to explore the
+                                <a
+                                    href="https://developer.mozilla.org/en-US/docs/Web/API/Storage"
+                                    >Storage API</a
+                                >.
+                            </p>
+                            <p class="note">
+                                <span class="highlight">*</span>
+                                This application is a modified fork of
+                                <a
+                                    href="https://github.com/miguelznunez/Flashcards"
+                                    >miguelznunez/Flashcards</a
+                                >.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">Application</h4>
+                        <nav class="menu">
+                            <a>
+                                <i class="bx bx-play-circle bx-md"></i>
+                                <span class="text">Showcase</span>
+                            </a>
+                            <a
+                                href="https://github.com/teleprint-me/flashcards"
+                                target="_blank"
+                            >
+                                <i class="bx bxl-github bx-md"></i>
+                                <span class="text">Github</span>
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="section">
+                        <h4 class="highlight">tool kit</h4>
+                        <nav class="menu">
+                            <a>
+                                <i class="bx bxl-git bx-sm"></i>
+                                <span class="text">Git</span>
+                            </a>
+                            <a>
+                                <i class="bx bxl-html5 bx-sm"></i>
+                                <span class="text">HTML</span>
+                            </a>
+                            <a>
+                                <i class="bx bxl-css3 bx-sm"></i>
+                                <span class="text">CSS</span>
+                            </a>
+                            <a>
+                                <i class="bx bxl-javascript bx-sm"></i>
+                                <span class="text">JavaScript</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media -->
             <div class="container">
                 <div class="wrapper">
                     <h3 class="highlight">social</h3>
@@ -318,13 +405,6 @@
                                 <span class="text">Reddit</span>
                             </a>
                             <a
-                                href="https://www.linkedin.com/in/austin-berrio-b1606124a/"
-                                target="_blank"
-                            >
-                                <i class="bx bxl-linkedin bx-md"></i>
-                                <span class="text">LinkedIn</span>
-                            </a>
-                            <a
                                 href="https://github.com/teleprint-me"
                                 target="_blank"
                             >
@@ -335,77 +415,32 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Donation -->
+            <div class="container">
+                <div class="wrapper">
+                    <h3 class="highlight">donate</h3>
+                    <div class="section">
+                        <nav class="wrapper router">
+                            <a
+                                href="https://blockstream.info/address/3Q4qSNxpiEcaK3aJDdagzqU9XNyqs8zNrJ"
+                                target="_blank"
+                            >
+                                <img
+                                    src="https://img.shields.io/badge/Bitcoin-3Q4qSNxpiEcaK3aJDdagzqU9XNyqs8zNrJ-orange"
+                                />
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
         </main>
 
-        <script>
-            class Theme {
-                get selector() {
-                    return 'data-theme';
-                }
+        <!-- Modules -->
+        <script src="/static/modules/theme.mjs" type="module"></script>
+        <script type="module">
+            import { Theme } from '/static/modules/theme.mjs';
 
-                light() {
-                    const selector = this.selector;
-
-                    return function (a) {
-                        const i = a.querySelector('i');
-                        const span = a.querySelector('span');
-
-                        a.setAttribute(selector, 'dark');
-                        a.classList.replace('theme-moon', 'theme-sun');
-                        i.classList.replace('bxs-moon', 'bxs-sun');
-                        span.innerText = 'Light';
-                    };
-                }
-
-                dark() {
-                    const selector = this.selector;
-
-                    return function (a) {
-                        const i = a.querySelector('i');
-                        const span = a.querySelector('span');
-
-                        a.setAttribute(selector, 'light');
-                        a.classList.replace('theme-sun', 'theme-moon');
-                        i.classList.replace('bxs-sun', 'bxs-moon');
-                        span.innerText = 'Dark';
-                    };
-                }
-
-                click() {
-                    const selector = this.selector;
-                    const light = this.light();
-                    const dark = this.dark();
-
-                    return function (event) {
-                        const a = event.target.closest('a');
-
-                        if ('light' === a.getAttribute(selector)) {
-                            light(a);
-                        } else {
-                            dark(a);
-                        }
-
-                        localStorage.setItem(
-                            selector,
-                            a.getAttribute(selector)
-                        );
-                    };
-                }
-
-                init() {
-                    const element = document.querySelector('[data-theme]');
-                    const selector = element.getAttribute(this.selector);
-                    const store = localStorage.getItem(this.selector);
-
-                    element.addEventListener('click', this.click());
-
-                    if (store != null) {
-                        if (store !== selector) {
-                            element.click();
-                        }
-                    }
-                }
-            }
             const theme = new Theme();
             theme.init();
         </script>
