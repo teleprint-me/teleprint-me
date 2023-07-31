@@ -3,40 +3,57 @@ export class Theme {
         return 'data-theme';
     }
 
-    light = () => (a) => {
-        const i = a.querySelector('i');
-        const span = a.querySelector('span');
+    light() {
+        const selector = this.selector;
 
-        a.setAttribute(this.selector, 'dark');
-        a.classList.replace('theme-moon', 'theme-sun');
-        i.classList.replace('bxs-moon', 'bxs-sun');
-        span.innerText = 'Light';
-    };
+        return function (a) {
+            const i = a.querySelector('i');
+            const span = a.querySelector('span');
 
-    dark = () => (a) => {
-        const i = a.querySelector('i');
-        const span = a.querySelector('span');
+            a.setAttribute(selector, 'dark');
+            a.classList.replace('theme-moon', 'theme-sun');
+            i.classList.replace('bxs-moon', 'bxs-sun');
+            span.innerText = 'Light';
+        };
+    }
 
-        a.setAttribute(this.selector, 'light');
-        a.classList.replace('theme-sun', 'theme-moon');
-        i.classList.replace('bxs-sun', 'bxs-moon');
-        span.innerText = 'Dark';
-    };
+    dark() {
+        const selector = this.selector;
 
-    click = () => (event) => {
-        const a = event.target.closest('a');
+        return function (a) {
+            const i = a.querySelector('i');
+            const span = a.querySelector('span');
 
-        if ('light' === a.getAttribute(this.selector)) {
-            this.light()(a);
-        } else {
-            this.dark()(a);
-        }
+            a.setAttribute(selector, 'light');
+            a.classList.replace('theme-sun', 'theme-moon');
+            i.classList.replace('bxs-sun', 'bxs-moon');
+            span.innerText = 'Dark';
+        };
+    }
 
-        localStorage.setItem(this.selector, a.getAttribute(this.selector));
-    };
+    click() {
+        const selector = this.selector;
+        const light = this.light();
+        const dark = this.dark();
+
+        return function (event) {
+            const a = event.target.closest('a');
+
+            if ('light' === a.getAttribute(selector)) {
+                light(a);
+            } else {
+                dark(a);
+            }
+
+            localStorage.setItem(
+                selector,
+                a.getAttribute(selector)
+            );
+        };
+    }
 
     init() {
-        const element = document.querySelector(`[${this.selector}]`);
+        const element = document.querySelector('[data-theme]');
         const selector = element.getAttribute(this.selector);
         const store = localStorage.getItem(this.selector);
 
