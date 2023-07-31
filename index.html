@@ -1,448 +1,408 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>teleprint.me</title>
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/static/images/favicon_io/apple-touch-icon.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/static/images/favicon_io/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/static/images/favicon_io/favicon-16x16.png"
-        />
-        <link
-            rel="manifest"
-            href="/static/images/favicon_io/site.webmanifest"
-        />
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-        />
-        <link rel="stylesheet" class="rel" href="/static/styles/root.css" />
-        <link rel="stylesheet" class="rel" href="/static/styles/main.css" />
-        <link rel="stylesheet" class="rel" href="/static/styles/media.css" />
-        <link
-            rel="stylesheet"
-            class="rel"
-            href="/static/styles/container.css"
-        />
-        <link rel="stylesheet" class="rel" href="/static/styles/router.css" />
-        <link rel="stylesheet" class="rel" href="/static/styles/menu.css" />
-        <link rel="stylesheet" class="rel" href="/static/styles/contact.css" />
-    </head>
 
-    <body>
-        <!-- Router -->
-        <header>
-            <div class="container">
-                <nav class="router">
-                    <a class="theme-moon" data-theme="light">
-                        <i class="bx bxs-moon bx-md"></i>
-                        <span class="text">Dark</span>
-                    </a>
-                </nav>
-            </div>
-        </header>
+<head>
+    <!-- TODO: https://developer.mozilla.org/en-US/docs/Web/HTTP/Permissions_Policy -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>teleprint.me</title>
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="/static/images/favicon_io/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="/static/images/favicon_io/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="/static/images/favicon_io/favicon-16x16.png" />
+    <link rel="manifest" href="/static/images/favicon_io/site.webmanifest" />
+    <link rel="stylesheet"
+        href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/root.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/main.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/media.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/container.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/router.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/menu.css" />
+    <link rel="stylesheet" class="rel" href="/static/styles/contact.css" />
+</head>
 
-        <!-- Application -->
-        <main>
-            <!-- Title -->
-            <div class="container">
-                <div class="wrapper">
-                    <div class="section profile">
-                        <h2>
-                            Hello. My name is
-                            <span class="highlight">Austin.</span>
-                        </h2>
+<body>
+    <!-- Router -->
+    <header>
+        <div class="container">
+            <nav class="router">
+                <a class="theme-moon" data-theme="light">
+                    <i class="bx bxs-moon bx-md"></i>
+                    <span class="text">Dark</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Application -->
+    <main>
+        <!-- Profile -->
+        <div class="container">
+            <div class="wrapper">
+                <!-- About Section -->
+                <div class="section profile">
+                    <h2>
+                        Hello, I'm <span class="highlight">Austin</span>.
+                    </h2>
+                    <div class="description">
+                        <p class="text">
+                            I'm a self-taught programmer with a passion for
+                            problem-solving and efficient solution design. My
+                            journey in programming has been driven by my
+                            curiosity
+                            and love for learning. My main areas of interest
+                            include
+                            GNU + Linux, software development, and artificial
+                            intelligence.
+                        </p>
+                    </div>
+                </div>
+                <!-- Skills Section -->
+                <div class="section">
+                    <h4 class="highlight">skills</h4>
+                    <div class="section flex-row">
+                        <ul>
+                            <li>Shell</li>
+                            <li>Python</li>
+                            <li>C/C++</li>
+                        </ul>
+                        <ul>
+                            <li>HTML</li>
+                            <li>CSS</li>
+                            <li>JavaScript</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Interests Section -->
+                <div class="section">
+                    <h4 class="highlight">interests</h4>
+                    <div class="section flex-row">
+                        <ul>
+                            <li>GNU + Linux</li>
+                            <li>Software Development</li>
+                        </ul>
+                        <ul>
+                            <li>Interpreters</li>
+                            <li>Artificial Intelligence</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Learning Goals Section -->
+                <div class="section">
+                    <h4 class="highlight">learning goals</h4>
+                    <div class="section flex-row">
+                        <ul>
+                            <li>Refining skills in C/C++</li>
+                            <li>Learning Lua</li>
+                            <li>Building Interpreters</li>
+                        </ul>
+                        <ul>
+                            <li>Data Analysis</li>
+                            <li>Machine Learning</li>
+                            <li>Artificial Intelligence</li>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Zen of Python -->
-            <div class="container">
-                <div class="wrapper">
-                    <div class="section">
-                        <h4 class="highlight">zen</h4>
-                        <div class="description">
-                            <p class="text" style="text-align: center">
-                                Beautiful is better than ugly.<br />
-                                Explicit is better than implicit.<br />
-                                Simple is better than complex.<br />
-                                Complex is better than complicated.<br />
-                            </p>
-                        </div>
+        <!-- PyGPTPrompt -->
+        <div class="container">
+            <div class="wrapper">
+                <h3 class="highlight">PyGPTPrompt</h3>
+                <div class="section">
+                    <h4 class="highlight">description</h4>
+                    <div class="description">
+                        <p class="text">
+                            PyGPTPrompt is a Python interface for the
+                            <a
+                                href="https://platform.openai.com/docs/introduction">OpenAI
+                                REST API</a>
+                            that enables automation of GPT-specific tasks
+                            using prompts.
+                        </p>
+                        <p class="note">
+                            <span class="highlight">*</span>
+                            This application requires a
+                            <a href="https://platform.openai.com/account/api-keys"
+                                target="_blank">openai api key</a>.
+                        </p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Profile -->
-            <div class="container">
-                <div class="wrapper">
-                    <div class="section">
-                        <h4 class="highlight">about</h4>
-                        <div class="description">
-                            <p class="text">
-                                I enjoy advancing my knowledge and experience
-                                with programming as my primary subject of
-                                interest.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="section">
-                        <h4 class="highlight">skills</h4>
-                        <div class="section flex-row">
-                            <ul>
-                                <li>Shell</li>
-                                <li>Python</li>
-                                <li>C/C++</li>
-                            </ul>
-                            <ul>
-                                <li>HTML</li>
-                                <li>CSS</li>
-                                <li>JavaScript</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="section">
-                        <h4 class="highlight">interests</h4>
-                        <div class="section flex-row">
-                            <ul>
-                                <li>GNU + Linux</li>
-                                <li>Software Development</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bootstrap Arch Linux -->
-            <div class="container">
-                <div class="wrapper">
-                    <h3 class="highlight">bootstrap arch linux</h3>
-                    <div class="section">
-                        <h4 class="highlight">description</h4>
-                        <div class="description">
-                            <p class="text">
-                                Experimental, minimalistic, and modular shell
-                                scripts to bootstrap
-                                <a href="https://archlinux.org">Arch Linux</a>.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="section">
-                        <h4 class="highlight">Application</h4>
-                        <nav class="menu">
-                            <!-- <a>
+                <div class="section">
+                    <h4 class="highlight">Application</h4>
+                    <nav class="menu">
+                        <!-- <a>
                                 <i class="bx bx-play-circle bx-md"></i>
                                 <span class="text">Showcase</span>
                             </a> -->
-                            <a
-                                href="https://github.com/teleprint-me/bootstrap-arch-linux"
-                                target="_blank"
-                            >
-                                <i class="bx bxl-github bx-md"></i>
-                                <span class="text">Github</span>
-                            </a>
-                        </nav>
-                    </div>
-                    <div class="section">
-                        <h4 class="highlight">tool kit</h4>
-                        <nav class="menu">
-                            <a>
-                                <i class="bx bxl-tux bx-sm"></i>
-                                <span class="text">Linux</span>
-                            </a>
-                            <a>
-                                <i class="bx bx-terminal bx-sm"></i>
-                                <span class="text">Shell</span>
-                            </a>
-                            <a>
-                                <i class="bx bxl-git bx-sm"></i>
-                                <span class="text">Git</span>
-                            </a>
-                        </nav>
+                        <a href="https://github.com/teleprint-me/py.gpt.prompt"
+                            target="_blank">
+                            <i class="bx bxl-github bx-md"></i>
+                            <span class="text">Github</span>
+                        </a>
+                    </nav>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">showcase</h4>
+                    <div class="gif-container">
+                        <img src="/static/videos/gpt-3.5-turbo-mobile.gif"
+                            type="image/gif" />
                     </div>
                 </div>
+                <div class="section">
+                    <h4 class="highlight">tool kit</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxl-tux bx-sm"></i>
+                            <span class="text">Linux</span>
+                        </a>
+                        <a>
+                            <i class="bx bx-terminal bx-sm"></i>
+                            <span class="text">Shell</span>
+                        </a>
+                        <a>
+                            <i class="bx bxl-git bx-sm"></i>
+                            <span class="text">Git</span>
+                        </a>
+                        <a>
+                            <i class="bx bxl-python bx-sm"></i>
+                            <span class="text">Python</span>
+                        </a>
+                    </nav>
+                </div>
             </div>
+        </div>
 
-            <!-- PyGPTPrompt -->
-            <div class="container">
-                <div class="wrapper">
-                    <h3 class="highlight">PyGPTPrompt</h3>
-                    <div class="section">
-                        <h4 class="highlight">description</h4>
-                        <div class="description">
-                            <p class="text">
-                                PyGPTPrompt is a Python interface for the
-                                <a
-                                    href="https://platform.openai.com/docs/introduction"
-                                    >OpenAI REST API</a
-                                >
-                                that enables automation of GPT-specific tasks
-                                using prompts.
-                            </p>
-                            <p class="note">
-                                <span class="highlight">*</span>
-                                This application requires a
-                                <a
-                                    href="https://platform.openai.com/account/api-keys"
-                                    target="_blank"
-                                    >openai api key</a
-                                >.
-                            </p>
-                        </div>
+        <!-- Bootstrap Arch Linux -->
+        <div class="container">
+            <div class="wrapper">
+                <h3 class="highlight">bootstrap arch linux</h3>
+                <div class="section">
+                    <h4 class="highlight">description</h4>
+                    <div class="description">
+                        <p class="text">
+                            Experimental, minimalistic, and modular shell
+                            scripts to bootstrap
+                            <a href="https://archlinux.org">Arch Linux</a>.
+                        </p>
                     </div>
-                    <div class="section">
-                        <h4 class="highlight">Application</h4>
-                        <nav class="menu">
-                            <!-- <a>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">Application</h4>
+                    <nav class="menu">
+                        <!-- <a>
                                 <i class="bx bx-play-circle bx-md"></i>
                                 <span class="text">Showcase</span>
                             </a> -->
+                        <a href="https://github.com/teleprint-me/bootstrap-arch-linux"
+                            target="_blank">
+                            <i class="bx bxl-github bx-md"></i>
+                            <span class="text">Github</span>
+                        </a>
+                    </nav>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">tool kit</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxl-tux bx-sm"></i>
+                            <span class="text">Linux</span>
+                        </a>
+                        <a>
+                            <i class="bx bx-terminal bx-sm"></i>
+                            <span class="text">Shell</span>
+                        </a>
+                        <a>
+                            <i class="bx bxl-git bx-sm"></i>
+                            <span class="text">Git</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Snake (Fork) -->
+        <div class="container">
+            <div class="wrapper">
+                <h3 class="highlight">snake</h3>
+                <div class="section">
+                    <h4 class="highlight">description</h4>
+                    <div class="description">
+                        <p class="text">
+                            A simple
                             <a
-                                href="https://github.com/teleprint-me/py.gpt.prompt"
-                                target="_blank"
-                            >
-                                <i class="bx bxl-github bx-md"></i>
-                                <span class="text">Github</span>
-                            </a>
-                        </nav>
+                                href="https://developer.mozilla.org/en-US/docs/Glossary/SPA">SPA</a>
+                            designed to explore the
+                            <a
+                                href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">Canvas
+                                API</a>.
+                        </p>
+                        <p class="note">
+                            <span class="highlight">*</span>
+                            This application is a modified fork of
+                            <a
+                                href="https://github.com/CodingWith-Adam/snake">CodingWith-Adam/snake</a>.
+                        </p>
                     </div>
-                    <div class="section">
-                        <h4 class="highlight">showcase</h4>
-                        <div class="gif-container">
+                </div>
+                <div class="section">
+                    <h4 class="highlight">Application</h4>
+                    <nav class="menu">
+                        <a href="/snake/index.html">
+                            <i class="bx bx-play-circle bx-md"></i>
+                            <span class="text">Showcase</span>
+                        </a>
+                        <a href="https://github.com/teleprint-me/snake"
+                            target="_blank">
+                            <i class="bx bxl-github bx-md"></i>
+                            <span class="text">Github</span>
+                        </a>
+                    </nav>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">tool kit</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxl-git bx-sm"></i>
+                            <span class="text">Git</span>
+                        </a>
+                        <a>
+                            <i class="bx bxl-html5 bx-sm"></i>
+                            <span class="text">HTML</span>
+                        </a>
+                        <a>
+                            <i class="bx bxl-css3 bx-sm"></i>
+                            <span class="text">CSS</span>
+                        </a>
+                        <a>
+                            <i class="bx bxl-javascript bx-sm"></i>
+                            <span class="text">JavaScript</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flashcards (Fork) -->
+        <div class="container">
+            <div class="wrapper">
+                <h3 class="highlight">flashcards</h3>
+                <div class="section">
+                    <h4 class="highlight">description</h4>
+                    <div class="description">
+                        <p class="text">
+                            A simple
+                            <a
+                                href="https://developer.mozilla.org/en-US/docs/Glossary/SPA">SPA</a>
+                            designed to explore the
+                            <a
+                                href="https://developer.mozilla.org/en-US/docs/Web/API/Storage">Storage
+                                API</a>.
+                        </p>
+                        <p class="note">
+                            <span class="highlight">*</span>
+                            This application is a modified fork of
+                            <a
+                                href="https://github.com/miguelznunez/Flashcards">miguelznunez/Flashcards</a>.
+                        </p>
+                    </div>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">Application</h4>
+                    <nav class="menu">
+                        <a href="/flashcards/index.html">
+                            <i class="bx bx-play-circle bx-md"></i>
+                            <span class="text">Showcase</span>
+                        </a>
+                        <a href="https://github.com/teleprint-me/flashcards"
+                            target="_blank">
+                            <i class="bx bxl-github bx-md"></i>
+                            <span class="text">Github</span>
+                        </a>
+                    </nav>
+                </div>
+                <div class="section">
+                    <h4 class="highlight">tool kit</h4>
+                    <nav class="menu">
+                        <a>
+                            <i class="bx bxl-git bx-sm"></i>
+                            <span class="text">Git</span>
+                        </a>
+                        <a>
+                            <i class="bx bxl-html5 bx-sm"></i>
+                            <span class="text">HTML</span>
+                        </a>
+                        <a>
+                            <i class="bx bxl-css3 bx-sm"></i>
+                            <span class="text">CSS</span>
+                        </a>
+                        <a>
+                            <i class="bx bxl-javascript bx-sm"></i>
+                            <span class="text">JavaScript</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact & Connect -->
+        <div class="container">
+            <div class="wrapper">
+                <h3 class="highlight">contact & connect</h3>
+                <!-- Donation -->
+                <div class="section">
+                    <h4 class="sub-highlight">donate</h4>
+                    <nav class="wrapper router">
+                        <a href="https://blockstream.info/address/3Q4qSNxpiEcaK3aJDdagzqU9XNyqs8zNrJ"
+                            target="_blank">
                             <img
-                                src="/static/videos/gpt-3.5-turbo-mobile.gif"
-                                type="image/gif"
-                            />
-                        </div>
-                    </div>
-                    <div class="section">
-                        <h4 class="highlight">tool kit</h4>
-                        <nav class="menu">
-                            <a>
-                                <i class="bx bxl-tux bx-sm"></i>
-                                <span class="text">Linux</span>
-                            </a>
-                            <a>
-                                <i class="bx bx-terminal bx-sm"></i>
-                                <span class="text">Shell</span>
-                            </a>
-                            <a>
-                                <i class="bx bxl-git bx-sm"></i>
-                                <span class="text">Git</span>
-                            </a>
-                            <a>
-                                <i class="bx bxl-python bx-sm"></i>
-                                <span class="text">Python</span>
-                            </a>
-                        </nav>
-                    </div>
+                                src="https://img.shields.io/badge/Bitcoin-3Q4qSNxpiEcaK3aJDdagzqU9XNyqs8zNrJ-orange" />
+                        </a>
+                    </nav>
+                </div>
+                <!-- Social Media -->
+                <div class="section">
+                    <h4 class="sub-highlight">social</h4>
+                    <nav class="wrapper router">
+                        <a href="https://www.reddit.com/user/teleprint-me"
+                            target="_blank">
+                            <i class="bx bxl-reddit bx-md"></i>
+                            <span class="text">Reddit</span>
+                        </a>
+                        <a href="https://github.com/teleprint-me"
+                            target="_blank">
+                            <i class="bx bxl-github bx-md"></i>
+                            <span class="text">Github</span>
+                        </a>
+                    </nav>
+                </div>
+                <!-- Contact -->
+                <div class="section">
+                    <h4 class="sub-highlight">email</h4>
+                    <nav class="wrapper router">
+                        <a href="mailto:aberrio@teleprint.me" target="_blank">
+                            aberrio@teleprint.me
+                        </a>
+                    </nav>
                 </div>
             </div>
+        </div>
 
-            <!-- Snake (Fork) -->
-            <div class="container">
-                <div class="wrapper">
-                    <h3 class="highlight">snake</h3>
-                    <div class="section">
-                        <h4 class="highlight">description</h4>
-                        <div class="description">
-                            <p class="text">
-                                A simple
-                                <a
-                                    href="https://developer.mozilla.org/en-US/docs/Glossary/SPA"
-                                    >SPA</a
-                                >
-                                designed to explore the
-                                <a
-                                    href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API"
-                                    >Canvas API</a
-                                >.
-                            </p>
-                            <p class="note">
-                                <span class="highlight">*</span>
-                                This application is a modified fork of
-                                <a
-                                    href="https://github.com/CodingWith-Adam/snake"
-                                    >CodingWith-Adam/snake</a
-                                >.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="section">
-                        <h4 class="highlight">Application</h4>
-                        <nav class="menu">
-                            <a href="/snake/index.html">
-                                <i class="bx bx-play-circle bx-md"></i>
-                                <span class="text">Showcase</span>
-                            </a>
-                            <a
-                                href="https://github.com/teleprint-me/snake"
-                                target="_blank"
-                            >
-                                <i class="bx bxl-github bx-md"></i>
-                                <span class="text">Github</span>
-                            </a>
-                        </nav>
-                    </div>
-                    <div class="section">
-                        <h4 class="highlight">tool kit</h4>
-                        <nav class="menu">
-                            <a>
-                                <i class="bx bxl-git bx-sm"></i>
-                                <span class="text">Git</span>
-                            </a>
-                            <a>
-                                <i class="bx bxl-html5 bx-sm"></i>
-                                <span class="text">HTML</span>
-                            </a>
-                            <a>
-                                <i class="bx bxl-css3 bx-sm"></i>
-                                <span class="text">CSS</span>
-                            </a>
-                            <a>
-                                <i class="bx bxl-javascript bx-sm"></i>
-                                <span class="text">JavaScript</span>
-                            </a>
-                        </nav>
-                    </div>
-                </div>
-            </div>
+    </main>
 
-            <!-- Flashcards (Fork) -->
-            <div class="container">
-                <div class="wrapper">
-                    <h3 class="highlight">flashcards</h3>
-                    <div class="section">
-                        <h4 class="highlight">description</h4>
-                        <div class="description">
-                            <p class="text">
-                                A simple
-                                <a
-                                    href="https://developer.mozilla.org/en-US/docs/Glossary/SPA"
-                                    >SPA</a
-                                >
-                                designed to explore the
-                                <a
-                                    href="https://developer.mozilla.org/en-US/docs/Web/API/Storage"
-                                    >Storage API</a
-                                >.
-                            </p>
-                            <p class="note">
-                                <span class="highlight">*</span>
-                                This application is a modified fork of
-                                <a
-                                    href="https://github.com/miguelznunez/Flashcards"
-                                    >miguelznunez/Flashcards</a
-                                >.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="section">
-                        <h4 class="highlight">Application</h4>
-                        <nav class="menu">
-                            <a href="/flashcards/index.html">
-                                <i class="bx bx-play-circle bx-md"></i>
-                                <span class="text">Showcase</span>
-                            </a>
-                            <a
-                                href="https://github.com/teleprint-me/flashcards"
-                                target="_blank"
-                            >
-                                <i class="bx bxl-github bx-md"></i>
-                                <span class="text">Github</span>
-                            </a>
-                        </nav>
-                    </div>
-                    <div class="section">
-                        <h4 class="highlight">tool kit</h4>
-                        <nav class="menu">
-                            <a>
-                                <i class="bx bxl-git bx-sm"></i>
-                                <span class="text">Git</span>
-                            </a>
-                            <a>
-                                <i class="bx bxl-html5 bx-sm"></i>
-                                <span class="text">HTML</span>
-                            </a>
-                            <a>
-                                <i class="bx bxl-css3 bx-sm"></i>
-                                <span class="text">CSS</span>
-                            </a>
-                            <a>
-                                <i class="bx bxl-javascript bx-sm"></i>
-                                <span class="text">JavaScript</span>
-                            </a>
-                        </nav>
-                    </div>
-                </div>
-            </div>
+    <!-- Modules -->
+    <script src="/static/modules/theme.mjs" type="module"></script>
+    <script type="module">
+        import { Theme } from '/static/modules/theme.mjs';
 
-            <!-- Social Media -->
-            <div class="container">
-                <div class="wrapper">
-                    <h3 class="highlight">social</h3>
-                    <div class="section">
-                        <nav class="wrapper router">
-                            <a
-                                href="https://www.reddit.com/user/teleprint-me"
-                                target="_blank"
-                            >
-                                <i class="bx bxl-reddit bx-md"></i>
-                                <span class="text">Reddit</span>
-                            </a>
-                            <a
-                                href="https://github.com/teleprint-me"
-                                target="_blank"
-                            >
-                                <i class="bx bxl-github bx-md"></i>
-                                <span class="text">Github</span>
-                            </a>
-                        </nav>
-                    </div>
-                </div>
-            </div>
+        const theme = new Theme();
+        theme.init();
+    </script>
+</body>
 
-            <!-- Donation -->
-            <div class="container">
-                <div class="wrapper">
-                    <h3 class="highlight">donate</h3>
-                    <div class="section">
-                        <nav class="wrapper router">
-                            <a
-                                href="https://blockstream.info/address/3Q4qSNxpiEcaK3aJDdagzqU9XNyqs8zNrJ"
-                                target="_blank"
-                            >
-                                <img
-                                    src="https://img.shields.io/badge/Bitcoin-3Q4qSNxpiEcaK3aJDdagzqU9XNyqs8zNrJ-orange"
-                                />
-                            </a>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Modules -->
-        <script src="/static/modules/theme.mjs" type="module"></script>
-        <script type="module">
-            import { Theme } from '/static/modules/theme.mjs';
-
-            const theme = new Theme();
-            theme.init();
-        </script>
-    </body>
 </html>
