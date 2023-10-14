@@ -14,7 +14,7 @@ app = Flask(
     template_folder=static_path.get("views"),
 )
 
-app.config["SECRET_KEY"] = str(uuid4())  # Replace with your actual secret key
+app.config["SECRET_KEY"] = str(uuid4())
 
 
 #
