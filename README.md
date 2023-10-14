@@ -50,11 +50,6 @@
 If you find value in the projects and believe in the work being done, consider
 making a donation. Your generous contribution will directly support the ongoing
 development and maintenance of these projects, helping to ensure they remain
-free and accessible to all. Donations can be made using Bitcoin, Ethereum, or
-Litecoin:
+free and accessible to all. Donations can be made using Bitcoin:
 
 [![Bitcoin](https://img.shields.io/badge/Bitcoin-3Q4qSNxpiEcaK3aJDdagzqU9XNyqs8zNrJ-orange)](https://blockstream.info/address/3Q4qSNxpiEcaK3aJDdagzqU9XNyqs8zNrJ)
-
-[![Ethereum](https://img.shields.io/badge/Ethereum-0xc1c95dE59FB7d8307359b473fa8F2817676405BA-blue)](https://etherscan.io/address/0xc1c95dE59FB7d8307359b473fa8F2817676405BA)
-
-[![Litecoin](https://img.shields.io/badge/Litecoin-MUs9i7GVra6CdH151tv2HZ2jbZHu43ie28-silver)](https://live.blockcypher.com/ltc/address/MUs9i7GVra6CdH151tv2HZ2jbZHu43ie28/)
