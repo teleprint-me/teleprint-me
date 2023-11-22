@@ -52,4 +52,4 @@ making a donation. Your generous contribution will directly support the ongoing
 development and maintenance of these projects, helping to ensure they remain
 free and accessible to all. Donations can be made using Bitcoin:
 
-[![Bitcoin](https://img.shields.io/badge/Bitcoin-3Q4qSNxpiEcaK3aJDdagzqU9XNyqs8zNrJ-orange)](https://blockstream.info/address/3Q4qSNxpiEcaK3aJDdagzqU9XNyqs8zNrJ)
+[![Bitcoin](https://img.shields.io/badge/Bitcoin-3Di3Dq9i812VBQEJnbowyrcuNwzPwTNRf1-orange)](https://blockstream.info/address/3Di3Dq9i812VBQEJnbowyrcuNwzPwTNRf1)
