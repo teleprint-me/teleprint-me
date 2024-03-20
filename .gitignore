@@ -1,6 +1,8 @@
 #
 # Local
 #
+local
+
 static/data
 static/documents
 static/videos
