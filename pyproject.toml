@@ -8,15 +8,15 @@ readme = "README.md"
 packages = [{include = "teleprint_me"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.8.10"
 WTForms = ">=3.1.2"
 email-validator = ">=2.1.1"
-flask = ">=3.0.2"
+flask = ">=3.0.3"
 Flask-WTF = ">=1.2.1"
 
 [tool.poetry.dev-dependencies]
 bpython = ">=0.24"
-black = ">=24.3.0"
+black = ">=24.4.2"
 flake8 = ">=7.0.0"
 
 [build-system]
