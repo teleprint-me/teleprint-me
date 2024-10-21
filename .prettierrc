@@ -1,14 +1,15 @@
 {
-	"singleQuote": true,
-	"trailingComma": "none",
-	"printWidth": 80,
-	"pluginSearchDirs": ["."],
+    "singleQuote": true,
+    "trailingComma": "none",
+    "printWidth": 79,
+    "pluginSearchDirs": ["."],
     "editor.formatOnSave": true,
-    "proseWrap": "always",
+    "proseWrap": "preserve",
     "tabWidth": 4,
     "requireConfig": false,
     "useTabs": false,
-    "bracketSpacing": true,
-    "jsxBracketSameLine": false,
+    "bracketSpacing": false,
+    "bracketSameLine": true,
+    "htmlWhitespaceSensitivity": "ignore",
     "semi": true
 }
