@@ -1,0 +1,26 @@
+/* static/styles/table.css */
+
+table {
+    margin: 0 auto;
+    width: 100%;
+    border: var(--border-primary);
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+thead {
+    font-weight: bold;
+}
+
+thead td {
+    border-bottom: var(--border-primary);
+}
+
+tbody {
+    padding: var(--spacing);
+}
+
+tr,
+td {
+    padding: 5px;
+}
