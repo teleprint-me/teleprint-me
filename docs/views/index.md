@@ -6,7 +6,6 @@ license: 'cc-by-nc-sa-4.0'
 ---
 
 # Hello, I'm [Austin](#highlight).
-
 I'm a self-taught programmer with a passion for problem-solving and efficient solution design. My journey in programming has been driven by my curiosity and love for learning. My main areas of interest include GNU + Linux, software development, and language modeling.
 
 ## Skills
