@@ -110,3 +110,7 @@ For those who prefer a one-time contribution or wish to support without a long-t
 - [GitHub](https://github.com/teleprint-me)
 - [Hugging Face](https://huggingface.co/teleprint-me)
 - [Email me](mailto:aberrio@teleprint.me)
+
+---
+
+<p align="center">Copyright (C) 2022 Austin Berrio</p>
