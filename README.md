@@ -45,11 +45,24 @@
     <img src="https://github-readme-stats.vercel.app/api?username=teleprint-me&show_icons=true" />
 </picture>
 
-## Donate
+## Contribute & Connect
 
-If you find value in the projects and believe in the work being done, consider
-making a donation. Your generous contribution will directly support the ongoing
-development and maintenance of these projects, helping to ensure they remain
-free and accessible to all. Donations can be made using Bitcoin:
+### Sponsor
+If you value my projects, consider becoming a sponsor. Your support enables me to dedicate more time to transformative open-source projects like pygptprompt, valerie, alt.cpp, and contributions to llama.cpp & ggml. Sponsorships through GitHub directly fund research, development, and the creation of high-quality tools for the community.
 
-[![Bitcoin](https://img.shields.io/badge/Bitcoin-3Di3Dq9i812VBQEJnbowyrcuNwzPwTNRf1-orange)](https://blockstream.info/address/3Di3Dq9i812VBQEJnbowyrcuNwzPwTNRf1)
+[Become a Sponsor](https://github.com/sponsors/teleprint-me?o=esb "Sponsor teleprint-me")
+
+### Patreon
+For ongoing support, consider becoming a patron on Patreon. Your contributions help me continue enhancing my projects.
+
+[Join me on Patreon](https://www.patreon.com/teleprint_me)
+
+### Donate
+If you prefer a one-time contribution, donations are a valuable way to support my work. Every contribution, large or small, sustains my open-source efforts in AI and ML. Donations can be made using Bitcoin, providing a universal method for your generous support.
+
+[Donate using Bitcoin](https://blockstream.info/address/3Di3Dq9i812VBQEJnbowyrcuNwzPwTNRf1 "Donate using Bitcoin")
+
+### Social
+- [GitHub](https://github.com/teleprint-me)
+- [Hugging Face](https://huggingface.co/teleprint-me)
+- [Email me](mailto:aberrio@teleprint.me)
