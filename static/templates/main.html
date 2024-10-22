@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- TODO: https://developer.mozilla.org/en-US/docs/Web/HTTP/Permissions_Policy -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>$pagetitle$</title>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <!-- Router -->
+        <header>
+            <nav class="router">
+                <a href="/">
+                    <i class="bx bxs-home bx-md"></i>
+                    <span class="text">Home</span>
+                </a>
+                <a class="theme-moon" data-theme="light">
+                    <i class="bx bxs-moon bx-md"></i>
+                    <span class="text">Dark</span>
+                </a>
+            </nav>
+        </header>
+
+        <!-- Application -->
+        <main>$body$</main>
+
+        <!-- Modules -->
+        <script src="main.mjs" type="module"></script>
+        <script type="module">
+            import {Theme} from '/main.mjs';
+
+            const theme = new Theme();
+            theme.init();
+        </script>
+    </body>
+</html>
