@@ -12,3 +12,7 @@ license: 'cc-by-nc-sa-4.0'
 
 ## Technical Articles
 - [Modular Arithmetic in Lehmer RNG](/static/views/modular-arithmetic-in-lehmer-rng.html)
+
+---
+
+<p align="center">Copyright (C) 2024 Austin Berrio</p>
