@@ -11,15 +11,19 @@
         <link
             href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
             rel="stylesheet" />
-        <link href="style.css" rel="stylesheet" />
+        <link href="/static/styles/style.css" rel="stylesheet" />
     </head>
     <body>
         <!-- Router -->
         <header>
             <nav class="router">
                 <a href="/">
-                    <i class="bx bxs-home bx-md"></i>
-                    <span class="text">Home</span>
+                    <i class="bx bxs-user bx-md"></i>
+                    <span class="text">Profile</span>
+                </a>
+                <a href="/static/views/links.html">
+                    <i class="bx bxs-file bx-md"></i>
+                    <span class="text">Articles</span>
                 </a>
                 <a class="theme-moon" data-theme="light">
                     <i class="bx bxs-moon bx-md"></i>
@@ -32,9 +36,9 @@
         <main>$body$</main>
 
         <!-- Modules -->
-        <script src="main.mjs" type="module"></script>
+        <script src="/static/modules/main.mjs" type="module"></script>
         <script type="module">
-            import {Theme} from '/main.mjs';
+            import {Theme} from '/static/modules/main.mjs';
 
             const theme = new Theme();
             theme.init();
