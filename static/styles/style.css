@@ -141,6 +141,7 @@ p {
     padding: 5px;
 }
 
+ol,
 ul {
     flex: 1 1;
     list-style-type: none;
@@ -194,6 +195,22 @@ figure img {
     height: 100%;
     object-fit: cover;
     /* This will ensure that your image covers the entire container without being stretched or squeezed */
+}
+
+
+pre {
+    border-radius: 10px;
+    overflow: none;
+}
+
+pre code {
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+span.math.display {
+    margin: 0 auto;
+    font-weight: 600;
 }
 
 @media (max-width: 7680px) {
