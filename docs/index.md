@@ -12,7 +12,7 @@ I'm a self-taught programmer with a passion for problem-solving and efficient so
 ## Skills
 - Shell
 - Python
-- C/C++
+- C
 - HTML
 - CSS
 - JavaScript
@@ -22,9 +22,9 @@ I'm a self-taught programmer with a passion for problem-solving and efficient so
 - Software Development
 - Interpreters
 - Language Modeling
+- Graphics Programming
 
 ## Learning Goals
-- Linear Algebra
 - Refining skills in C
 - Learning Lua
 - Building Interpreters
@@ -95,6 +95,11 @@ A simple [SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA) designed t
 If you find value in my projects, particularly in areas like Neural Networks, Natural Language Processing, and Model Alignment, consider becoming a sponsor. Your support allows me to devote more time to developing transformative open-source projects, such as pygptprompt, valerie, alt.cpp, contributions to llama.cpp & ggml, and more. Sponsorships, managed through GitHub, directly fuel research, development, and the creation of high-quality, open-source tools for the community.
 
 [Become a Sponsor](https://github.com/sponsors/teleprint-me?o=esb "Sponsor teleprint-me")
+
+### Patreon
+If you’d like to support my work on a monthly basis, consider becoming a patron on Patreon. Your contributions help me continue to create and improve my projects.
+
+[Join me on Patreon](https://www.patreon.com/teleprint_me)
 
 ### Donate
 For those who prefer a one-time contribution or wish to support without a long-term commitment, donations are a valuable way to contribute. Each donation, big or small, plays a significant role in sustaining my open-source work in AI and ML. Donations can be made using Bitcoin, offering a universal and convenient method for your generous support.
