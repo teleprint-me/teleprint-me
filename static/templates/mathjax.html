@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- TODO: https://developer.mozilla.org/en-US/docs/Web/HTTP/Permissions_Policy -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>$pagetitle$</title>
+        <link
+            href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+            rel="stylesheet" />
+        <link href="style.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Router -->
+        <header>
+            <nav class="router">
+                <a href="/">
+                    <i class="bx bxs-home bx-md"></i>
+                    <span class="text">Home</span>
+                </a>
+                <a class="theme-moon" data-theme="light">
+                    <i class="bx bxs-moon bx-md"></i>
+                    <span class="text">Dark</span>
+                </a>
+            </nav>
+        </header>
+
+        <!-- Application -->
+        <main>$body$</main>
+
+        <!--
+            See the following links for more information:
+            - https://docs.mathjax.org/en/v3.0-latest/input/tex/delimiters.html#tex-delimiters
+            - https://docs.mathjax.org/en/v3.0-latest/options/input/tex.html#tex-options
+        -->
+
+        <script>
+            MathJax = {
+                tex: {
+                    // packages: ['base'], // extensions to use
+                    inlineMath: [
+                        // start/end delimiter pairs for in-line math
+                        ['$', '$'],
+                        ['\\(', '\\)']
+                    ],
+                    displayMath: [
+                        // start/end delimiter pairs for display math
+                        ['$$', '$$'],
+                        ['\\[', '\\]']
+                    ],
+                    processEscapes: true, // use \$ to produce a literal dollar sign
+                    processEnvironments: true, // process \begin{xxx}...\end{xxx} outside math mode
+                    processRefs: true, // process \ref{...} outside of math mode
+                    digits: /^(?:[0-9]+(?:\{,\}[0-9]{3})*(?:\.[0-9]*)?|\.[0-9]+)/,
+                    // pattern for recognizing numbers
+                    tags: 'none', // or 'ams' or 'all'
+                    tagSide: 'right', // side for \tag macros
+                    tagIndent: '0.8em', // amount to indent tags
+                    useLabelIds: true, // use label name rather than tag for ids
+                    multlineWidth: '85%', // width of multiline environment
+                    maxMacros: 1000, // maximum number of macro substitutions per expression
+                    maxBuffer: 5 * 1024 // maximum size for the internal TeX string (5K)
+                }
+            };
+            console.log('Set mathjax initial props');
+        </script>
+
+        <!-- Enable Older Browsers -->
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <!-- Enable Inline and Block Level Rendering-->
+        <script
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+            id="MathJax-script"></script>
+        <!-- Enable ASCII Rendering -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/asciimath.js"
+            charset="UTF-8"></script>
+
+        <!-- Modules -->
+        <script src="main.mjs" type="module"></script>
+        <script type="module">
+            import {Theme} from '/main.mjs';
+
+            const theme = new Theme();
+            theme.init();
+        </script>
+    </body>
+</html>
