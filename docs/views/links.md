@@ -1,3 +1,10 @@
+---
+title: 'links.md'
+type: 'technical'
+date: '2024-10-21'
+license: 'cc-by-nc-sa-4.0'
+---
+
 # Links to My Articles
 
 ## Blog Articles
