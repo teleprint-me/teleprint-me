@@ -48,17 +48,17 @@
 ## Contribute & Connect
 
 ### Sponsor
-If you value my projects, consider becoming a sponsor. Your support enables me to dedicate more time to transformative open-source projects like pygptprompt, valerie, alt.cpp, and contributions to llama.cpp & ggml. Sponsorships through GitHub directly fund research, development, and the creation of high-quality tools for the community.
+Consider becoming a sponsor if you value my projects. Your support enables the creation of open-source tools that remain available to everyone. Sponsorships through GitHub fund research and development.
 
 [Become a Sponsor](https://github.com/sponsors/teleprint-me?o=esb "Sponsor teleprint-me")
 
 ### Patreon
-For ongoing support, consider becoming a patron on Patreon. Your contributions help me continue enhancing my projects.
+Consider joining me on Patreon. Your contributions support the development of new and existing projects, helping me advance research and technology.
 
 [Join me on Patreon](https://www.patreon.com/teleprint_me)
 
 ### Donate
-If you prefer a one-time contribution, donations are a valuable way to support my work. Every contribution, large or small, sustains my open-source efforts in AI and ML. Donations can be made using Bitcoin, providing a universal method for your generous support.
+If you prefer a one-time contribution, donations are a valuable way to support my work. Every contribution, large or small, sustains my open-source efforts. Donations can be made using Bitcoin, providing a universal method for your generous support.
 
 [Donate using Bitcoin](https://blockstream.info/address/3Di3Dq9i812VBQEJnbowyrcuNwzPwTNRf1 "Donate using Bitcoin")
 
