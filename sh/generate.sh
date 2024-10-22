@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Copyright (C) 2020 Austin Berrio
+
 # Configuration variables
 config=".prettierrc"
 template="template.html"
