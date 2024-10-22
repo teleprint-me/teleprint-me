@@ -6,7 +6,6 @@ license: "cc-by-nc-sa-4.0"
 ---
 
 # Teach Yourself Programming in Ten Years
-
 - Posted in 2022
 - Revised in 2023
 - Edited in 2024
