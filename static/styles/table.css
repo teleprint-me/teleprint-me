@@ -1,7 +1,7 @@
 /* static/styles/table.css */
 
 table {
-    margin: 0 auto;
+    margin: 10px auto;
     width: 100%;
     border: var(--border-primary);
     border-radius: var(--border-radius);
