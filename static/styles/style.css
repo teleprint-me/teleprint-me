@@ -27,6 +27,8 @@
         /* Cornflower blue for built-ins */
         --built-in: var(--keyword);
         /* Rich blue for functions */
+        --title: var(--type);
+        /* Rich blue for functions */
         --function: var(--keyword);
         /* Washed out light pink for numbers */
         --number: rgb(255, 150, 255);
@@ -77,6 +79,8 @@
     --built-in: var(--keyword);
     /* Rich blue for functions */
     --function: var(--keyword);
+    /* Rich blue for functions */
+    --title: var(--type);
     /* Dark purple for numbers */
     --number: rgb(128, 0, 128);
     /* Dark green for strings */
@@ -292,6 +296,10 @@ code.hljs {
 .hljs-built_in {
     color: var(--built-in);
     font-weight: bold;
+}
+
+.hljs-title {
+    color: var(--title);
 }
 
 .hljs-title.function_ {
