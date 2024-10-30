@@ -333,3 +333,7 @@ The Digital Differential Analyzer (DDA) algorithm is a fundamental method for li
 This document outlines the steps to implement the DDA algorithm, emphasizing the mathematical concepts that underlie each step. By exploring these connections, we deepen our understanding of both the algorithm and the mathematical principles that support it.
 
 This document's approach serves as a valuable reference for learning and implementing the DDA algorithm, bridging the gap between theory and practical application in computer graphics.
+
+---
+
+<p align="center">Copyright (C) 2024 Austin Berrio</p>
