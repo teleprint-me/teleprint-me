@@ -41,9 +41,13 @@
     --font-size-xs: 0.75em;
     --font-size-sm: 0.875em;
     --font-size-md: 1em;
-    --font-size-lg: 1.25em;
-    --font-size-xl: 1.5em;
+    --font-size-lg: 1.125em;
+    --font-size-xl: 1.25em;
     --spacing: 0.625em;
+    /* hljs light theme */
+    --hljs-keyword: var(--primary);
+    --hljs-type: darkslategray;
+    --hljs-string: darkgreen;
 }
 
 *,
@@ -52,6 +56,20 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track-piece {
+    border-radius: 10px;
 }
 
 body {
@@ -198,18 +216,89 @@ figure img {
 }
 
 pre {
-    border-radius: 10px;
-    overflow: none;
+    border-radius: var(--border-radius);
 }
 
-pre code {
-    border-radius: 10px;
-    font-weight: 600;
+p>code {
+    font-size: var(--font-size-md);
+    font-weight: bold;
+}
+
+pre>code {
+    font-size: var(--font-size-md);
+    border-radius: var(--border-radius);
+}
+
+code.hljs {
+    background-color: var(--background-primary);
+    color: var(--primary);
+}
+
+.hljs-meta {
+    /* matte black */
+    color: var(--primary);
+}
+
+.hljs-params {
+    /* matte black */
+    color: var(--primary);
+}
+
+.hljs-type {
+    /* red */
+    color: rgb(150, 0, 50);
+    font-weight: bold;
+}
+
+.hljs-keyword {
+    /* blue */
+    color: rgb(0, 100, 255);
+    font-weight: bold;
+}
+
+.hljs-built_in {
+    /* brown */
+    color: rgb(140, 80, 20);
+    font-weight: bold;
+}
+
+.hljs-title.function_ {
+    /* blue */
+    color: rgb(0, 100, 255);
+}
+
+.hljs-number {
+    /* purple */
+    color: rgb(128, 0, 128);
+}
+
+.hljs-string {
+    /* green */
+    color: rgb(0, 128, 32);
+}
+
+.hljs-comment {
+    /* grey */
+    color: rgb(127, 127, 127);
+    font-size: var(--font-size-sm);
+    font-weight: bold;
 }
 
 span.math.display {
-    margin: 0 auto;
-    font-weight: 600;
+    display: block;
+    text-align: center;
+    /* matte black */
+    color: var(--primary);
+}
+
+span.math.display sub {
+    font-size: var(--font-size-sm);
+}
+
+span.math.inline {
+    /* matte black */
+    color: var(--primary);
+    font-weight: bold;
 }
 
 @media (max-width: 7680px) {
