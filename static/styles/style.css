@@ -21,7 +21,7 @@
         --background-tertiary: rgb(75, 75, 75);
         --box-shadow: 1px 1px 4px 2px rgba(0, 0, 0, 0.2);
         /* Rich flat orange for types */
-        --type: rgb(255, 100, 25);
+        --type: rgb(255, 170, 150);
         /* Cornflower blue for keywords */
         --keyword: rgb(150, 200, 255);
         /* Cornflower blue for built-ins */
@@ -29,9 +29,11 @@
         /* Rich blue for functions */
         --function: var(--keyword);
         /* Washed out light pink for numbers */
-        --number: rgb(255, 100, 255);
+        --number: rgb(255, 150, 255);
         /* Light green for strings */
         --string: rgb(144, 238, 144);
+        /* Washed out light pink for numbers */
+        --literal: var(--number);
         /* Light cloudy gray for comments */
         --comment: rgb(180, 180, 180);
     }
@@ -79,6 +81,8 @@
     --number: rgb(128, 0, 128);
     /* Dark green for strings */
     --string: rgb(0, 128, 32);
+    /* Dark purple for numbers */
+    --literal: var(--number);
     /* Dark cloudy gray for comments */
     --comment: rgb(127, 127, 127);
 }
@@ -300,6 +304,10 @@ code.hljs {
 
 .hljs-string {
     color: var(--string);
+}
+
+.hljs-literal {
+    color: var(--literal);
 }
 
 .hljs-comment {
