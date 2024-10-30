@@ -244,8 +244,8 @@ figure img {
     left: 0;
     width: 100%;
     height: 100%;
+    /* Cover the entire container without being stretched or squeezed */
     object-fit: cover;
-    /* This will ensure that your image covers the entire container without being stretched or squeezed */
 }
 
 pre {
