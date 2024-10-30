@@ -18,8 +18,8 @@ for file in docs/blog/*.md; do
     pandoc -f markdown-smart -t html "$file" \
         --template="$template_main" --css="$css" \
         -o "static/views/blog/$filename.html"
-    prettier --ignore-path --config "$config" \
-        --write "static/views/blog/$filename.html"
+    # prettier --ignore-path --config "$config" \
+    #     --write "static/views/blog/$filename.html"
 done
 
 # Generate technical articles
@@ -30,8 +30,8 @@ for file in docs/technical/*.md; do
     pandoc -f markdown+tex_math_dollars -t html "$file" \
         --template="$template_mathjax" --css="$css" \
         -o "static/views/technical/$filename.html"
-    prettier --ignore-path --config "$config" \
-        --write "static/views/technical/$filename.html"
+    # prettier --ignore-path --config "$config" \
+    #     --write "static/views/technical/$filename.html"
 done
 
 # Generate core views (like index.md)
@@ -41,8 +41,8 @@ for file in docs/views/*.md; do
     pandoc -f markdown-smart -t html "$file" \
         --template="$template_main" --css="$css" \
         -o "static/views/$filename.html"
-    prettier --ignore-path --config "$config" \
-        --write "static/views/$filename.html"
+    # prettier --ignore-path --config "$config" \
+    #     --write "static/views/$filename.html"
 done
 
 # Copy index.html to the root if needed
