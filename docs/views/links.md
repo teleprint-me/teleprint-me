@@ -12,6 +12,7 @@ license: 'cc-by-nc-sa-4.0'
 
 ## Technical Articles
 - [Modular Arithmetic in Lehmer RNG](/static/views/technical/modular-arithmetic-in-lehmer-rng.html)
+- [The Digital Differential Analyzer Algorithm](/static/views/technical/digital-differential-analyzer-algorithm.html)
 
 ---
 
