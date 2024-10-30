@@ -30,9 +30,6 @@ I'm a self-taught programmer with a passion for problem-solving and efficient so
 - Data Analysis
 - Machine Learning
 
-## My Articles
-For a collection of my articles, check out my [article links](/static/views/links.html).
-
 ## Projects
 
 ### PyGPTPrompt
