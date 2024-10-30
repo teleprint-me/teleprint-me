@@ -126,6 +126,7 @@ signed int position = 0;
 ```
 
 Where:
+
 - `position` starts at 0,
 - `boundary` is 256 (the maximum value for an 8-bit integer).
 
@@ -309,6 +310,7 @@ We can see that they remain equivalent throughout. The expressions retain their 
 
 #### 4. **Range of Remainders**
 In both cases, the remainder will always fall within the range:
+
 - For `m > 0`, the remainder is within `[0, m - 1]`.
 - For `m < 0`, the remainder is within `[m, -1]`.
 
