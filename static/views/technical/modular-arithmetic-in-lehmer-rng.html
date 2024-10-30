@@ -196,8 +196,12 @@ upper bound.</p>
 boundary:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">unsigned</span> <span class="dt">int</span> boundary <span class="op">=</span> <span class="dv">256</span><span class="op">;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">signed</span> <span class="dt">int</span> position <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
-<p>Where: - <code>position</code> starts at 0, - <code>boundary</code>
-is 256 (the maximum value for an 8-bit integer).</p>
+<p>Where:</p>
+<ul>
+<li><code>position</code> starts at 0,</li>
+<li><code>boundary</code> is 256 (the maximum value for an 8-bit
+integer).</li>
+</ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>position <span class="op">=</span> <span class="op">(</span>position <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> boundary<span class="op">;</span></span></code></pre></div>
 <p>If <code>position</code> is decremented below 0, the modulus
 operation wraps it back into the valid range
@@ -397,10 +401,13 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a h
 retain their equivalency, regardless of structure.</p>
 <h4 id="range-of-remainders">4. <strong>Range of
 Remainders</strong></h4>
-<p>In both cases, the remainder will always fall within the range: - For
-<code>m &gt; 0</code>, the remainder is within <code>[0, m - 1]</code>.
-- For <code>m &lt; 0</code>, the remainder is within
-<code>[m, -1]</code>.</p>
+<p>In both cases, the remainder will always fall within the range:</p>
+<ul>
+<li>For <code>m &gt; 0</code>, the remainder is within
+<code>[0, m - 1]</code>.</li>
+<li>For <code>m &lt; 0</code>, the remainder is within
+<code>[m, -1]</code>.</li>
+</ul>
 <p>The modulus operation essentially binds values to these ranges,
 making it a helpful tool for cyclic or wrapping operations.</p>
 <p><strong>Examples with Larger Values:</strong></p>
