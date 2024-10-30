@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- TODO: https://developer.mozilla.org/en-US/docs/Web/HTTP/Permissions_Policy -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>The Digital Differential Analyzer Algorithm</title>
+        <link
+            href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+            rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />
+        <link href="/static/styles/style.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    </head>
+    <body>
+        <!-- Router -->
+        <header>
+            <nav class="router">
+                <a href="/">
+                    <i class="bx bxs-user bx-md"></i>
+                    <span class="text">Profile</span>
+                </a>
+                <a href="/static/views/links.html">
+                    <i class="bx bxs-file bx-md"></i>
+                    <span class="text">Articles</span>
+                </a>
+                <a class="theme-moon" data-theme="light">
+                    <i class="bx bxs-moon bx-md"></i>
+                    <span class="text">Dark</span>
+                </a>
+            </nav>
+        </header>
+
+        <!-- Application -->
+        <main><h1 id="the-digital-differential-analyzer-algorithm">The
+Digital Differential Analyzer Algorithm</h1>
+<p>The <a
+href="https://en.wikipedia.org/wiki/Digital_differential_analyser">Digital
+Differential Analyzer</a> is used for line drawing in computer graphics,
+providing a simple and efficient method to render lines. Understanding
+the underlying mathematics behind algorithms like DDA is crucial for
+developing creative solutions to complex problems in computer graphics
+and video game development.</p>
+<h2 id="introduction">Introduction</h2>
+<p>The DDA (Digital Differential Analyzer) algorithm is an efficient way
+to draw a straight line between two points in a 2D space. The core idea
+is to calculate the intermediate points along the line by incrementally
+adding a small, fixed-step size to the starting point’s coordinates.</p>
+<h2 id="mathematical-foundations">Mathematical Foundations</h2>
+<p>The DDA (Digital Differential Analyzer) algorithm can be understood
+through several mathematical concepts:</p>
+<ul>
+<li><strong>Midpoint Calculation</strong>: Determines the midpoint
+between two endpoints of a line segment.</li>
+<li><strong>Iterative Increments</strong>: Moves to the next point by
+adding fractional increments to each coordinate.</li>
+<li><strong>Slope and Rate of Change</strong>: Utilizes the slope and
+rate of change of a line.</li>
+<li><strong>Average Rate of Change</strong>: Applies the average rate of
+change.</li>
+<li><strong>Gradient Steps</strong>: Incrementally determines the next
+point based on the number of steps with respect to a gradient.</li>
+</ul>
+<p>This document aims to provide an accessible understanding of the DDA
+algorithm while connecting it to relevant mathematical concepts from
+various resources, such as Blitzer’s <em>Introductory Algebra</em> and
+Wiley’s <em>Applied Calculus</em>.</p>
+<h2 id="algorithm-steps">Algorithm Steps</h2>
+<h3
+id="input-the-coordinates-of-the-start-x_1-y_1-and-end-x_2-y_2-points">1.
+Input the coordinates of the start <span
+class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>)</span>
+and end <span
+class="math inline">(<em>x</em><sub>2</sub>,<em>y</em><sub>2</sub>)</span>
+points</h3>
+<p>The algorithm begins by taking the coordinates of the two endpoints
+of a line segment. Let’s denote them as <span
+class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>)</span>
+for the starting point and <span
+class="math inline">(<em>x</em><sub>2</sub>,<em>y</em><sub>2</sub>)</span>
+for the ending point.</p>
+<h4 id="defining-our-parameters">Defining Our Parameters</h4>
+<ul>
+<li><strong>Starting Point</strong>: Define the starting point as <span
+class="math inline"><em>s</em><em>t</em><em>a</em><em>r</em><em>t</em> = (<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>) = (0,0)</span>.</li>
+<li><strong>Ending Point</strong>: Define the ending point as <span
+class="math inline"><em>e</em><em>n</em><em>d</em> = (<em>x</em><sub>2</sub>,<em>y</em><sub>2</sub>) = (4,5)</span>.</li>
+</ul>
+<h4 id="data-structures-for-points">Data Structures for Points</h4>
+<p>We define a data structure representing points that use
+floating-point precision. This provides higher fidelity and range of
+expression, which is particularly useful for rendering graphics
+accurately.</p>
+<blockquote>
+<p>Note: While SDL provides an <code>SDL_FPoint</code> structure for
+this purpose, we will use our custom <code>FloatPoint</code> structure
+for illustration.</p>
+</blockquote>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> FloatPoint <span class="op">{</span> <span class="co">// Coordinates of a point</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> x<span class="op">;</span> <span class="co">// horizontal axis</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> y<span class="op">;</span> <span class="co">// vertical axis</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> float_point_t<span class="op">;</span> <span class="co">// type alias</span></span></code></pre></div>
+<h4 id="instantiating-points">Instantiating Points</h4>
+<p>We then create instances of this structure for the starting and
+ending points:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Example points for illustration</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>float_point_t start <span class="op">=</span> <span class="op">{</span><span class="fl">0.0</span><span class="bu">f</span><span class="op">,</span> <span class="fl">0.0</span><span class="bu">f</span><span class="op">};</span>  <span class="co">// x_1, y_1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>float_point_t end   <span class="op">=</span> <span class="op">{</span><span class="fl">4.0</span><span class="bu">f</span><span class="op">,</span> <span class="fl">5.0</span><span class="bu">f</span><span class="op">};</span>  <span class="co">// x_2, y_2</span></span></code></pre></div>
+<h3 id="calculate-the-differences-between-the-coordinates">2. Calculate
+the differences between the coordinates</h3>
+<p>We define the <strong>Slope of a Line</strong> as follows:</p>
+<p><span class="math display">$$\text{slope} = \frac{Δy}{Δx} = \frac{y_2
+- y_1}{x_2 - x_1}$$</span></p>
+<p>The changes in <span class="math inline"><em>x</em></span> and <span
+class="math inline"><em>y</em></span> represent the horizontal and
+vertical distances between the start and end points.</p>
+<ul>
+<li><strong>Change in <span class="math inline"><em>y</em></span> (<span
+class="math inline"><em>Δ</em><em>y</em></span>)</strong> is defined as
+<span
+class="math inline"><em>Δ</em><em>y</em> = <em>y</em><sub>2</sub> − <em>y</em><sub>1</sub></span></li>
+<li><strong>Change in <span class="math inline"><em>x</em></span> (<span
+class="math inline"><em>Δ</em><em>x</em></span>)</strong> is defined as
+<span
+class="math inline"><em>Δ</em><em>x</em> = <em>x</em><sub>2</sub> − <em>x</em><sub>1</sub></span></li>
+</ul>
+<p>Given <span
+class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>) = (0.0<em>f</em>,0.0<em>f</em>)</span>
+and <span
+class="math inline">(<em>x</em><sub>2</sub>,<em>y</em><sub>2</sub>) = (4.0<em>f</em>,5.0<em>f</em>)</span>,
+we have:</p>
+<p><span
+class="math display"><em>Δ</em><em>y</em> = <em>y</em><sub>2</sub> − <em>y</em><sub>1</sub> = 5.0<em>f</em> − 0.0<em>f</em> = 5.0<em>f</em></span></p>
+<p><span
+class="math display"><em>Δ</em><em>x</em> = <em>x</em><sub>2</sub> − <em>x</em><sub>1</sub> = 4.0<em>f</em> − 0.0<em>f</em> = 4.0<em>f</em></span></p>
+<p>We can reason this as having a 2-dimensional plane where we move
+<strong>right</strong> by 4 units and <strong>upward</strong> by 5
+units. The <strong>Slope of the Line (m)</strong> between these points
+is <span class="math inline">$\frac{Δy}{Δx} = \frac{5.0f}{4.0f}$</span>
+(or <span class="math inline">1.25<em>f</em></span>).</p>
+<p>We can define the changes in the positions of these points in C as
+follows:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Calculate delta values</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>float_point_t delta <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>y <span class="op">=</span> end<span class="op">.</span>y <span class="op">-</span> start<span class="op">.</span>y<span class="op">,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>x <span class="op">=</span> end<span class="op">.</span>x <span class="op">-</span> start<span class="op">.</span>x<span class="op">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<h3 id="determine-the-number-of-steps-required-to-draw-the-line">3.
+Determine the number of steps required to draw the line</h3>
+<p>The number of steps required to draw the line is determined by the
+maximum of the absolute values of <span
+class="math inline"><em>Δ</em><em>x</em></span> and <span
+class="math inline"><em>Δ</em><em>y</em></span>. This ensures that we
+take enough steps to cover the entire line.</p>
+<p><span
+class="math display">steps = max (|<em>Δ</em><em>x</em>|,|<em>Δ</em><em>y</em>|)</span></p>
+<p>Given <span
+class="math inline"><em>Δ</em><em>x</em> = 4.0<em>f</em></span> and
+<span class="math inline"><em>Δ</em><em>y</em> = 5.0<em>f</em></span>,
+we calculate the steps as follows:</p>
+<p><span
+class="math display">steps = max (|4.0<em>f</em>|,|5.0<em>f</em>|) = 5</span></p>
+<p>This calculation is straightforward with whole integers but can
+become more complex with floating-point values, which is beyond the
+scope of this article.</p>
+<p>We can calculate this in C by defining a function to determine the
+steps:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Function to calculate the maximum of two integer values</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> calculate_steps<span class="op">(</span>float_point_t delta<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Explicitly type cast to an integer so we can set the limit</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span> delta<span class="op">.</span>x<span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> y <span class="op">=</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span> delta<span class="op">.</span>y<span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Return the limit based on the point&#39;s axis with the greater absolute value</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> abs<span class="op">(</span>x<span class="op">)</span> <span class="op">&gt;</span> abs<span class="op">(</span>y<span class="op">)</span> <span class="op">?</span> abs<span class="op">(</span>x<span class="op">)</span> <span class="op">:</span> abs<span class="op">(</span>y<span class="op">);</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>In the main implementation, we use this function to calculate the
+steps:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Calculate the number of steps required</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> steps <span class="op">=</span> calculate_steps<span class="op">(</span>delta<span class="op">);</span></span></code></pre></div>
+<h3 id="calculate-the-increments-for-each-step-in-x-and-y">4. Calculate
+the increments for each step in <span
+class="math inline"><em>x</em></span> and <span
+class="math inline"><em>y</em></span></h3>
+<p>The increments <span
+class="math inline"><em>y</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
+and <span
+class="math inline"><em>x</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
+are the changes in the <span class="math inline"><em>y</em></span> and
+<span class="math inline"><em>x</em></span> coordinates for each step.
+These increments determine how much to move in the <span
+class="math inline"><em>y</em></span> and <span
+class="math inline"><em>x</em></span> directions at each step to reach
+the next point on the line.</p>
+<p><span class="math display">$$y_{increment} = \frac{\Delta
+y}{steps}$$</span></p>
+<p><span class="math display">$$x_{increment} = \frac{\Delta
+x}{steps}$$</span></p>
+<p>Given <span
+class="math inline"><em>Δ</em><em>x</em> = 4.0<em>f</em></span>, <span
+class="math inline"><em>Δ</em><em>y</em> = 5.0<em>f</em></span>, and
+<span
+class="math inline"><em>s</em><em>t</em><em>e</em><em>p</em><em>s</em> = 5</span>,
+we calculate the increments as follows:</p>
+<p><span class="math display">$$y_{increment} = \frac{5.0f}{5} =
+1.0f$$</span></p>
+<p><span class="math display">$$x_{increment} = \frac{4.0f}{5} =
+0.8f$$</span></p>
+<p>We can implement this in C as follows:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Calculate increment values</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>float_point_t increment <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>y <span class="op">=</span> delta<span class="op">.</span>y <span class="op">/</span> <span class="op">(</span><span class="dt">float</span><span class="op">)</span> steps<span class="op">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span>x <span class="op">=</span> delta<span class="op">.</span>x <span class="op">/</span> <span class="op">(</span><span class="dt">float</span><span class="op">)</span> steps<span class="op">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p><em>Note that we type cast <code>steps</code> back to
+<code>float</code> to ensure the division yields a floating-point
+result. This step, similar to when we calculated the differences between
+the coordinates, highlights a limitation of the DDA algorithm as it may
+lose precision during this phase of the process.</em></p>
+<h3 id="initialize-the-starting-point-x-y">5. Initialize the starting
+point <span class="math inline">(<em>x</em>,<em>y</em>)</span></h3>
+<p>The starting point <span
+class="math inline">(<em>x</em>,<em>y</em>)</span> is initialized to the
+starting coordinates <span
+class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>)</span>.</p>
+<p><span
+class="math display"><em>x</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub> = <em>s</em><em>t</em><em>a</em><em>r</em><em>t</em></span></p>
+<p>We initialize the current point to the starting point in our C code
+as follows:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Initialize current point to start point</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>float_point_t current <span class="op">=</span> start<span class="op">;</span></span></code></pre></div>
+<p>This sets the starting point of the line, from which the algorithm
+will begin incrementing to plot each point along the line.</p>
+<h3
+id="loop-through-the-number-of-steps-incrementing-the-current-point-and-plotting-it">6.
+Loop through the number of steps, incrementing the current point and
+plotting it</h3>
+<p>For each step, the algorithm increments the <span
+class="math inline"><em>x</em></span> and <span
+class="math inline"><em>y</em></span> coordinates by <span
+class="math inline"><em>x</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
+and <span
+class="math inline"><em>y</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
+respectively. The new point <span
+class="math inline">(<em>x</em>,<em>y</em>)</span> is then plotted. This
+process repeats until all steps are completed, effectively drawing the
+line from the start point to the end point.</p>
+<p><span class="math display">$$
+\begin{aligned}
+    \sum_{i = 0}^{i \leq steps}
+    \text{plot}(x_i, y_i) \quad \text{where} \quad
+    \begin{cases}
+        x_{i+1} = x_i + x_{increment} \\
+        y_{i+1} = y_i + y_{increment}
+    \end{cases}
+\end{aligned}
+$$</span></p>
+<p>In our C code, we implement the loop to increment the current point
+and plot it as follows:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Loop through and plot each point</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> steps<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    SDL_RenderDrawPointF<span class="op">(</span>renderer<span class="op">,</span> current<span class="op">.</span>x<span class="op">,</span> current<span class="op">.</span>y<span class="op">);</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    current<span class="op">.</span>y <span class="op">+=</span> increment<span class="op">.</span>y<span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    current<span class="op">.</span>x <span class="op">+=</span> increment<span class="op">.</span>x<span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The <code>SDL_RenderDrawPointF</code> function plots the current
+point on the screen. The <code>current</code> point is then incremented
+by <span
+class="math inline"><em>x</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
+and <span
+class="math inline"><em>y</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
+for each step. This continues until the loop has run for the total
+number of steps calculated earlier.</p>
+<ul>
+<li><p><strong>Incrementing the Coordinates</strong>: The current <span
+class="math inline"><em>x</em></span> and <span
+class="math inline"><em>y</em></span> coordinates are incremented by the
+values of <span
+class="math inline"><em>x</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
+and <span
+class="math inline"><em>y</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>.
+This ensures that the points are spaced evenly along the line.</p></li>
+<li><p><strong>Plotting the Points</strong>: The
+<code>SDL_RenderDrawPointF</code> function is responsible for rendering
+the point on the screen. By using the current floating-point coordinates
+directly, it ensures precision in the rendering process.</p></li>
+</ul>
+<h2 id="putting-it-all-together">Putting it all together</h2>
+<h3 id="step-by-step-explanation">Step-by-Step Explanation</h3>
+<ol type="1">
+<li><strong>Initialize the Endpoints</strong>:
+<ul>
+<li><strong>Define the start and end points</strong>: Specify the
+coordinates of the start <span
+class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>)</span>
+and end <span
+class="math inline">(<em>x</em><sub>2</sub>,<em>y</em><sub>2</sub>)</span>
+points using floating-point precision.</li>
+</ul></li>
+<li><strong>Calculate Differences</strong>:
+<ul>
+<li><strong>Compute differences</strong>: Determine <span
+class="math inline"><em>Δ</em><em>x</em></span> and <span
+class="math inline"><em>Δ</em><em>y</em></span>, the changes in <span
+class="math inline"><em>x</em></span> and <span
+class="math inline"><em>y</em></span> coordinates between the start and
+end points.</li>
+</ul></li>
+<li><strong>Calculate Steps</strong>:
+<ul>
+<li><strong>Determine steps</strong>: Calculate the number of steps
+required to draw the line as the maximum of <span
+class="math inline">|<em>Δ</em><em>x</em>|</span> and <span
+class="math inline">|<em>Δ</em><em>y</em>|</span>.</li>
+</ul></li>
+<li><strong>Calculate Increments</strong>:
+<ul>
+<li><strong>Compute increments</strong>: Calculate <span
+class="math inline"><em>x</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
+and <span
+class="math inline"><em>y</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>,
+the incremental changes in <span class="math inline"><em>x</em></span>
+and <span class="math inline"><em>y</em></span> coordinates per
+step.</li>
+</ul></li>
+<li><strong>Initialize and Plot</strong>:
+<ul>
+<li><strong>Initialize current point</strong>: Set the starting point
+<span
+class="math inline">(<em>x</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>,<em>y</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>)</span>
+to <span
+class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>)</span>.</li>
+<li><strong>Plot starting point</strong>: Render the starting point on
+the screen.</li>
+</ul></li>
+<li><strong>Iterate and Plot</strong>:
+<ul>
+<li><strong>Increment and plot</strong>: Iterate through each step,
+updating <span
+class="math inline">(<em>x</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>,<em>y</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>)</span>
+by adding <span
+class="math inline"><em>x</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
+and <span
+class="math inline"><em>y</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
+respectively, and plot each updated point using
+<code>SDL_RenderDrawPointF</code>.</li>
+</ul></li>
+</ol>
+<h3 id="code-implementation">Code Implementation</h3>
+<p>Here’s a complete implementation of the DDA algorithm in C:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Example implementation of the Digital Differential Analyzer (DDA) algorithm</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> draw_line<span class="op">(</span>SDL_Renderer<span class="op">*</span> renderer<span class="op">,</span> float_point_t start<span class="op">,</span> float_point_t end<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Calculate delta values</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    float_point_t delta <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>y <span class="op">=</span> end<span class="op">.</span>y <span class="op">-</span> start<span class="op">.</span>y<span class="op">,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>x <span class="op">=</span> end<span class="op">.</span>x <span class="op">-</span> start<span class="op">.</span>x<span class="op">,</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Calculate the number of steps required</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> steps <span class="op">=</span> calculate_steps<span class="op">(</span>delta<span class="op">);</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Calculate increment values</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    float_point_t increment <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>y <span class="op">=</span> delta<span class="op">.</span>y <span class="op">/</span> <span class="op">(</span><span class="dt">float</span><span class="op">)</span> steps<span class="op">,</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>x <span class="op">=</span> delta<span class="op">.</span>x <span class="op">/</span> <span class="op">(</span><span class="dt">float</span><span class="op">)</span> steps<span class="op">,</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize current point to start point</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    float_point_t current <span class="op">=</span> start<span class="op">;</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Loop through and plot each point</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> steps<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        SDL_RenderDrawPointF<span class="op">(</span>renderer<span class="op">,</span> current<span class="op">.</span>x<span class="op">,</span> current<span class="op">.</span>y<span class="op">);</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>        current<span class="op">.</span>y <span class="op">+=</span> increment<span class="op">.</span>y<span class="op">;</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        current<span class="op">.</span>x <span class="op">+=</span> increment<span class="op">.</span>x<span class="op">;</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="integration-with-sdl">Integration with SDL</h3>
+<p>To integrate this function into an SDL application, we need to
+initialize SDL, create a window and renderer, and then call the
+<code>draw_line</code> function within the rendering loop. Here’s a
+complete example:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;SDL2/SDL.h&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Define your float_point_t structure here</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Include the draw_line function here</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize SDL</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>SDL_Init<span class="op">(</span>SDL_INIT_VIDEO<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="co">// errors on truthy values</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        fprintf<span class="op">(</span>stderr<span class="op">,</span> <span class="st">&quot;SDL_Init Error: </span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> SDL_GetError<span class="op">());</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create SDL window</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    SDL_Window<span class="op">*</span> window <span class="op">=</span> SDL_CreateWindow<span class="op">(</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;DDA Line Drawing&quot;</span><span class="op">,</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        SDL_WINDOWPOS_UNDEFINED<span class="op">,</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        SDL_WINDOWPOS_UNDEFINED<span class="op">,</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        <span class="dv">640</span><span class="op">,</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="dv">480</span><span class="op">,</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        SDL_WINDOW_SHOWN</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">);</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>NULL <span class="op">==</span> window<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        fprintf<span class="op">(</span>stderr<span class="op">,</span> <span class="st">&quot;SDL_CreateWindow Error: </span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> SDL_GetError<span class="op">());</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        SDL_Quit<span class="op">();</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create SDL renderer</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    SDL_Renderer<span class="op">*</span> renderer</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>        <span class="op">=</span> SDL_CreateRenderer<span class="op">(</span>window<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> SDL_RENDERER_ACCELERATED <span class="op">|</span> SDL_RENDERER_PRESENTVSYNC<span class="op">);</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>NULL <span class="op">==</span> renderer<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>        SDL_DestroyWindow<span class="op">(</span>window<span class="op">);</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>        fprintf<span class="op">(</span>stderr<span class="op">,</span> <span class="st">&quot;SDL_CreateRenderer Error: </span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> SDL_GetError<span class="op">());</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>        SDL_Quit<span class="op">();</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Set the background to black</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    SDL_SetRenderDrawColor<span class="op">(</span>renderer<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> SDL_ALPHA_OPAQUE<span class="op">);</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Clear the window</span></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    SDL_RenderClear<span class="op">(</span>renderer<span class="op">);</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Define start and end points here</span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    float_point_t start <span class="op">=</span> <span class="op">{</span><span class="fl">0.0</span><span class="bu">f</span><span class="op">,</span> <span class="fl">0.0</span><span class="bu">f</span><span class="op">};</span>     <span class="co">// x_1, y_1</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    float_point_t end   <span class="op">=</span> <span class="op">{</span><span class="fl">320.0</span><span class="bu">f</span><span class="op">,</span> <span class="fl">240.0</span><span class="bu">f</span><span class="op">};</span> <span class="co">// x_2, y_2</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Set the line color to white</span></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    SDL_SetRenderDrawColor<span class="op">(</span>renderer<span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> SDL_ALPHA_OPAQUE<span class="op">);</span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Draw the line using DDA algorithm</span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>    draw_line<span class="op">(</span>renderer<span class="op">,</span> start<span class="op">,</span> end<span class="op">);</span></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Present the renderer</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>    SDL_RenderPresent<span class="op">(</span>renderer<span class="op">);</span></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Wait for a few seconds before quitting</span></span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    SDL_Delay<span class="op">(</span><span class="dv">5000</span><span class="op">);</span></span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Cleanup</span></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>    SDL_DestroyRenderer<span class="op">(</span>renderer<span class="op">);</span></span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>    SDL_DestroyWindow<span class="op">(</span>window<span class="op">);</span></span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>    SDL_Quit<span class="op">();</span></span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This example initializes SDL, creates a window and renderer, and uses
+the <code>draw_line</code> function to draw a line between two points.
+The window displays the line for 5 seconds before quitting.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The Digital Differential Analyzer (DDA) algorithm is a fundamental
+method for line drawing in computer graphics, offering a simple yet
+effective way to render lines. By understanding and implementing the DDA
+algorithm, we gain insight into how graphics systems translate
+mathematical descriptions into visual representations.</p>
+<p>This document outlines the steps to implement the DDA algorithm,
+emphasizing the mathematical concepts that underlie each step. By
+exploring these connections, we deepen our understanding of both the
+algorithm and the mathematical principles that support it.</p>
+<p>This document’s approach serves as a valuable reference for learning
+and implementing the DDA algorithm, bridging the gap between theory and
+practical application in computer graphics.</p>
+<hr />
+<p align="center">
+Copyright (C) 2024 Austin Berrio
+</p></main>
+
+        <!-- marked -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+            defer></script>
+
+        <!-- highlight -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+        <!-- Enable Inline and Block Level Rendering-->
+        <script
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+            id="MathJax-script"></script>
+        <!-- Enable ASCII Rendering -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/asciimath.js"
+            charset="UTF-8"></script>
+
+        <!-- Modules -->
+        <script src="/static/modules/main.mjs" type="module"></script>
+        <script type="module">
+            import {Theme} from '/static/modules/main.mjs';
+
+            const theme = new Theme();
+            theme.init();
+
+            // Configure marked.js with highlight.js for code syntax highlighting
+            marked.setOptions({
+                highlight: function (code, lang) {
+                    // Function to handle code syntax highlighting using highlight.js
+                    // Get the language if available, otherwise set it as plain text
+                    const language = highlight.getLanguage(lang)
+                        ? lang
+                        : 'plaintext';
+                    // Apply highlighting and get the highlighted code
+                    return highlight.highlight(code, {language}).value;
+                },
+                // Use 'hljs' class prefix for compatibility with highlight.js CSS
+                langPrefix: 'hljs language-',
+                // Use async; this is disabled by default
+                async: true
+            });
+            console.log('Successfully initialized marked.js');
+
+            // Highlight all the code snippets in the document
+            hljs.highlightAll(); // Initial code highlighting, if any
+            console.log('Successfully initialized highlight.js');
+        </script>
+    </body>
+</html>
