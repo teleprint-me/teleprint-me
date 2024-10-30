@@ -8,11 +8,13 @@ license: "cc-by-nc-sa-4.0"
 # Modular Arithmetic in Lehmer RNG
 
 ## Introduction
+
 Modular arithmetic is a fundamental concept in the design of the Lehmer Random Number Generator (RNG) in our project. By applying a modulus operation, we can bind the generated random numbers to a fixed range and ensure sequence positions wrap around predictably when they exceed their limits.
 
 This document provides an in-depth exploration of modular arithmetic as it is applied in the Lehmer RNG, covering essential concepts such as signed and unsigned integer behavior, overflow, and underflow.
 
 ## Building Intuition with Division and Modulus
+
 Modulus arithmetic can be challenging to grasp at first, especially when dealing with negative numbers or boundary conditions in C. However, by understanding the fundamental concept of division and the remainder, we can develop a solid intuition for modulus arithmetic.
 
 Let's start by reviewing the **division** concept:
@@ -26,6 +28,7 @@ $$\text{quotient} = \frac{\text{numerator}}{\text{denominator}}$$
 Both are equivalent. The latter is nicer than the former because we can use the initial letters $q$ (quotient), $n$ (numerator), and $d$ (denominator), respectively. This allows us to mitigate any conflicts in variable names.
 
 ### Division with Remainder:
+
 Modular arithmetic is based on the concept of division with remainder. When you divide an integer $n$ by another integer $d$, you can write the division as:
 
 $$n = d \times q + r$$
@@ -66,9 +69,11 @@ $$n \mod d \equiv r$$
 To say that this is congruent means we define the expression as being two numbers which have the same remainder when divided by a third number. For example, 10 and 3 are congruent when the modulus is 1.
 
 ## Examples
+
 Modular arithmetic can be a bit tricky, especially when dealing with negative numbers or boundary conditions in C. To help build intuition, let's go over some examples to illustrate the concept.
 
 ### Example 1: $10 \div 5$
+
 $$10 = 5 \times 2 + 0$$
 
 The remainder $r = 0$ because 10 is evenly divisible by 5. Therefore:
@@ -76,6 +81,7 @@ The remainder $r = 0$ because 10 is evenly divisible by 5. Therefore:
 $$10 \mod 5 = 0$$
 
 ### Example 2: $10 \div 3$
+
 Here’s where it gets interesting:
 
 $$10 = 3 \times 3 + 1$$
@@ -87,11 +93,13 @@ $$10 \mod 3 = 1$$
 The **modulus** operation effectively gives you the leftover portion after you subtract as many multiples of the divisor as possible.
 
 ### Extension to Modular Arithmetic
+
 Modular arithmetic is fascinating because of how it "wraps" numbers. If we "overflow" or "underflow", we simply "wrap" around due to how the remainder works out.
 
 This wrapping behavior is a core property of modulus, and it’s why modulus is so useful in applications like random number generation, hashing, or circular buffers.
 
 ### Example 3: Negative Values and Modulus
+
 When working with **negative numbers** in modulus, things can get confusing. For example:
 
 $$-1 \mod 3 = 2$$
@@ -103,6 +111,7 @@ $$-1 = 3 \times (-1) + 2$$
 In this case, the remainder has to be non-negative, so the modulus operation gives us 2. Essentially, we’re "wrapping" around the range defined by the divisor (3) and ensuring the result is positive.
 
 ## Modulus and Overflow/Underflow
+
 In programming, modulus arithmetic is valuable because it constrains values within a certain range. When performing an operation like:
 
 $$a \mod m$$
@@ -110,6 +119,7 @@ $$a \mod m$$
 the result is always between $0$ and $m - 1$, no matter how large or small `a` is. This makes modulus an ideal tool for handling cyclic behavior, such as wrapping sequence positions in an RNG or managing circular buffers.
 
 ### Position Management
+
 Consider traversing a sequence of values with an upper bound of 256 values. The lower boundary is 0 and the upper boundary is 256.
 
 We keep track of where we are by defining a **position**. If the position is **unbounded**, then we may traverse undefined values. If the position is **bounded**, then we may traverse defined values.
@@ -137,6 +147,7 @@ position = (position - 1) % boundary;
 If `position` is decremented below 0, the modulus operation wraps it back into the valid range `[0, boundary - 1]`.
 
 #### Stepping Through the Example:
+
 Let’s mathematically step through what happens:
 
 1. **Start with position = 0**  
@@ -156,6 +167,7 @@ Let’s mathematically step through what happens:
 This process continues, ensuring that even as `position` decrements beyond the lower boundary, it wraps around correctly due to the modulus operation. This predictable behavior allows for safe navigation within the sequence.
 
 ### Modulus as a Bounding Mechanism
+
 Thinking of modulus as a **bounding mechanism** helps to better understand its usefulness in certain contexts:
 
 - It keeps values **within a specified range**, regardless of the size of the input.
@@ -170,12 +182,14 @@ Modular arithmetic isn’t just division with a twist—it’s also a powerful t
 ### Modulus Operation
 
 #### Signed and Unsigned Integers
+
 In C, the behavior of signed and unsigned integers differs when it comes to overflow and underflow:
 
 - **Signed Integers:** When a signed integer overflows, it wraps around to the other end of its value range. This behavior is predictable and can be thought of as a "safe" overflow.
 - **Unsigned Integers:** Unsigned integers do not wrap around on overflow. Instead, the value can overflow into adjacent memory resulting in undefined behavior.
 
 #### Overflow and Underflow
+
 - **Overflow:** When a signed integer exceeds its maximum value, it wraps around to the minimum possible value. In contrast, an unsigned integer may produce unexpected results as it does not have a negative range.
 - **Underflow:** For signed integers, underflow behaves similarly to overflow but in the opposite direction. The value wraps around to the maximum possible value.
 
@@ -239,6 +253,7 @@ Both expressions are equivalent because the modulus operation ensures the result
 In modular arithmetic, the sign of the divisor (denoted as `m`) plays an important role in determining the sign of the remainder when performing the modulus operation. Understanding how this behavior works is crucial when using modular arithmetic in programming.
 
 #### 1. **Positive Divisor (`m > 0`)**
+
 When the divisor `m` is positive, the modulus operation `a % m` always returns a remainder within the range `[0, m - 1]`. This behavior holds regardless of whether `a` (the number being divided) is positive or negative.
 
 - If `a` is positive, the remainder is naturally between `0` and `m - 1`.
@@ -258,6 +273,7 @@ When the divisor `m` is positive, the modulus operation `a % m` always returns a
 ```
 
 #### 2. **Negative Divisor (`m < 0`)**
+
 When the divisor `m` is negative, the remainder will always fall within the range `[m, -1]`. This is because the sign of `m` determines the wrapping behavior of the modulus operation.
 
 - If `a` is positive, the remainder is wrapped to be negative.
@@ -277,6 +293,7 @@ When the divisor `m` is negative, the remainder will always fall within the rang
 ```
 
 #### 3. **Ensuring a Positive Remainder**
+
 In some situations, you might want to ensure that the remainder is always positive, even when `a` or `m` is negative. To achieve this, you can adjust the modulus operation by using the absolute value of `m`:
 
 ```python
@@ -309,6 +326,7 @@ True
 We can see that they remain equivalent throughout. The expressions retain their equivalency, regardless of structure.
 
 #### 4. **Range of Remainders**
+
 In both cases, the remainder will always fall within the range:
 
 - For `m > 0`, the remainder is within `[0, m - 1]`.
@@ -332,6 +350,7 @@ The modulus operation essentially binds values to these ranges, making it a help
 In summary, the sign of the divisor determines the range in which the remainder falls. A positive divisor results in a positive remainder, while a negative divisor leads to a negative remainder. Using the absolute value of the divisor can help ensure that the remainder is always positive, which is useful in certain applications.
 
 ## The Lehmer RNG
+
 The Lehmer Random Number Generator (RNG) is a classic example of a **Linear Congruential Generator (LCG)**, widely used to produce pseudo-random sequences. It extends the basic principles of modular arithmetic by introducing two additional key concepts: **scalar values** and **recursive scaling**.
 
 ### Formal Definition
@@ -346,6 +365,7 @@ Where:
 - $z$ is the initial value (known as the **seed**).
 
 ### Scalar Values
+
 In the Lehmer RNG, the **scalar value** is represented by $z$, which serves as the seed. This seed initializes the process and is crucial in generating the sequence. Once defined, the seed $z$ is used as the input to the modulus operation:
 
 $$z_{n+1} = (a \times z_n) \mod m$$
@@ -353,6 +373,7 @@ $$z_{n+1} = (a \times z_n) \mod m$$
 Here, $z_{n+1}$ is the next value in the sequence, derived by scaling the current seed $z_n$ by the multiplier $a$, followed by a modulus with $m$. The seed value evolves through the sequence, confined within the range $[0, m - 1]$.
 
 ### Recursive Scaling
+
 One of the key innovations of the Lehmer RNG is **recursive scaling**. This means that the output of each iteration is used as the input for the next iteration. Specifically, the result from one step (the new seed $z_{n+1}$) is fed back into the equation for the next iteration:
 
 $$z_{n+2} = (a \times z_{n+1}) \mod m$$
@@ -360,6 +381,7 @@ $$z_{n+2} = (a \times z_{n+1}) \mod m$$
 This recursive process creates a sequence of pseudo-random values that depends entirely on the initial seed.
 
 ### Modular Arithmetic in the Lehmer RNG
+
 The Lehmer RNG relies on modular arithmetic to keep the generated numbers within a specific range. The general modulus operation is defined as:
 
 $$n \mod d = r$$
@@ -381,14 +403,17 @@ Where:
 - $r = z$ is both the input and output seed.
 
 ### Seed Selection and Iteration
+
 The selection of the initial seed $z_0$ is crucial, as it defines the starting point for the entire pseudo-random sequence. After each iteration, the output seed $z_{n+1}$ becomes the new input for the next round of calculations, recursively generating the sequence.
 
 This iterative process means the remainder $r$, which is $z$, functions as both the output and input in each step. The choice of $a$ and $m$ helps ensure that the sequence retains reasonable statistical properties and achieves a long period before repeating itself.
 
 #### Periodicity and Weak Properties
+
 However, it's important to note that these statistical properties are inherently weak due to the periodic nature of the generator. **Periodicity** means that no matter how large the modulus $m$ is, the sequence will eventually repeat itself. Although this repetition may not be immediately apparent, it is inevitable and mathematically derivable. This upper limit defines the sequence’s period, which can introduce weaknesses when high-quality randomness or unpredictability is required.
 
 ### Function Definition
+
 The function $f(z)$ can be defined as the relationship between the input seed and the output seed:
 
 $$f(z) = (a \times z) \mod m$$
