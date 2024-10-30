@@ -8,7 +8,7 @@ license: "cc-by-nc-sa-4.0"
 # Modular Arithmetic in Lehmer RNG
 
 ## Introduction
-Modular arithmetic is a fundamental concept in the design of the Lehmer Random Number Generator (RNG) in our project. By applying a modulus operation, we can bound the generated random numbers within a fixed range and ensure that sequence positions wrap around predictably when they exceed their limits.
+Modular arithmetic is a fundamental concept in the design of the Lehmer Random Number Generator (RNG) in our project. By applying a modulus operation, we can bind the generated random numbers to a fixed range and ensure sequence positions wrap around predictably when they exceed their limits.
 
 This document provides an in-depth exploration of modular arithmetic as it is applied in the Lehmer RNG, covering essential concepts such as signed and unsigned integer behavior, overflow, and underflow.
 
@@ -338,6 +338,7 @@ The Lehmer RNG is defined by the equation:
 $$f(z) = (a \times z) \mod m$$
 
 Where:
+
 - $m$ is a Mersenne prime (a prime number of the form $2^p - 1$),
 - $a$ is a prime multiplier (a number divisible only by $1$ and itself),
 - $z$ is the initial value (known as the **seed**).
@@ -362,6 +363,7 @@ The Lehmer RNG relies on modular arithmetic to keep the generated numbers within
 $$n \mod d = r$$
 
 Where:
+
 - $n$ is the input value,
 - $d$ is the divisor,
 - $r$ is the remainder.
@@ -371,6 +373,7 @@ In the Lehmer RNG context, the modulus operation takes the form:
 $$(a \times z) \mod m = z$$
 
 Where:
+
 - $n = a \times z$ is the product of the multiplier and the seed,
 - $d = m$ is the modulus (a Mersenne prime),
 - $r = z$ is both the input and output seed.
