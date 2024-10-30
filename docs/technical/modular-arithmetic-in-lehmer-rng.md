@@ -31,6 +31,7 @@ Modular arithmetic is based on the concept of division with remainder. When you 
 $$n = d \times q + r$$
 
 Where:
+
 - $n$ is the numerator (the number divided into)
 - $d$ is the denominator (the number divided by)
 - $q$ is the quotient (how many times $d$ divides into $n$),
