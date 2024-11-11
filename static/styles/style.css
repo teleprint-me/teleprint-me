@@ -204,39 +204,69 @@ ol,
 ul {
     flex: 1 1;
     list-style-type: none;
-    margin: 1em;
+    margin: 0.25em;
+    padding: 0.25em;
 }
 
 li {
     font-size: 1em;
     text-align: left;
-    margin: 5px;
-    padding: 5px;
+    margin: 0 10px;
+    padding: 0.125em 10px;
 }
 
+/* Table Styles */
 table {
+    display: flex;
     margin: 10px auto;
     width: 100%;
     border: var(--border-primary);
     border-radius: var(--border-radius);
-    text-align: center;
+    table-layout: fixed;
+    word-break: break-word;
 }
 
+/* Hide header row since labels will be handled by data-labels in td */
 thead {
-    font-weight: bold;
+    display: none;
 }
 
-thead td {
+/* Row and Cell Styles */
+tr {
+    display: flex;
+    flex-direction: column;
+    background: var(--background-secondary);
     border-bottom: var(--border-primary);
 }
 
+td {
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: var(--border-primary);
+    position: relative;
+}
+
+/* Alternating Row Background for Better Readability */
+tr:nth-of-type(even) {
+    background: var(--background-primary);
+}
+
+/* Label Style on Each Cell */
+td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: var(--secondary);
+    margin-right: 8px;
+}
+
+/* Padding and Typography Adjustments for Better Readability */
 tbody {
     padding: var(--spacing);
 }
 
-tr,
 td {
-    padding: 5px;
+    font-size: var(--font-size-sm);
+    color: var(--primary);
 }
 
 figure {
