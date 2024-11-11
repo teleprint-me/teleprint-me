@@ -1,3 +1,7 @@
+/**
+ * @file static/modules/main.mjs
+ */
+
 export class Theme {
     get selector() {
         return 'data-theme';
@@ -45,10 +49,7 @@ export class Theme {
                 dark(a);
             }
 
-            localStorage.setItem(
-                selector,
-                a.getAttribute(selector)
-            );
+            localStorage.setItem(selector, a.getAttribute(selector));
         };
     }
 
@@ -65,4 +66,21 @@ export class Theme {
             }
         }
     }
+}
+
+export function responsiveTables(event) {
+    const tables = document.querySelectorAll('table');
+    tables.forEach((table) => {
+        const headers = Array.from(table.querySelectorAll('thead th'));
+        table.querySelectorAll('tbody tr').forEach((row) => {
+            Array.from(row.cells).forEach((cell, index) => {
+                if (headers[index]) {
+                    cell.setAttribute(
+                        'data-label',
+                        headers[index].textContent
+                    );
+                }
+            });
+        });
+    });
 }
