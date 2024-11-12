@@ -2,6 +2,7 @@
 # Local
 #
 local
+sh/sync.sh
 
 static/data
 static/documents
