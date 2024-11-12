@@ -203,15 +203,15 @@ the modulus operation ensures that the position “wraps” back to the
 upper bound.</p>
 <p>When programming, we would begin by defining the position and
 boundary:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">unsigned</span> <span class="dt">int</span> boundary <span class="op">=</span> <span class="dv">256</span><span class="op">;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">signed</span> <span class="dt">int</span> position <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div>
+<pre class="c"><code>const unsigned int boundary = 256;
+signed int position = 0;</code></pre>
 <p>Where:</p>
 <ul>
 <li><code>position</code> starts at 0,</li>
 <li><code>boundary</code> is 256 (the maximum value for an 8-bit
 integer).</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>position <span class="op">=</span> <span class="op">(</span>position <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> boundary<span class="op">;</span></span></code></pre></div>
+<pre class="c"><code>position = (position - 1) % boundary;</code></pre>
 <p>If <code>position</code> is decremented below 0, the modulus
 operation wraps it back into the valid range
 <code>[0, boundary - 1]</code>.</p>
@@ -289,41 +289,41 @@ in Lehmer RNG</h2>
 generation and boundary enforcement. The modulus ensures that positions
 in the sequence remain within valid bounds, and overflows or underflows
 do not result in undefined behavior.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LIMIT </span><span class="dv">10</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// signed int wraps around when overflows occur</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">signed</span> <span class="dt">int</span> position <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// this cannot overflow</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// unsigned int simply overflows and does not wrap around</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">const</span> <span class="dt">unsigned</span> <span class="dt">int</span> boundary <span class="op">=</span> <span class="dv">256</span><span class="op">;</span> <span class="co">// this can overflow</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// step backwards over each iteration</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">unsigned</span> <span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> LIMIT<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">// negate the position and bind it to the boundary</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        position <span class="op">=</span> <span class="op">(</span>position <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> boundary<span class="op">;</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">// output the current position</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">&quot;position: </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> position<span class="op">);</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">// return on success</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre class="c"><code>#include &lt;stdio.h&gt;
+
+#define LIMIT 10
+
+int main(void) {
+    // signed int wraps around when overflows occur
+    signed int position = 0; // this cannot overflow
+    // unsigned int simply overflows and does not wrap around
+    const unsigned int boundary = 256; // this can overflow
+
+    // step backwards over each iteration
+    for (unsigned int i = 0; i &lt; LIMIT; i++) {
+        // negate the position and bind it to the boundary
+        position = (position - 1) % boundary;
+        // output the current position
+        printf(&quot;position: %d\n&quot;, position);
+    }
+
+    // return on success
+    return 0;
+}</code></pre>
 <h3 id="example">Example</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">signed</span> <span class="dt">int</span> position <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">unsigned</span> <span class="dt">int</span> boundary <span class="op">=</span> <span class="dv">256</span><span class="op">;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>position <span class="op">=</span> <span class="op">(</span>position <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> boundary<span class="op">;</span></span></code></pre></div>
+<pre class="c"><code>signed int position = 0;
+const unsigned int boundary = 256;
+
+position = (position - 1) % boundary;</code></pre>
 <p>Here, the <code>position</code> variable is decremented, and the
 modulus operation ensures that it stays within the bounds defined by
 <code>boundary</code>. If the position underflows, it wraps around to
 the maximum boundary value.</p>
 <h3 id="simplifying-expressions">Simplifying Expressions</h3>
 <p>In certain cases, you may see the following pattern:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>position <span class="op">=</span> <span class="op">(</span>position <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> boundary<span class="op">)</span> <span class="op">%</span> boundary<span class="op">;</span></span></code></pre></div>
+<pre class="c"><code>position = (position - 1 + boundary) % boundary;</code></pre>
 <p>This can be simplified to:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>position <span class="op">=</span> <span class="op">(</span>position <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> boundary<span class="op">;</span></span></code></pre></div>
+<pre class="c"><code>position = (position - 1) % boundary;</code></pre>
 <p>Both expressions are equivalent because the modulus operation ensures
 the result stays within bounds, eliminating the need to explicitly add
 the boundary in most cases.</p>
@@ -346,16 +346,15 @@ programming.</p>
 into the positive range.</li>
 </ul>
 <p><strong>Examples:</strong></p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> m <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">%</span> m</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>  <span class="co"># Remainder is within [0, 2]</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="op">-</span><span class="dv">5</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> m <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">%</span> m</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  <span class="co"># Despite being negative, the remainder wraps back to the positive range</span></span></code></pre></div>
+<pre class="python"><code>&gt;&gt;&gt; a = 5
+&gt;&gt;&gt; m = 3
+&gt;&gt;&gt; a % m
+2  # Remainder is within [0, 2]
+
+&gt;&gt;&gt; a = -5
+&gt;&gt;&gt; m = 3
+&gt;&gt;&gt; a % m
+1  # Despite being negative, the remainder wraps back to the positive range</code></pre>
 <h4 id="negative-divisor-m-0">2. <strong>Negative Divisor
 (<code>m &lt; 0</code>)</strong></h4>
 <p>When the divisor <code>m</code> is negative, the remainder will
@@ -370,42 +369,38 @@ the negative divisor and provides a remainder within the range
 <code>[m, -1]</code>.</li>
 </ul>
 <p><strong>Examples:</strong></p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> m <span class="op">=</span> <span class="op">-</span><span class="dv">3</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">%</span> m</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">-</span><span class="dv">1</span>  <span class="co"># Result is within [-3, -1]</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="op">-</span><span class="dv">5</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> m <span class="op">=</span> <span class="op">-</span><span class="dv">3</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">%</span> m</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="op">-</span><span class="dv">2</span>  <span class="co"># Result remains negative</span></span></code></pre></div>
+<pre class="python"><code>&gt;&gt;&gt; a = 5
+&gt;&gt;&gt; m = -3
+&gt;&gt;&gt; a % m
+-1  # Result is within [-3, -1]
+
+&gt;&gt;&gt; a = -5
+&gt;&gt;&gt; m = -3
+&gt;&gt;&gt; a % m
+-2  # Result remains negative</code></pre>
 <h4 id="ensuring-a-positive-remainder">3. <strong>Ensuring a Positive
 Remainder</strong></h4>
 <p>In some situations, you might want to ensure that the remainder is
 always positive, even when <code>a</code> or <code>m</code> is negative.
 To achieve this, you can adjust the modulus operation by using the
 absolute value of <code>m</code>:</p>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="op">-</span><span class="dv">5</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> m <span class="op">=</span> <span class="op">-</span><span class="dv">3</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> (a <span class="op">%</span> <span class="bu">abs</span>(m)) </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  <span class="co"># Using the absolute value of m ensures a positive remainder</span></span></code></pre></div>
+<pre class="python"><code>&gt;&gt;&gt; a = -5
+&gt;&gt;&gt; m = -3
+&gt;&gt;&gt; (a % abs(m)) 
+1  # Using the absolute value of m ensures a positive remainder</code></pre>
 <p>This technique is useful when working in contexts where positive
 remainders are expected or necessary, such as when indexing arrays or
 managing cyclic data structures.</p>
 <p>Note that nesting the modulus to the result has no effect:</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="op">-</span><span class="dv">5</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> m <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> (a <span class="op">%</span> m <span class="op">+</span> m) <span class="op">%</span> m</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  <span class="co"># Has no effect</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> (a <span class="op">%</span> m <span class="op">+</span> m) <span class="op">%</span> m <span class="op">==</span> a <span class="op">%</span> m</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="va">True</span></span></code></pre></div>
+<pre class="python"><code>&gt;&gt;&gt; a = -5
+&gt;&gt;&gt; m = 3
+&gt;&gt;&gt; (a % m + m) % m
+1  # Has no effect
+&gt;&gt;&gt; (a % m + m) % m == a % m
+True</code></pre>
 <p>Adding the modulus to the result still results in no effect:</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> (a <span class="op">+</span> m) <span class="op">%</span> m <span class="op">==</span> a <span class="op">%</span> m</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="va">True</span></span></code></pre></div>
+<pre class="python"><code>&gt;&gt;&gt; (a + m) % m == a % m
+True</code></pre>
 <p>We can see that they remain equivalent throughout. The expressions
 retain their equivalency, regardless of structure.</p>
 <h4 id="range-of-remainders">4. <strong>Range of
@@ -420,16 +415,15 @@ Remainders</strong></h4>
 <p>The modulus operation essentially binds values to these ranges,
 making it a helpful tool for cyclic or wrapping operations.</p>
 <p><strong>Examples with Larger Values:</strong></p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> m <span class="op">=</span> <span class="dv">256</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">300</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">%</span> m</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dv">44</span>  <span class="co"># Positive range [0, 255]</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> m <span class="op">=</span> <span class="op">-</span><span class="dv">256</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="op">-</span><span class="dv">300</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">%</span> m</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="op">-</span><span class="dv">44</span>  <span class="co"># Negative range [-256, -1]</span></span></code></pre></div>
+<pre class="python"><code>&gt;&gt;&gt; m = 256
+&gt;&gt;&gt; a = 300
+&gt;&gt;&gt; a % m
+44  # Positive range [0, 255]
+
+&gt;&gt;&gt; m = -256
+&gt;&gt;&gt; a = -300
+&gt;&gt;&gt; a % m
+-44  # Negative range [-256, -1]</code></pre>
 <p>In summary, the sign of the divisor determines the range in which the
 remainder falls. A positive divisor results in a positive remainder,
 while a negative divisor leads to a negative remainder. Using the
@@ -613,7 +607,6 @@ Copyright (C) 2024 Austin Berrio
 
                 theme.init();
                 responsiveTables();
-
                 checkCDNDependencies(); // Check CDN dependencies
 
                 if (typeof marked !== 'undefined') {
@@ -621,7 +614,7 @@ Copyright (C) 2024 Austin Berrio
                 }
 
                 if (typeof hljs !== 'undefined') {
-                    setupHighlightJS();
+                    setupHighlightJS(); // Only highlight without additional escaping
                 }
             });
         </script>
