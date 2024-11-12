@@ -186,10 +186,14 @@ Copyright (C) 2022 Austin Berrio
         <!-- Modules -->
         <script src="/static/modules/main.mjs" type="module"></script>
         <script type="module">
-            import {Theme} from '/static/modules/main.mjs';
+            import {Theme, responsiveTables} from '/static/modules/main.mjs';
 
-            const theme = new Theme();
-            theme.init();
+            // Configure responsive tables and content theme
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const theme = new Theme();
+                theme.init();
+                responsiveTables();
+            });
         </script>
     </body>
 </html>

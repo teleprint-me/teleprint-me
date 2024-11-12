@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- TODO: https://developer.mozilla.org/en-US/docs/Web/HTTP/Permissions_Policy -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>ALT Model File Format Specification</title>
+        <link
+            href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+            rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />
+        <link href="/static/styles/style.css" rel="stylesheet" />
+        <script
+            data-cdn="highlight.js"
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    </head>
+    <body>
+        <!-- Router -->
+        <header>
+            <nav class="router">
+                <a href="/">
+                    <i class="bx bxs-user bx-md"></i>
+                    <span class="text">Profile</span>
+                </a>
+                <a href="/static/views/links.html">
+                    <i class="bx bxs-file bx-md"></i>
+                    <span class="text">Articles</span>
+                </a>
+                <a class="theme-moon" data-theme="light">
+                    <i class="bx bxs-moon bx-md"></i>
+                    <span class="text">Dark</span>
+                </a>
+            </nav>
+        </header>
+
+        <noscript>
+            <p>
+                Please enable JavaScript to view MathJax and syntax-highlighted
+                content properly.
+            </p>
+        </noscript>
+
+        <!-- Application -->
+        <main><h1 id="alt-model-file-format-specification">ALT Model
+File Format Specification</h1>
+<p>This document outlines the ALT (Altiera) model file format designed
+to simplify parsing in C-based executors. The format is organized into
+structured, sequential sections, each marked by unique identifiers and
+predefined fields.</p>
+<h2 id="purpose">Purpose</h2>
+<p>This specification aims to facilitate efficient loading and
+utilization of the Mistral 7B v0.1 model licensed under the Apache
+License for various applications in natural language processing.</p>
+<h2 id="objective">Objective</h2>
+<p>A Python script will be utilized to implement this specification,
+allowing users to convert model files into the custom binary format. The
+script will accept a directory path, parse the contents of that path,
+and output a binary file according to the outlined structure. It will
+also include error handling and validation checks to ensure the
+integrity of the generated format. This specification serves as a
+general guide rather than a strict rule.</p>
+<h2 id="file-layout">File Layout</h2>
+<p>The ALT file contains the following sections in order:</p>
+<ol type="1">
+<li><strong>Start Marker</strong> - Identifies the file format.</li>
+<li><strong>Parameters Section</strong> - Contains model-specific
+hyperparameters essential for model execution.</li>
+<li><strong>Tokenizer Section</strong> - Holds tokenizer vocabulary and
+special token IDs used during processing.</li>
+<li><strong>Tensor Section</strong> - Contains tensor metadata and
+binary data required for model inference.</li>
+<li><strong>End Marker</strong> - Marks the end of the file.</li>
+</ol>
+<h3 id="file-alignment">File Alignment</h3>
+<p>Each section is 32-byte aligned, padded with <code>0x00</code> bytes
+as necessary. The file uses <strong>little-endian</strong> byte order by
+default.</p>
+<h3 id="file-extension">File Extension</h3>
+<p>Model files will be appended with a <code>.alt</code> suffix to
+mitigate confusion with GGUF file formats, as they will be incompatible
+and require export.</p>
+<h3 id="file-reading-and-writing">File Reading and Writing</h3>
+<ul>
+<li>The read and write processes should involve the following steps:
+<ol type="1">
+<li><strong>Magic Value Check</strong>: The first 4 bytes contain the
+“alt” magic value. This verifies that the file is in the expected format
+and compatible with the current implementation.</li>
+<li><strong>Padding Calculation</strong>: Calculate padding to ensure
+32-byte alignment. If the total size of the current position is not
+aligned, pad with <code>0x00</code> bytes as necessary to maintain
+efficient memory access.</li>
+<li><strong>Section Header Validation</strong>:
+<ul>
+<li><strong>Section Marker</strong>: Validate the model section marker
+against an expected unique magic value in hexadecimal.
+<ul>
+<li>This marker denotes the beginning of a new section utilized by the
+model.</li>
+<li>The marker is an 8-byte label with type <code>int64</code>.</li>
+</ul></li>
+<li><strong>Section Size</strong>: Read the model section size to
+determine the total size of the section.
+<ul>
+<li>This size indicates the absolute total size of the section,
+represented by the start and end offsets.</li>
+<li>The size may be utilized to jump forward to a following
+section.</li>
+<li>The size is 8 bytes with type <code>int64</code>.</li>
+</ul></li>
+</ul></li>
+<li><strong>Section Reading/Writing</strong>:
+<ul>
+<li>Proceed to read or write each field according to its defined
+structure:
+<ul>
+<li>Use types purposefully:
+<ul>
+<li>Prefer <code>int32</code> for integers where possible for
+efficiency.</li>
+<li>Use <code>int64</code> for fields that need larger integer
+representations.</li>
+<li>Use <code>float32</code> for floating-point values as required.</li>
+</ul></li>
+<li>Ensure that strings are prefixed with their lengths:
+<ul>
+<li>The length of the string as <code>int32</code>.</li>
+<li>The string as a “utf-8” character string.</li>
+</ul></li>
+<li>Store lists, arrays, tensors, etc., as contiguous streams,
+including:
+<ul>
+<li>Total count and shape information.</li>
+<li>The number of dimensions for each sequence.</li>
+<li>The elements of the object’s composition (e.g., [0.1, 0.2, 0.3, 0.4,
+…]).</li>
+<li>All elements must be of a single type.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><strong>End Marker Check</strong>: Repeat the reading/writing
+process until the end marker (4 bytes, int32) is reached, which
+indicates the conclusion of the current section and helps verify its
+integrity. After reaching the end marker, the process should terminate
+gracefully or reset for another section.</li>
+</ol></li>
+<li>Most fields will be represented as <code>int32</code> for
+efficiency, while string and floating-point types are retained as
+necessary to accurately capture model-specific details.</li>
+<li>Each field must adhere to the defined data types, ensuring that the
+section is correctly read in its entirety.</li>
+<li>Include validation checks during the reading process to confirm that
+all expected fields are present and formatted correctly, handling any
+discrepancies gracefully.</li>
+</ul>
+<h3 id="file-structure-with-alignment">File Structure with
+Alignment</h3>
+<ul>
+<li><strong>Start Marker</strong>:
+<ul>
+<li>Identifies the file format.</li>
+</ul></li>
+<li><strong>Parameters Section</strong>:
+<ul>
+<li>Stores essential hyperparameters for inference.</li>
+<li><strong>Alignment</strong>: Applied preceding this section.</li>
+</ul></li>
+<li><strong>Tokenizer Section</strong>:
+<ul>
+<li>Contains the tokenizer vocabulary and special token IDs.</li>
+<li><strong>Alignment</strong>: Applied preceding this section.</li>
+</ul></li>
+<li><strong>Tensor Section</strong>:
+<ul>
+<li>Stores weights and other necessary tensors.</li>
+<li><strong>Alignment</strong>: Applied preceding this section.</li>
+</ul></li>
+<li><strong>End Marker</strong>:
+<ul>
+<li>Marks the end of the file.</li>
+<li><strong>Alignment</strong>: Applied preceding this section.</li>
+</ul></li>
+</ul>
+<h3 id="alignment-calculation">Alignment Calculation</h3>
+<ul>
+<li>Calculate the alignment offset as follows:
+<ul>
+<li><strong>ALIGNMENT</strong> = 32</li>
+<li><strong>POSITION</strong> = file.tell()</li>
+<li><strong>OFFSET</strong> = POSITION % ALIGNMENT</li>
+<li><strong>PAD</strong> = (ALIGNMENT - OFFSET) % ALIGNMENT</li>
+<li>If <strong>PAD</strong> &gt; 0, insert <strong>PAD</strong> bytes of
+<code>0x00</code> padding.</li>
+</ul></li>
+</ul>
+<h3 id="start-marker">1. <strong>Start Marker</strong></h3>
+<ul>
+<li><p><strong>Purpose</strong>: Identifies the file format as an ALT
+(Altiera) file format.</p></li>
+<li><p><strong>Field</strong>:</p>
+<ul>
+<li><code>Magic Number (4 bytes, int32)</code>: <code>0x616C7463</code>
+(“altc” in hex).
+<ul>
+<li>Where <code>altc</code> is shorthand for Altiera Cunningham</li>
+</ul></li>
+</ul></li>
+<li><p><strong>Offset</strong>:</p>
+<ul>
+<li>Starts at byte <code>0</code></li>
+<li>Ends at byte <code>4</code></li>
+<li>Followed by a 32-byte aligned offset.</li>
+</ul></li>
+<li><p><strong>Validation</strong>: When reading the file, ensure the
+first 4 bytes match the specified magic number to verify format
+compatibility.</p></li>
+</ul>
+<h3 id="parameters-section">2. <strong>Parameters Section</strong></h3>
+<ul>
+<li><p><strong>Purpose</strong>: Stores essential hyperparameters for
+inference, ensuring that the model has the necessary configurations for
+operation.</p></li>
+<li><p><strong>Alignment</strong>: Add 32-byte alignment as previously
+defined.</p>
+<ul>
+<li>Begins on the next 32-byte aligned offset after the <strong>Start
+Marker</strong>.</li>
+</ul></li>
+<li><p><strong>Header</strong>:</p>
+<ul>
+<li><strong>Marker</strong>: (8 bytes, int64) <code>0xDEADBEEF</code> -
+A unique identifier for the <strong>Parameters Section</strong>.</li>
+<li><strong>Size</strong>: (8 bytes, int64) - Indicates the total size
+of the <strong>Parameters Section</strong>.</li>
+</ul></li>
+<li><p><strong>Structure</strong>: The parameters section will include
+the following fields (in the specified order):</p>
+<ul>
+<li><strong>Model Type</strong>:
+<ul>
+<li><strong>Length</strong>: (int32) - The length of the model’s
+identifier string.</li>
+<li><strong>Identifier</strong>: (string) - The model’s identifier
+(e.g., “mistral”).</li>
+</ul></li>
+<li><strong>Model Configuration</strong> (4 bytes each, int32):
+<ul>
+<li><code>hidden_size</code> (int32): Embedding dimension (hidden
+size).</li>
+<li><code>num_hidden_layers</code> (int32): Number of transformer layers
+(e.g., <code>32</code>).</li>
+<li><code>intermediate_size</code> (int32): Size of the feed-forward
+networks, typically calculated as <code>4 * hidden_size</code> (e.g.,
+<code>14336</code>).</li>
+<li><code>num_attention_heads</code> (int32): Total number of attention
+heads (e.g., <code>32</code>).</li>
+<li><code>num_key_value_heads</code> (int32): Number of key-value heads
+for Grouped-Query Attention (default matches
+<code>num_attention_heads</code> if not specified).</li>
+<li><code>sliding_window</code> (int32): Size of the sliding window
+attention (e.g., <code>4096</code>).</li>
+<li><code>rope_theta</code> (float32): Parameter for rotary embeddings
+(default <code>10000.0</code>).</li>
+<li><code>rms_norm_eps</code> (float32): Epsilon for RMS normalization
+(default <code>1e-5</code>).</li>
+</ul></li>
+<li><strong>Model Parameters</strong>:
+<ul>
+<li><code>head_size</code> (int32): Computed as
+<code>hidden_size / num_attention_heads</code>.</li>
+<li><code>data_type</code> (int32): Data type indicator (e.g.,
+<code>0</code> for float32, <code>1</code> for float16, <code>2</code>
+for qint8).</li>
+<li><code>context_length</code> (int32): Maximum context length for the
+model (e.g., <code>8192</code>).</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="tokenizer-section">3. <strong>Tokenizer Section</strong></h3>
+<ul>
+<li><p><strong>Purpose</strong>: Contains the tokenizer vocabulary and
+special token IDs necessary for model operations.</p></li>
+<li><p><strong>Alignment</strong>: Add 32-byte alignment as previously
+defined.</p>
+<ul>
+<li>Begins on the next 32-byte aligned offset after the
+<strong>Parameters Section</strong>.</li>
+</ul></li>
+<li><p><strong>Header</strong>:</p>
+<ul>
+<li><strong>Marker</strong>: (8 bytes, int64)
+<code>0xBADDCAFE</code>.</li>
+<li><strong>Size</strong>: (8 bytes, int64) - Indicates the total size
+of the tokenizer section.</li>
+</ul></li>
+<li><p><strong>Structure</strong>:</p>
+<ul>
+<li><strong>Header Size (8 bytes, int64)</strong>: Total size of the
+tokenizer section.</li>
+<li><strong>Tokenizer Metadata</strong> (4 bytes each, int32):
+<ul>
+<li><code>vocab_size</code>: Number of tokens.</li>
+<li><code>bos_id</code>: Beginning-of-sequence token ID.</li>
+<li><code>eos_id</code>: End-of-sequence token ID.</li>
+<li><code>pad_id</code>: Padding token ID.</li>
+<li><code>unk_id</code>: Unknown token ID.</li>
+</ul></li>
+<li><strong>Vocabulary Tokens</strong>:
+<ul>
+<li><strong>Each Token</strong>:
+<ul>
+<li><strong>Token Length</strong> (4 bytes, int32): Byte length of the
+token string.</li>
+<li><strong>Token Data</strong> (variable): UTF-8 encoded token
+string.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="tensor-section">4. <strong>Tensor Section</strong></h3>
+<ul>
+<li><p><strong>Purpose</strong>: Stores weights and other necessary
+tensors, sequentially ordered for efficient access.</p></li>
+<li><p><strong>Alignment</strong>: Add 32-byte alignment as previously
+defined.</p>
+<ul>
+<li>Begins on the next 32-byte aligned offset after the
+<strong>Tokenizer Section</strong>.</li>
+</ul></li>
+<li><p><strong>Header</strong>:</p>
+<ul>
+<li><strong>Marker</strong>: (8 bytes, int64)
+<code>0xFACEFEED</code>.</li>
+<li><strong>Size</strong>: (8 bytes, int64) - Indicates the total size
+of the <strong>Tensor Section</strong>.</li>
+</ul></li>
+<li><p><strong>Structure</strong>:</p>
+<ul>
+<li><strong>Tensor Metadata</strong>:
+<ul>
+<li><code>tensor_count</code> (8 bytes, int64): Total number of
+tensors.</li>
+<li><code>shape_count</code> (8 bytes, int64): Total number of shape
+elements.</li>
+</ul></li>
+<li><strong>Each Tensor</strong>:
+<ul>
+<li><strong>Tensor Metadata</strong>:
+<ul>
+<li><code>dimensions</code> (4 bytes, int32): Number of dimensions.</li>
+<li><code>name_length</code> (4 bytes, int32): Length of the tensor
+name.</li>
+<li><code>data_type</code> (4 bytes, int32): Data type.</li>
+</ul></li>
+<li><strong>Shape Dimensions</strong> (4 bytes each, int32): Sequential
+dimensions of the tensor.</li>
+<li><strong>Tensor Name</strong> (variable): UTF-8 encoded name.</li>
+<li><strong>Tensor Data</strong> (variable): Raw data, following the
+specified <code>data_type</code>.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="end-marker">5. <strong>End Marker</strong></h3>
+<ul>
+<li><p><strong>Purpose</strong>: Marks the end of the file.</p></li>
+<li><p><strong>Alignment</strong>: Add 32-byte alignment as previously
+defined.</p>
+<ul>
+<li>Begins on the next 32-byte aligned offset after the <strong>Tensor
+Section</strong>.</li>
+</ul></li>
+<li><p><strong>Field</strong>:</p>
+<ul>
+<li><strong>End Marker</strong>: (4 bytes, int32)
+<code>0xFFFFFFF</code>.</li>
+</ul></li>
+</ul>
+<h3 id="example-layout-summary">Example Layout Summary</h3>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 24%" />
+<col style="width: 8%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Offset</th>
+<th>Field</th>
+<th>Size</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Start Marker</td>
+<td>4</td>
+<td>Magic number (<code>0x616C7463</code>, “altc”)</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Padding</td>
+<td>28</td>
+<td>Padding to align to the next 32-byte boundary</td>
+</tr>
+<tr class="odd">
+<td>32</td>
+<td>Parameters Section</td>
+<td>Varies</td>
+<td>Hyperparameters prefixed by section header</td>
+</tr>
+<tr class="even">
+<td>Aligned</td>
+<td>Tokenizer Section</td>
+<td>Varies</td>
+<td>Vocabulary and special token IDs</td>
+</tr>
+<tr class="odd">
+<td>Aligned</td>
+<td>Tensor Section</td>
+<td>Varies</td>
+<td>Tensor metadata and binary data</td>
+</tr>
+<tr class="even">
+<td>Aligned</td>
+<td>End Marker</td>
+<td>4</td>
+<td>End marker (<code>0xFFFFFFF</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-notes">Key Notes</h3>
+<ol type="1">
+<li><strong>Endianess</strong>: Files are little-endian by default. If
+not specified, assume little-endian.</li>
+<li><strong>Alignment</strong>: Each section begins on a 32-byte aligned
+offset, facilitated by padding as required. The
+<code>alt/lib/magic.py</code> module provides
+<code>write_align_offset</code> and <code>read_align_offset</code>
+functions for handling this alignment during both reading and writing
+processes.</li>
+<li><strong>Token Encoding</strong>: Token strings are UTF-8 encoded to
+handle multi-byte characters, ensuring compatibility with varied
+vocabularies and applications across different languages.</li>
+<li><strong>Dimension Ordering</strong>: Shape dimensions are stored in
+sequential order to support tensor indexing operations effectively,
+improving the performance of tensor-related computations.</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>This specification provides a clear layout and simplifies parsing by
+maintaining a sequential, non-reversed structure, making it efficient
+and compatible with C-based executors. It serves as a solid foundation
+for current implementations while allowing for future extensions or
+modifications as needed.</p>
+<hr />
+<p align="center">
+Copyright (C) 2024 Austin Berrio
+</p></main>
+
+        <!-- marked -->
+        <script
+            data-cdn="marked"
+            src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+            defer></script>
+
+        <!-- highlight -->
+        <script
+            data-cdn="highlight.js"
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+        <!-- Enable Inline and Block Level Rendering-->
+        <script
+            data-cdn="MathJax"
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+            id="MathJax"></script>
+
+        <!-- Enable ASCII Rendering -->
+        <script
+            data-cdn="MathJax"
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/input/asciimath.js"
+            charset="UTF-8"></script>
+
+        <!-- Modules -->
+        <script src="/static/modules/main.mjs" type="module"></script>
+        <script type="module">
+            import {
+                Theme,
+                responsiveTables,
+                setupMarkedOptions,
+                setupHighlightJS,
+                checkCDNDependencies
+            } from '/static/modules/main.mjs';
+
+            const theme = new Theme();
+
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('DOMContentLoaded event triggered');
+
+                theme.init();
+                responsiveTables();
+
+                checkCDNDependencies(); // Check CDN dependencies
+
+                if (typeof marked !== 'undefined') {
+                    setupMarkedOptions();
+                }
+
+                if (typeof hljs !== 'undefined') {
+                    setupHighlightJS();
+                }
+            });
+        </script>
+    </body>
+</html>

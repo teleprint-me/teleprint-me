@@ -46,6 +46,9 @@ Yourself Programming in Ten Years</a></li>
 href="/static/views/technical/quantization-for-large-language-models.html">Quantization
 for Large Language Models</a></li>
 <li><a
+href="/static/views/technical/alt-model-file-format-specification.html">ALT
+Model File Format Specification</a></li>
+<li><a
 href="/static/views/technical/modular-arithmetic-in-lehmer-rng.html">Modular
 Arithmetic in Lehmer RNG</a></li>
 <li><a
@@ -60,10 +63,14 @@ Copyright (C) 2024 Austin Berrio
         <!-- Modules -->
         <script src="/static/modules/main.mjs" type="module"></script>
         <script type="module">
-            import {Theme} from '/static/modules/main.mjs';
+            import {Theme, responsiveTables} from '/static/modules/main.mjs';
 
-            const theme = new Theme();
-            theme.init();
+            // Configure responsive tables and content theme
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const theme = new Theme();
+                theme.init();
+                responsiveTables();
+            });
         </script>
     </body>
 </html>
