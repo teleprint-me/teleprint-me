@@ -157,7 +157,6 @@ Model files will be appended with a `.alt` suffix to mitigate confusion with GGU
   - **Size**: (8 bytes, int64) - Indicates the total size of the tokenizer section.
 
 - **Structure**:
-  - **Header Size (8 bytes, int64)**: Total size of the tokenizer section.
   - **Tokenizer Metadata** (4 bytes each, int32):
     - `vocab_size`: Number of tokens.
     - `bos_id`: Beginning-of-sequence token ID.
@@ -223,7 +222,7 @@ Model files will be appended with a `.alt` suffix to mitigate confusion with GGU
 
 ## Conclusion
 
-This specification provides a clear layout and simplifies parsing by maintaining a sequential, non-reversed structure, making it efficient and compatible with C-based executors. It serves as a solid foundation for current implementations while allowing for future extensions or modifications as needed.
+This specification provides a clear layout and simplifies parsing by maintaining a sequential structure, making it efficient and compatible with C-based executors. It serves as a solid foundation for current implementations while allowing for future extensions or modifications as needed.
 
 ---
 
