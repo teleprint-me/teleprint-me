@@ -4,6 +4,7 @@
 local
 sh/sync.sh
 
+static/fonts
 static/data
 static/documents
 static/videos
