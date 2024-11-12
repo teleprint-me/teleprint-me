@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap');
+@font-face {
+    font-family: 'Noto Sans Mono';
+    src: url('../fonts/NotoSansMono-Regular.ttf') format('TrueType');
+    font-weight: normal;
+    font-style: normal;
+}
 
 :root:has(a[data-theme='dark']) {
     --primary: rgb(250, 250, 250);
@@ -63,8 +68,7 @@
     --border-radius: 0.625em;
     --delay: 200ms;
     --duration: 500ms;
-    --font-primary: 'Noto Sans Mono';
-    --font-family: var(--font-primary), Monospace, Arial, Helvetica, Times;
+    --font-family: 'Noto Sans Mono', Monospace, Arial, Helvetica, Times;
     --font-size-xs: 0.75em;
     --font-size-sm: 0.875em;
     --font-size-md: 1em;
@@ -166,10 +170,15 @@ h3,
 h4,
 h5,
 h6 {
-    border-bottom: var(--border-primary);
     color: var(--secondary);
     padding: var(--spacing);
     text-transform: capitalize;
+}
+
+h1,
+h2,
+h3 {
+    border-bottom: var(--border-primary);
 }
 
 h3 {
