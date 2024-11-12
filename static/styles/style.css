@@ -212,7 +212,7 @@ li {
     font-size: 1em;
     text-align: left;
     margin: 0 10px;
-    padding: 0.125em 10px;
+    padding: 0.125em 0.125px;
 }
 
 /* Table Styles */
@@ -227,6 +227,7 @@ table {
 }
 
 /* Hide header row since labels will be handled by data-labels in td */
+colgroup,
 thead {
     display: none;
 }
@@ -241,7 +242,7 @@ tr {
 
 td {
     justify-content: space-between;
-    padding: 8px;
+    padding: 10px;
     border-bottom: var(--border-primary);
     position: relative;
 }
@@ -261,6 +262,7 @@ td::before {
 
 /* Padding and Typography Adjustments for Better Readability */
 tbody {
+    flex-grow: 1;
     padding: var(--spacing);
 }
 
