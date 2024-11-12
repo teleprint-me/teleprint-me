@@ -300,8 +300,6 @@ of the tokenizer section.</li>
 </ul></li>
 <li><p><strong>Structure</strong>:</p>
 <ul>
-<li><strong>Header Size (8 bytes, int64)</strong>: Total size of the
-tokenizer section.</li>
 <li><strong>Tokenizer Metadata</strong> (4 bytes each, int32):
 <ul>
 <li><code>vocab_size</code>: Number of tokens.</li>
@@ -454,10 +452,10 @@ improving the performance of tensor-related computations.</li>
 </ol>
 <h2 id="conclusion">Conclusion</h2>
 <p>This specification provides a clear layout and simplifies parsing by
-maintaining a sequential, non-reversed structure, making it efficient
-and compatible with C-based executors. It serves as a solid foundation
-for current implementations while allowing for future extensions or
-modifications as needed.</p>
+maintaining a sequential structure, making it efficient and compatible
+with C-based executors. It serves as a solid foundation for current
+implementations while allowing for future extensions or modifications as
+needed.</p>
 <hr />
 <p align="center">
 Copyright (C) 2024 Austin Berrio
@@ -511,7 +509,7 @@ Copyright (C) 2024 Austin Berrio
                 }
 
                 if (typeof hljs !== 'undefined') {
-                    setupHighlightJS(); // Only highlight without additional escaping
+                    setupHighlightJS();
                 }
             });
         </script>
