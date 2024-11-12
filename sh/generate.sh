@@ -21,13 +21,14 @@ for file in docs/blog/*.md; do
 done
 
 # Generate technical articles
+# WARN: Use --no-highlight to produce "html safe" code
 mkdir -p static/views/technical
 for file in docs/technical/*.md; do
     filename=$(basename "$file" .md)
     echo "generating ${filename}"
     pandoc -f markdown+tex_math_dollars -t html "$file" \
         --template="$template_mathjax" --css="$css" \
-        -o "static/views/technical/$filename.html"
+        --no-highlight -o "static/views/technical/$filename.html"
 done
 
 # Generate core views (like index.md)
