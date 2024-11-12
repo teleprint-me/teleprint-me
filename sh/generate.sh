@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Copyright (C) 2020 Austin Berrio
+# File: sh/generate.sh
 
 echo "generating static content..."
 
