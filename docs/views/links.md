@@ -11,7 +11,7 @@ license: 'cc-by-nc-sa-4.0'
 - [Teach Yourself Programming in Ten Years](/static/views/blog/teach-yourself-programming-in-ten-years.html)
 
 ## Technical Articles
-- [Quantization for Large Language Models](/static/views/technical/quantization-for-large-language-models.html)
+- [Quantization Modeling](/static/views/technical/quantization-modeling.html)
 - [ALT Model File Format Specification](/static/views/technical/alt-model-file-format-specification.html)
 - [Modular Arithmetic in Lehmer RNG](/static/views/technical/modular-arithmetic-in-lehmer-rng.html)
 - [The Digital Differential Analyzer Algorithm](/static/views/technical/digital-differential-analyzer-algorithm.html)
