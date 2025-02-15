@@ -60,7 +60,7 @@ Consider joining me on Patreon. Your contributions support the development of ne
 ### Donate
 If you prefer a one-time contribution, donations are a valuable way to support my work. Every contribution, large or small, sustains my open-source efforts. Donations can be made using Bitcoin, providing a universal method for your generous support.
 
-[Donate using Bitcoin](https://blockstream.info/address/3Di3Dq9i812VBQEJnbowyrcuNwzPwTNRf1 "Donate using Bitcoin")
+[Donate using Bitcoin](https://blockstream.info/nojs/address/3E1rEDAoLYJG6fD7B27K394HQxmiYpK68V "Donate using Bitcoin")
 
 ### Social
 - [GitHub](https://github.com/teleprint-me)
