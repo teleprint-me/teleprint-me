@@ -10,8 +10,9 @@ I'm a self-taught programmer with a passion for problem-solving and efficient so
 
 ## Skills
 - Shell
-- Python
 - C
+- C++
+- Python
 - HTML
 - CSS
 - JavaScript
@@ -31,6 +32,33 @@ I'm a self-taught programmer with a passion for problem-solving and efficient so
 - Machine Learning
 
 ## Projects
+
+### MLP
+
+A multi-layer perceptron.
+
+#### Application
+[GitHub](https://github.com/teleprint-me/mlp.cpp)
+
+#### Toolkit
+- Linux
+- Shell
+- Git
+- C
+- C++
+
+### Byte-pair
+
+Byte Pair Encoder for Natural Language Processing.
+
+#### Application
+[GitHub](https://github.com/teleprint-me/byte-pair)
+
+#### Toolkit
+- Linux
+- Shell
+- Git
+- Python
 
 ### PyGPTPrompt
 PyGPTPrompt is a CLI tool that manages context windows for AI models, facilitating user interaction and data ingestion for optimized long-term memory and task automation. While it was initially designed for the [OpenAI REST API](https://platform.openai.com/docs/introduction), it now supports a wider range of AI models.
@@ -74,20 +102,6 @@ A simple [SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA) designed t
 - CSS
 - JavaScript
 
-### Flashcards
-A simple [SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA) designed to explore the [Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Storage).
-
-> **Note:** This application is a modified fork of [miguelznunez/Flashcards](https://github.com/miguelznunez/Flashcards).
-
-#### Application
-[Showcase](/flashcards/index.html) | [GitHub](https://github.com/teleprint-me/flashcards)
-
-#### Toolkit
-- Git
-- HTML
-- CSS
-- JavaScript
-
 ## Contribute & Connect
 
 ### Sponsor
@@ -95,15 +109,10 @@ If you find value in my projects, particularly in areas like Neural Networks, Na
 
 [Become a Sponsor](https://github.com/sponsors/teleprint-me?o=esb "Sponsor teleprint-me")
 
-### Patreon
-If you’d like to support my work on a monthly basis, consider becoming a patron on Patreon. Your contributions help me continue to create and improve my projects.
-
-[Join me on Patreon](https://www.patreon.com/teleprint_me)
-
 ### Donate
 For those who prefer a one-time contribution or wish to support without a long-term commitment, donations are a valuable way to contribute. Each donation, big or small, plays a significant role in sustaining my open-source work in AI and ML. Donations can be made using Bitcoin, offering a universal and convenient method for your generous support.
 
-[Donate using Bitcoin](https://blockstream.info/address/3Di3Dq9i812VBQEJnbowyrcuNwzPwTNRf1 "Donate using Bitcoin")
+[Donate using Bitcoin](https://blockstream.info/address/3E1rEDAoLYJG6fD7B27K394HQxmiYpK68V "Donate using Bitcoin")
 
 ### Social
 - [GitHub](https://github.com/teleprint-me)
