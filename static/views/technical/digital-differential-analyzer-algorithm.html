@@ -83,22 +83,22 @@ Wiley’s <em>Applied Calculus</em>.</p>
 <h3
 id="input-the-coordinates-of-the-start-x_1-y_1-and-end-x_2-y_2-points">1.
 Input the coordinates of the start <span
-class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>)</span>
+class="math inline">(<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>)</span>
 and end <span
-class="math inline">(<em>x</em><sub>2</sub>,<em>y</em><sub>2</sub>)</span>
+class="math inline">(<em>x</em><sub>2</sub>, <em>y</em><sub>2</sub>)</span>
 points</h3>
 <p>The algorithm begins by taking the coordinates of the two endpoints
 of a line segment. Let’s denote them as <span
-class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>)</span>
+class="math inline">(<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>)</span>
 for the starting point and <span
-class="math inline">(<em>x</em><sub>2</sub>,<em>y</em><sub>2</sub>)</span>
+class="math inline">(<em>x</em><sub>2</sub>, <em>y</em><sub>2</sub>)</span>
 for the ending point.</p>
 <h4 id="defining-our-parameters">Defining Our Parameters</h4>
 <ul>
 <li><strong>Starting Point</strong>: Define the starting point as <span
-class="math inline"><em>s</em><em>t</em><em>a</em><em>r</em><em>t</em> = (<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>) = (0,0)</span>.</li>
+class="math inline"><em>s</em><em>t</em><em>a</em><em>r</em><em>t</em> = (<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>) = (0, 0)</span>.</li>
 <li><strong>Ending Point</strong>: Define the ending point as <span
-class="math inline"><em>e</em><em>n</em><em>d</em> = (<em>x</em><sub>2</sub>,<em>y</em><sub>2</sub>) = (4,5)</span>.</li>
+class="math inline"><em>e</em><em>n</em><em>d</em> = (<em>x</em><sub>2</sub>, <em>y</em><sub>2</sub>) = (4, 5)</span>.</li>
 </ul>
 <h4 id="data-structures-for-points">Data Structures for Points</h4>
 <p>We define a data structure representing points that use
@@ -139,9 +139,9 @@ class="math inline"><em>Δ</em><em>x</em></span>)</strong> is defined as
 class="math inline"><em>Δ</em><em>x</em> = <em>x</em><sub>2</sub> − <em>x</em><sub>1</sub></span></li>
 </ul>
 <p>Given <span
-class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>) = (0.0<em>f</em>,0.0<em>f</em>)</span>
+class="math inline">(<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>) = (0.0<em>f</em>, 0.0<em>f</em>)</span>
 and <span
-class="math inline">(<em>x</em><sub>2</sub>,<em>y</em><sub>2</sub>) = (4.0<em>f</em>,5.0<em>f</em>)</span>,
+class="math inline">(<em>x</em><sub>2</sub>, <em>y</em><sub>2</sub>) = (4.0<em>f</em>, 5.0<em>f</em>)</span>,
 we have:</p>
 <p><span
 class="math display"><em>Δ</em><em>y</em> = <em>y</em><sub>2</sub> − <em>y</em><sub>1</sub> = 5.0<em>f</em> − 0.0<em>f</em> = 5.0<em>f</em></span></p>
@@ -167,13 +167,13 @@ class="math inline"><em>Δ</em><em>x</em></span> and <span
 class="math inline"><em>Δ</em><em>y</em></span>. This ensures that we
 take enough steps to cover the entire line.</p>
 <p><span
-class="math display">steps = max (|<em>Δ</em><em>x</em>|,|<em>Δ</em><em>y</em>|)</span></p>
+class="math display">steps = max (|<em>Δ</em><em>x</em>|, |<em>Δ</em><em>y</em>|)</span></p>
 <p>Given <span
 class="math inline"><em>Δ</em><em>x</em> = 4.0<em>f</em></span> and
 <span class="math inline"><em>Δ</em><em>y</em> = 5.0<em>f</em></span>,
 we calculate the steps as follows:</p>
 <p><span
-class="math display">steps = max (|4.0<em>f</em>|,|5.0<em>f</em>|) = 5</span></p>
+class="math display">steps = max (|4.0<em>f</em>|, |5.0<em>f</em>|) = 5</span></p>
 <p>This calculation is straightforward with whole integers but can
 become more complex with floating-point values, which is beyond the
 scope of this article.</p>
@@ -231,11 +231,11 @@ result. This step, similar to when we calculated the differences between
 the coordinates, highlights a limitation of the DDA algorithm as it may
 lose precision during this phase of the process.</em></p>
 <h3 id="initialize-the-starting-point-x-y">5. Initialize the starting
-point <span class="math inline">(<em>x</em>,<em>y</em>)</span></h3>
+point <span class="math inline">(<em>x</em>, <em>y</em>)</span></h3>
 <p>The starting point <span
-class="math inline">(<em>x</em>,<em>y</em>)</span> is initialized to the
-starting coordinates <span
-class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>)</span>.</p>
+class="math inline">(<em>x</em>, <em>y</em>)</span> is initialized to
+the starting coordinates <span
+class="math inline">(<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>)</span>.</p>
 <p><span
 class="math display"><em>x</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub> = <em>s</em><em>t</em><em>a</em><em>r</em><em>t</em></span></p>
 <p>We initialize the current point to the starting point in our C code
@@ -255,9 +255,9 @@ class="math inline"><em>x</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e
 and <span
 class="math inline"><em>y</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
 respectively. The new point <span
-class="math inline">(<em>x</em>,<em>y</em>)</span> is then plotted. This
-process repeats until all steps are completed, effectively drawing the
-line from the start point to the end point.</p>
+class="math inline">(<em>x</em>, <em>y</em>)</span> is then plotted.
+This process repeats until all steps are completed, effectively drawing
+the line from the start point to the end point.</p>
 <p><span class="math display">$$
 \begin{aligned}
     \sum_{i = 0}^{i \leq steps}
@@ -305,9 +305,9 @@ directly, it ensures precision in the rendering process.</p></li>
 <ul>
 <li><strong>Define the start and end points</strong>: Specify the
 coordinates of the start <span
-class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>)</span>
+class="math inline">(<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>)</span>
 and end <span
-class="math inline">(<em>x</em><sub>2</sub>,<em>y</em><sub>2</sub>)</span>
+class="math inline">(<em>x</em><sub>2</sub>, <em>y</em><sub>2</sub>)</span>
 points using floating-point precision.</li>
 </ul></li>
 <li><strong>Calculate Differences</strong>:
@@ -340,9 +340,9 @@ step.</li>
 <ul>
 <li><strong>Initialize current point</strong>: Set the starting point
 <span
-class="math inline">(<em>x</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>,<em>y</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>)</span>
+class="math inline">(<em>x</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>, <em>y</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>)</span>
 to <span
-class="math inline">(<em>x</em><sub>1</sub>,<em>y</em><sub>1</sub>)</span>.</li>
+class="math inline">(<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>)</span>.</li>
 <li><strong>Plot starting point</strong>: Render the starting point on
 the screen.</li>
 </ul></li>
@@ -350,7 +350,7 @@ the screen.</li>
 <ul>
 <li><strong>Increment and plot</strong>: Iterate through each step,
 updating <span
-class="math inline">(<em>x</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>,<em>y</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>)</span>
+class="math inline">(<em>x</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>, <em>y</em><sub><em>c</em><em>u</em><em>r</em><em>r</em><em>e</em><em>n</em><em>t</em></sub>)</span>
 by adding <span
 class="math inline"><em>x</em><sub><em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em></sub></span>
 and <span

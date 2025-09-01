@@ -172,9 +172,9 @@ hashing, or circular buffers.</p>
 Values and Modulus</h3>
 <p>When working with <strong>negative numbers</strong> in modulus,
 things can get confusing. For example:</p>
-<p><span class="math display"> − 1 mod  3 = 2</span></p>
+<p><span class="math display">−1 mod  3 = 2</span></p>
 <p>Why? Because:</p>
-<p><span class="math display"> − 1 = 3 × (−1) + 2</span></p>
+<p><span class="math display">−1 = 3 × (−1) + 2</span></p>
 <p>In this case, the remainder has to be non-negative, so the modulus
 operation gives us 2. Essentially, we’re “wrapping” around the range
 defined by the divisor (3) and ensuring the result is positive.</p>
@@ -220,9 +220,9 @@ operation wraps it back into the valid range
 <ol type="1">
 <li><p><strong>Start with position = 0</strong><br />
 Subtract 1:<br />
-<span class="math display">position = 0 − 1 =  − 1</span><br />
+<span class="math display">position = 0 − 1 = −1</span><br />
 Apply modulus:<br />
-<span class="math display"> − 1 mod  256 = 255</span><br />
+<span class="math display">−1 mod  256 = 255</span><br />
 Result: <code>position</code> becomes 255, effectively wrapping around
 to the other end of the range.</p></li>
 <li><p><strong>Decrement again from 255</strong><br />
@@ -439,7 +439,7 @@ scaling</strong>.</p>
 <h3 id="formal-definition">Formal Definition</h3>
 <p>The Lehmer RNG is defined by the equation:</p>
 <p><span
-class="math display"><em>f</em>(<em>z</em>) = (<em>a</em>×<em>z</em>) mod  <em>m</em></span></p>
+class="math display"><em>f</em>(<em>z</em>) = (<em>a</em> × <em>z</em>) mod  <em>m</em></span></p>
 <p>Where:</p>
 <ul>
 <li><span class="math inline"><em>m</em></span> is a Mersenne prime (a
@@ -459,7 +459,7 @@ sequence. Once defined, the seed <span
 class="math inline"><em>z</em></span> is used as the input to the
 modulus operation:</p>
 <p><span
-class="math display"><em>z</em><sub><em>n</em> + 1</sub> = (<em>a</em>×<em>z</em><sub><em>n</em></sub>) mod  <em>m</em></span></p>
+class="math display"><em>z</em><sub><em>n</em> + 1</sub> = (<em>a</em> × <em>z</em><sub><em>n</em></sub>) mod  <em>m</em></span></p>
 <p>Here, <span
 class="math inline"><em>z</em><sub><em>n</em> + 1</sub></span> is the
 next value in the sequence, derived by scaling the current seed <span
@@ -467,7 +467,7 @@ class="math inline"><em>z</em><sub><em>n</em></sub></span> by the
 multiplier <span class="math inline"><em>a</em></span>, followed by a
 modulus with <span class="math inline"><em>m</em></span>. The seed value
 evolves through the sequence, confined within the range <span
-class="math inline">[0,<em>m</em>−1]</span>.</p>
+class="math inline">[0, <em>m</em> − 1]</span>.</p>
 <h3 id="recursive-scaling">Recursive Scaling</h3>
 <p>One of the key innovations of the Lehmer RNG is <strong>recursive
 scaling</strong>. This means that the output of each iteration is used
@@ -476,7 +476,7 @@ step (the new seed <span
 class="math inline"><em>z</em><sub><em>n</em> + 1</sub></span>) is fed
 back into the equation for the next iteration:</p>
 <p><span
-class="math display"><em>z</em><sub><em>n</em> + 2</sub> = (<em>a</em>×<em>z</em><sub><em>n</em> + 1</sub>) mod  <em>m</em></span></p>
+class="math display"><em>z</em><sub><em>n</em> + 2</sub> = (<em>a</em> × <em>z</em><sub><em>n</em> + 1</sub>) mod  <em>m</em></span></p>
 <p>This recursive process creates a sequence of pseudo-random values
 that depends entirely on the initial seed.</p>
 <h3 id="modular-arithmetic-in-the-lehmer-rng">Modular Arithmetic in the
@@ -494,7 +494,7 @@ class="math display"><em>n</em> mod  <em>d</em> = <em>r</em></span></p>
 </ul>
 <p>In the Lehmer RNG context, the modulus operation takes the form:</p>
 <p><span
-class="math display">(<em>a</em>×<em>z</em>) mod  <em>m</em> = <em>z</em></span></p>
+class="math display">(<em>a</em> × <em>z</em>) mod  <em>m</em> = <em>z</em></span></p>
 <p>Where:</p>
 <ul>
 <li><span
@@ -537,7 +537,7 @@ required.</p>
 can be defined as the relationship between the input seed and the output
 seed:</p>
 <p><span
-class="math display"><em>f</em>(<em>z</em>) = (<em>a</em>×<em>z</em>) mod  <em>m</em></span></p>
+class="math display"><em>f</em>(<em>z</em>) = (<em>a</em> × <em>z</em>) mod  <em>m</em></span></p>
 <p>This defines a mapping from one seed value to the next, creating a
 deterministic number sequence - e.g. A pseudo-random number generated
 sequence.</p>

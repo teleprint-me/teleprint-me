@@ -51,7 +51,7 @@
 representing floating-point values using smaller, integer-based formats.
 Common formats include 4-bit, 8-bit, 16-bit, and 32-bit integers. During
 quantization, the range <span
-class="math inline">[−<em>n</em>,<em>n</em>]</span> is mapped to <span
+class="math inline">[−<em>n</em>, <em>n</em>]</span> is mapped to <span
 class="math inline"><em>n</em></span>-bit signed integers using fixed
 scaling factors to ensure consistent precision.</p>
 <h2 id="n-bit-modeling">N-Bit Modeling</h2>
@@ -83,10 +83,10 @@ as a range function, denoted <span
 class="math inline"><em>I</em>(<em>x</em>)</span>, where <span
 class="math inline"><em>x</em></span> represents the magnitude of the
 input domain. This interval includes all values between <span
-class="math inline"> − <em>x</em></span> and <span
+class="math inline">−<em>x</em></span> and <span
 class="math inline"><em>x</em></span>:</p>
 <p><span
-class="math display"><em>I</em>(<em>x</em>) = [−<em>x</em>,<em>x</em>]</span></p>
+class="math display"><em>I</em>(<em>x</em>) = [−<em>x</em>, <em>x</em>]</span></p>
 <p>Here, <span class="math inline"><em>x</em></span> defines the maximum
 absolute value of the floating-point input domain. This interval ensures
 that the floating-point values are bounded to a specified range.</p>
@@ -118,13 +118,13 @@ x &amp; \text{if } x &lt; 0
 $$</span></p>
 <p>These bounds constrain the domain of <span
 class="math inline">ℝ</span>. Values outside <span
-class="math inline">[<em>x</em><sub>min</sub>,<em>x</em><sub>max</sub>]</span>
+class="math inline">[<em>x</em><sub>min</sub>, <em>x</em><sub>max</sub>]</span>
 are clamped or excluded.</p>
 <h4 id="input-domain-example"><strong>Input Domain Example</strong></h4>
 <p>To better understand the interval mapping, let’s consider an example
 where the floating-point value <span
 class="math inline"><em>r</em></span> is normalized within the range
-<span class="math inline">[−1.0,1.0]</span>. This range is commonly
+<span class="math inline">[−1.0, 1.0]</span>. This range is commonly
 chosen for applications in signal processing due to its symmetry around
 zero and compact representation.</p>
 <h5 id="definition-of-the-input-range"><strong>1. Definition of the
@@ -132,11 +132,11 @@ Input Range</strong></h5>
 <p>Let <span class="math inline"><em>r</em> = 1.0</span>. The range
 <span class="math inline"><em>I</em>(<em>x</em>)</span> for this domain
 is:</p>
-<p><span class="math display"><em>I</em>(1.0) = [−1.0,1.0]</span></p>
+<p><span class="math display"><em>I</em>(1.0) = [−1.0, 1.0]</span></p>
 <p>This range specifies that all input values are constrained to the
-interval <span class="math inline">[−1.0,1.0]</span>.</p>
+interval <span class="math inline">[−1.0, 1.0]</span>.</p>
 <h5 id="why-choose--1.0-1.0"><strong>2. Why Choose <span
-class="math inline">[−1.0,1.0]</span>?</strong></h5>
+class="math inline">[−1.0, 1.0]</span>?</strong></h5>
 <p>The choice of this range is deliberate and advantageous for several
 reasons:</p>
 <ol type="1">
@@ -158,44 +158,43 @@ values.</li>
 <li><p><strong>Compact Representation</strong>:</p>
 <ul>
 <li>In practice, values within <span
-class="math inline">[−1.0,1.0]</span> can be easily scaled to match
-other domains, such as <span class="math inline">[0,1]</span> for
-probabilities or <span class="math inline">[−128,127]</span> for 8-bit
+class="math inline">[−1.0, 1.0]</span> can be easily scaled to match
+other domains, such as <span class="math inline">[0, 1]</span> for
+probabilities or <span class="math inline">[−128, 127]</span> for 8-bit
 quantized integers.</li>
 </ul></li>
 <li><p><strong>Practical Use Case</strong>:</p>
 <ul>
 <li>Consider audio signals, which are often normalized to <span
-class="math inline">[−1.0,1.0]</span> to fit within the constraints of
+class="math inline">[−1.0, 1.0]</span> to fit within the constraints of
 digital hardware while preserving fidelity.</li>
 <li>Similarly, in image processing, pixel intensities are scaled to
-<span class="math inline">[−1.0,1.0]</span> for computational efficiency
-in deep learning models.</li>
+<span class="math inline">[−1.0, 1.0]</span> for computational
+efficiency in deep learning models.</li>
 </ul></li>
 </ol>
 <h5 id="boundary-behavior"><strong>3. Boundary Behavior</strong></h5>
-<p>Values outside the range <span class="math inline">[−1.0,1.0]</span>
+<p>Values outside the range <span class="math inline">[−1.0, 1.0]</span>
 are clamped or rejected. For instance:</p>
 <ul>
 <li>An input of <span class="math inline"><em>r</em> = 1.2</span> would
 be clamped to <span class="math inline"><em>r</em> = 1.0</span>.</li>
-<li>An input of <span class="math inline"><em>r</em> =  − 1.5</span>
-would be clamped to <span
-class="math inline"><em>r</em> =  − 1.0</span>.</li>
+<li>An input of <span class="math inline"><em>r</em> = −1.5</span> would
+be clamped to <span class="math inline"><em>r</em> = −1.0</span>.</li>
 </ul>
 <p>This ensures all inputs adhere to the defined domain, avoiding
 undefined behavior or numerical instability.</p>
 <h5 id="extending-the-range"><strong>4. Extending the
 Range</strong></h5>
-<p>While <span class="math inline">[−1.0,1.0]</span> is a common choice,
-the interval can be extended based on application needs. For
+<p>While <span class="math inline">[−1.0, 1.0]</span> is a common
+choice, the interval can be extended based on application needs. For
 example:</p>
 <ul>
 <li>In signal processing, dynamic ranges of <span
-class="math inline">[−32768,32767]</span> might be used to represent
+class="math inline">[−32768, 32767]</span> might be used to represent
 16-bit audio signals.</li>
 <li>For scaled probabilities, a range of <span
-class="math inline">[0,1]</span> might be more appropriate.</li>
+class="math inline">[0, 1]</span> might be more appropriate.</li>
 </ul>
 <p>By understanding the rationale behind these intervals, we gain
 flexibility in defining the input domain while maintaining precision and
@@ -203,19 +202,19 @@ stability.</p>
 <h5 id="visualizing-the-example"><strong>Visualizing the
 Example</strong></h5>
 <p>To further enhance comprehension, consider a simple visualization.
-The normalized range <span class="math inline">[−1.0,1.0]</span> can be
+The normalized range <span class="math inline">[−1.0, 1.0]</span> can be
 depicted on a number line:</p>
 <pre><code>-1.0         0.0         1.0
   |-----------|-----------|</code></pre>
 <p>Inputs <span class="math inline"><em>r</em></span> are bounded within
 this range. Clamped values (e.g., <span
 class="math inline"><em>r</em> = 1.2</span> or <span
-class="math inline"><em>r</em> =  − 1.5</span>) are shown as snapping to
+class="math inline"><em>r</em> = −1.5</span>) are shown as snapping to
 the nearest boundary.</p>
 <h5 id="conclusion-of-example"><strong>Conclusion of
 Example</strong></h5>
 <p>This example illustrates how a carefully chosen input domain, like
-<span class="math inline">[−1.0,1.0]</span>, serves as a foundation for
+<span class="math inline">[−1.0, 1.0]</span>, serves as a foundation for
 practical and efficient quantization. By normalizing inputs within this
 range, we ensure compatibility with downstream systems and maintain the
 integrity of numerical computations.</p>
@@ -236,10 +235,10 @@ as a range function, denoted <span
 class="math inline"><em>I</em>(<em>y</em>)</span>, where <span
 class="math inline"><em>y</em></span> represents the magnitude of the
 output domain. This interval includes all integer values between <span
-class="math inline"> − <em>y</em></span> and <span
+class="math inline">−<em>y</em></span> and <span
 class="math inline"><em>y</em></span>, inclusive:</p>
 <p><span
-class="math display"><em>I</em>(<em>y</em>) = [−<em>y</em>,<em>y</em>]</span></p>
+class="math display"><em>I</em>(<em>y</em>) = [−<em>y</em>, <em>y</em>]</span></p>
 <p>This interval defines the bounds within which all quantized integer
 values lie.</p>
 <h4 id="defining-outputs-for-the-integer-domain"><strong>Defining
@@ -271,7 +270,7 @@ $$</span></p>
 <p>These bounds constrain the range of <span
 class="math inline">ℤ</span>, ensuring that all quantized integer values
 fall within <span
-class="math inline">[<em>z</em><sub>min</sub>,<em>z</em><sub>max</sub>]</span>.
+class="math inline">[<em>z</em><sub>min</sub>, <em>z</em><sub>max</sub>]</span>.
 Any value outside this range is clamped.</p>
 <h4 id="output-domain-example"><strong>Output Domain
 Example</strong></h4>
@@ -280,27 +279,27 @@ in digital systems. In this case:</p>
 <ul>
 <li>The range of values is:</li>
 </ul>
-<p><span class="math display"><em>I</em>(127) = [−128,127]</span></p>
+<p><span class="math display"><em>I</em>(127) = [−128, 127]</span></p>
 <ul>
 <li><strong>Maximum value</strong>: <span
 class="math inline"><em>z</em><sub>max</sub> = 127</span></li>
 <li><strong>Minimum value</strong>: <span
-class="math inline"><em>z</em><sub>min</sub> =  − 128</span></li>
+class="math inline"><em>z</em><sub>min</sub> = −128</span></li>
 </ul>
 <p>This interval corresponds to the range of representable values for an
 8-bit signed integer. Any quantized value falling outside this range
 would be clamped to the nearest boundary (<span
-class="math inline"> − 128</span> or <span
+class="math inline">−128</span> or <span
 class="math inline">127</span>).</p>
 <h5 id="why-choose--128-127-for-8-bit-integers"><strong>Why Choose <span
-class="math inline">[−128,127]</span> for 8-bit Integers?</strong></h5>
-<p>The interval <span class="math inline">[−128,127]</span> is derived
+class="math inline">[−128, 127]</span> for 8-bit Integers?</strong></h5>
+<p>The interval <span class="math inline">[−128, 127]</span> is derived
 from the properties of signed integers in digital systems: 1.
 <strong>Signed Representation</strong>: An <span
 class="math inline"><em>n</em></span>-bit signed integer uses 1 bit for
 the sign and <span class="math inline"><em>n</em> − 1</span> bits for
 the magnitude. This allows representation of values from <span
-class="math inline"> − 2<sup><em>n</em> − 1</sup></span> to <span
+class="math inline">−2<sup><em>n</em> − 1</sup></span> to <span
 class="math inline">2<sup><em>n</em> − 1</sup> − 1</span>. 2.
 <strong>Compactness</strong>: This range balances positive and negative
 values, making it ideal for symmetric datasets such as audio signals or
@@ -308,14 +307,14 @@ neural network weights.</p>
 <h5 id="connection-to-the-input-domain"><strong>Connection to the Input
 Domain</strong></h5>
 <p>This output range maps directly to the input domain <span
-class="math inline">[−1.0,1.0]</span>, ensuring a proportional and
+class="math inline">[−1.0, 1.0]</span>, ensuring a proportional and
 reversible relationship. For example: - A floating-point value of <span
 class="math inline">1.0</span> corresponds to <span
 class="math inline"><em>z</em> = 127</span>. - A floating-point value of
-<span class="math inline"> − 1.0</span> corresponds to <span
-class="math inline"><em>z</em> =  − 128</span>. - The quantization
-scalar <span class="math inline"><em>s</em></span> bridges the two
-domains, ensuring linear mapping.</p>
+<span class="math inline">−1.0</span> corresponds to <span
+class="math inline"><em>z</em> = −128</span>. - The quantization scalar
+<span class="math inline"><em>s</em></span> bridges the two domains,
+ensuring linear mapping.</p>
 <h2 id="mapping-floating-point-and-integer-sets"><strong>Mapping
 Floating-point and Integer Sets</strong></h2>
 <p>To convert values between representational types, we define a
@@ -339,22 +338,22 @@ Outputs</strong></h3>
 (Quantization)</strong></h4>
 <p>We define the forward quantization mapping as:</p>
 <p><span
-class="math display">ℚ<sub>input</sub> : ℝ<sup>+</sup> → 2<sup>ℝ</sup>,  <em>x</em> ↦ [−<em>x</em>,<em>x</em>]</span></p>
+class="math display">ℚ<sub>input</sub> : ℝ<sup>+</sup> → 2<sup>ℝ</sup>,  <em>x</em> ↦ [−<em>x</em>, <em>x</em>]</span></p>
 <p>Here:</p>
 <ul>
 <li><span class="math inline"><em>x</em></span> represents the magnitude
 of the input domain.</li>
 <li>The interval <span
-class="math inline">[−<em>x</em>,<em>x</em>]</span> constrains the set
+class="math inline">[−<em>x</em>, <em>x</em>]</span> constrains the set
 of floating-point values <span class="math inline">ℝ</span>.</li>
 </ul>
 <p>The corresponding quantized output set is defined as:</p>
 <p><span
 class="math display">ℚ<sub>output</sub> : 2<sup>ℝ</sup> → ℤ<sup>+</sup>,  <em>r</em> ↦ <em>z</em></span></p>
 <p>Where <span
-class="math inline"><em>r</em> ∈ [−<em>x</em>,<em>x</em>]</span> and
+class="math inline"><em>r</em> ∈ [−<em>x</em>, <em>x</em>]</span> and
 <span
-class="math inline"><em>z</em> ∈ [−<em>y</em>,<em>y</em>]</span>.</p>
+class="math inline"><em>z</em> ∈ [−<em>y</em>, <em>y</em>]</span>.</p>
 <h4 id="inverse-mapping-dequantization"><strong>2. Inverse Mapping
 (Dequantization)</strong></h4>
 <p>The inverse mapping approximates floating-point values from quantized
@@ -389,7 +388,7 @@ process is defined as:</p>
 <h4 id="quantization-real-to-integer"><strong>1. Quantization (Real to
 Integer)</strong>:</h4>
 <p>For <span
-class="math inline"><em>r</em> ∈ [<em>r</em><sub>min</sub>,<em>r</em><sub>max</sub>]</span>:</p>
+class="math inline"><em>r</em> ∈ [<em>r</em><sub>min</sub>, <em>r</em><sub>max</sub>]</span>:</p>
 <p><span class="math display">$$
 z = \text{round}\left(\frac{r - r_{\text{min}}}{s}\right) +
 z_{\text{min}}
@@ -398,9 +397,9 @@ $$</span></p>
 <h4 id="dequantization-integer-to-real"><strong>2. Dequantization
 (Integer to Real)</strong>:</h4>
 <p>For <span
-class="math inline"><em>z</em> ∈ [<em>z</em><sub>min</sub>,<em>z</em><sub>max</sub>]</span>:</p>
+class="math inline"><em>z</em> ∈ [<em>z</em><sub>min</sub>, <em>z</em><sub>max</sub>]</span>:</p>
 <p><span
-class="math display"><em>r̂</em> = <em>s</em> ⋅ (<em>z</em>−<em>z</em><sub>min</sub>) + <em>r</em><sub>min</sub></span></p>
+class="math display"><em>r̂</em> = <em>s</em> ⋅ (<em>z</em> − <em>z</em><sub>min</sub>) + <em>r</em><sub>min</sub></span></p>
 <p>This reconstructs the floating-point approximation from integers.</p>
 <h3 id="error-bounds"><strong>Error Bounds</strong></h3>
 <p>Quantization introduces a bounded error due to rounding during the
@@ -421,13 +420,13 @@ approximation of <span class="math inline"><em>r</em></span>.</p>
 $$</span></p>
 <h3 id="visualization-of-the-mapping"><strong>Visualization of the
 Mapping</strong></h3>
-<p>For <span class="math inline">[−1.0,1.0]</span> mapped to <span
-class="math inline">[−128,127]</span> (8-bit signed integers):</p>
+<p>For <span class="math inline">[−1.0, 1.0]</span> mapped to <span
+class="math inline">[−128, 127]</span> (8-bit signed integers):</p>
 <ul>
 <li>Input Domain (<span class="math inline">ℝ</span>): <span
-class="math inline">[−1.0,1.0]</span></li>
+class="math inline">[−1.0, 1.0]</span></li>
 <li>Output Domain (<span class="math inline">ℤ</span>): <span
-class="math inline">[−128,127]</span></li>
+class="math inline">[−128, 127]</span></li>
 <li>Scalar:</li>
 </ul>
 <p><span class="math display">$$
@@ -570,7 +569,7 @@ Values</strong></h3>
 class="math inline"><em>r̂</em></span> from an integer <span
 class="math inline"><em>z</em></span>:</p>
 <p><span
-class="math display"><em>r̂</em> = <em>s</em> ⋅ (<em>z</em>−<em>z</em><sub>min</sub>) + <em>r</em><sub>min</sub></span></p>
+class="math display"><em>r̂</em> = <em>s</em> ⋅ (<em>z</em> − <em>z</em><sub>min</sub>) + <em>r</em><sub>min</sub></span></p>
 <h4 id="implementation-1"><strong>Implementation</strong></h4>
 <pre class="c"><code>// Function to dequantize a quantized integer from 8-bits
 double dequantize_qint8(signed char q, double scalar) {
@@ -586,7 +585,7 @@ crucial for evaluating the quality of the quantization process.</p>
 class="math inline"><em>r</em></span>) and its dequantized approximation
 (<span class="math inline"><em>r̂</em></span>):</p>
 <p><span
-class="math display"><em>e</em><sub>absolute</sub> = |<em>r</em>−<em>r̂</em>|</span></p>
+class="math display"><em>e</em><sub>absolute</sub> = |<em>r</em> − <em>r̂</em>|</span></p>
 <h5 id="relative-error"><strong>Relative Error</strong>:</h5>
 <p>The error as a fraction of the original value (<span
 class="math inline"><em>r</em></span>):</p>
@@ -618,9 +617,9 @@ datasets.</p>
 <li>Define the input and output ranges:
 <ul>
 <li>Floating-point range: <span
-class="math inline">[<em>r</em><sub>min</sub>,<em>r</em><sub>max</sub>]</span></li>
+class="math inline">[<em>r</em><sub>min</sub>, <em>r</em><sub>max</sub>]</span></li>
 <li>Integer range: <span
-class="math inline">[<em>z</em><sub>min</sub>,<em>z</em><sub>max</sub>]</span></li>
+class="math inline">[<em>z</em><sub>min</sub>, <em>z</em><sub>max</sub>]</span></li>
 </ul></li>
 <li>Compute the scalar value <span class="math inline"><em>s</em></span>
 to scale the ranges proportionally:</li>
@@ -653,7 +652,7 @@ $$</span></p>
 <p>Reconstruct the floating-point approximation from the quantized
 value:</p>
 <p><span
-class="math display"><em>r̂</em> = <em>s</em> ⋅ (<em>z</em>−<em>z</em><sub>min</sub>) + <em>r</em><sub>min</sub></span></p>
+class="math display"><em>r̂</em> = <em>s</em> ⋅ (<em>z</em> − <em>z</em><sub>min</sub>) + <em>r</em><sub>min</sub></span></p>
 <h5 id="error-calculation-optional"><strong>Error Calculation</strong>
 (Optional):</h5>
 <p>Compute the absolute and relative errors between <span
