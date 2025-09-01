@@ -52,11 +52,6 @@ Consider becoming a sponsor if you value my projects. Your support enables the c
 
 [Become a Sponsor](https://github.com/sponsors/teleprint-me?o=esb "Sponsor teleprint-me")
 
-### Patreon
-Consider joining me on Patreon. Your contributions support the development of new and existing projects, helping me advance research and technology.
-
-[Join me on Patreon](https://www.patreon.com/teleprint_me)
-
 ### Donate
 If you prefer a one-time contribution, donations are a valuable way to support my work. Every contribution, large or small, sustains my open-source efforts. Donations can be made using Bitcoin, providing a universal method for your generous support.
 
