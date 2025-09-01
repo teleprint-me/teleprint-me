@@ -14,6 +14,9 @@
     "editor.formatOnPaste": true,
     "editor.formatOnSave": false, // enable per language
     "editor.formatOnType": true,
+    "extensions.ignoreRecommendations": false,
+    "editor.inlineSuggest.enabled": true,
+    "terminal.integrated.fontSize": 10,
     "editor.codeActionsOnSave": {
         "source.organizeImports": "explicit"
     },
