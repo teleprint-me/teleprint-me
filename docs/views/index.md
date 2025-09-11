@@ -68,9 +68,6 @@ PyGPTPrompt is a CLI tool that manages context windows for AI models, facilitati
 #### Application
 [GitHub](https://github.com/teleprint-me/py.gpt.prompt)
 
-#### Showcase
-![PyGPTPrompt Demo](/static/videos/gpt-3.5-turbo-mobile.gif)
-
 #### Toolkit
 - Linux
 - Shell
