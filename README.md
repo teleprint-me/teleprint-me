@@ -48,12 +48,12 @@
 ## Contribute & Connect
 
 ### Sponsor
-Consider becoming a sponsor if you value my projects. Your support enables the creation of open-source tools that remain available to everyone. Sponsorships through GitHub fund research and development.
+If you find value in my projects, particularly in areas like Systems Programming, High-performance Compute, Graphics Programming, Neural Networks, Natural Language Processing, and Model Alignment, consider becoming a sponsor. Your support allows me to devote more time to developing transformative open-source projects. Sponsorships, managed through GitHub, directly fuel research, development, and the creation of high-quality, open-source tools for the community.
 
-[Become a Sponsor](https://github.com/sponsors/teleprint-me?o=esb "Sponsor teleprint-me")
+[Become a Sponsor](https://github.com/sponsors/teleprint-me "Sponsor teleprint-me")
 
 ### Donate
-If you prefer a one-time contribution, donations are a valuable way to support my work. Every contribution, large or small, sustains my open-source efforts. Donations can be made using Bitcoin, providing a universal method for your generous support.
+For those who prefer a one-time contribution or wish to support without a long-term commitment, donations are a valuable way to contribute. Each donation, big or small, plays a significant role in sustaining my open-source work. Donations can be made using Bitcoin, offering a universal and convenient method for your generous support.
 
 [Donate using Bitcoin](https://blockstream.info/nojs/address/3E1rEDAoLYJG6fD7B27K394HQxmiYpK68V "Donate using Bitcoin")
 
