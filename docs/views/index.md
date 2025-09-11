@@ -21,15 +21,15 @@ I'm a self-taught programmer with a passion for problem-solving and efficient so
 - GNU + Linux
 - Software Development
 - Interpreters
-- Language Modeling
 - Graphics Programming
+- Machine Learning
 
 ## Learning Goals
-- Refining skills in C
-- Learning Lua
-- Building Interpreters
 - Data Analysis
-- Machine Learning
+- Time-series Modeling
+- Language Modeling
+- Vulkan Graphics and Compute API
+- Refining skills in C++
 
 ## Projects
 
