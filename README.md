@@ -1,22 +1,13 @@
----
-title: README
-emoji: 😻
-colorFrom: blue
-colorTo: red
-sdk: static
-pinned: true
----
-
 # teleprint-me
 
 ## About Me
 
-I'm a self-taught programmer with a passion for problem-solving and efficient solution design. My journey in programming has been driven by my curiosity and love for learning. My main areas of interest include GNU + Linux, software development, and artificial intelligence.
+I'm a self-taught programmer with a passion for problem-solving and efficient solution design. My journey in programming has been driven by my curiosity and love for learning. My main areas of interest include Systems Programming, Interpreters, and Natural Language Processing.
 
 ## Interests
 
 - GNU + Linux
-- Software Development
+- Systems Programming
 - Interpreters
 - Natural Language Processing
 
@@ -24,7 +15,7 @@ I'm a self-taught programmer with a passion for problem-solving and efficient so
 
 ### Sponsor
 
-If you find value in my projects, particularly in areas like Systems Programming, High-performance Compute, Graphics Programming, Neural Networks, Natural Language Processing, and Model Alignment, consider becoming a sponsor. Your support allows me to devote more time to developing transformative open-source projects. Sponsorships, managed through GitHub, directly fuel research, development, and the creation of high-quality, open-source tools for the community.
+If you find value in my projects, particularly in areas like Systems Programming, Graphics Programming, and Natural Language Processing, consider becoming a sponsor. Your support allows me to devote more time to developing transformative open-source projects. Sponsorships, managed through GitHub, directly fuel research, development, and the creation of high-quality, open-source tools for the community.
 
 [Become a Sponsor](https://github.com/sponsors/teleprint-me "Sponsor teleprint-me")
 
